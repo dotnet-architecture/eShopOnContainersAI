@@ -1,4 +1,4 @@
- # eShopOnContainers - Microservices Architecture and Containers based Reference Application (Visual Studio 2017 and CLI environments compatible)
+ # eShopOnContainersAI - Extended version with AI (Artificial Intelligence) features
 Sample .NET Core reference application, powered by Microsoft, based on a simplified microservices architecture and Docker containers. <p>
 **Note for Pull Requests**: We accept pull request from the community. When doing it, please do it onto the DEV branch which is the consolidated work-in-progress branch. Do not request it onto Master, if possible.
 
