@@ -1,0 +1,487 @@
+[33mcommit 9999ff2dca36ca0215dcc62374ab8b6af2e54116[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: aab18ad5 e8c86780
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Wed Oct 4 14:37:09 2017 -0700
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit e8c8678082d39533c38cc53ebf8c23f263df7762[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Wed Oct 4 13:54:34 2017 -0700
+
+    Changed to new GA SQL Server container Image tag and parameters
+
+[33mcommit 84bb9b505f96fd3f5412d0d5692e843d507d585a[m
+Merge: 9d6da785 04cb531b
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Wed Oct 4 14:05:22 2017 -0400
+
+    Merge pull request #357 from dotnet-architecture/revert-356-dev
+    
+    Revert "Update docker-compose.yml"
+
+[33mcommit 04cb531b46d41846cab76f88bc1f939048c33618[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Wed Oct 4 11:05:04 2017 -0700
+
+    Revert "Update docker-compose.yml"
+
+[33mcommit 9d6da785074cb893d09209b13cda1b4baf57cc48[m
+Merge: dd20236e a78626c4
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Wed Oct 4 13:08:30 2017 -0400
+
+    Merge pull request #356 from volkan/dev
+    
+    Update docker-compose.yml
+
+[33mcommit dd20236eb61bdf46c7968b7a8a4dfb193645cf07[m
+Merge: 01376ead 01ff19a6
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Wed Oct 4 18:36:16 2017 +0200
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 01376ead68eafb1cba4828e1c8cb89b0f6e39aef[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Wed Oct 4 18:36:08 2017 +0200
+
+    Created ARM template for deploying a secured SF
+    Created ps1 to generate certificates in keyvault
+    Updated readme
+
+[33mcommit a78626c4d85f6974248e72ed7dd064dfb40bda8f[m
+Author: Volkan Altan <volkanaltan@gmail.com>
+Date:   Wed Oct 4 16:43:37 2017 +0300
+
+    Update docker-compose.yml
+    
+    fix mssql version
+
+[33mcommit 01ff19a6133bcd6f101f18d696b518604a88f806[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Tue Oct 3 09:19:06 2017 -0700
+
+    Removed Service Fabric manifests targeting Windows from default eShopOnContainers VS solution which targets Docker Linux
+
+[33mcommit aab18ad5bf787a75746dcd85323786664e04140a[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 14:59:53 2017 -0700
+
+    Set Linux as by default target OS for Docker's project in VS2017
+
+[33mcommit 2ca72e8f1d04c38006a401e730646cb17cc106c9[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 14:59:30 2017 -0700
+
+    Set Linux as by default target OS for Docker's project in VS2017
+
+[33mcommit 08478a2339b31c00b6bca5bd6258132e4618791f[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:45:39 2017 -0700
+
+    Update README.md
+
+[33mcommit 898c856b9b0db000e57eec0c6217e3148d80c8d7[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:43:49 2017 -0700
+
+    Commit the new README.md file for AI within docs
+
+[33mcommit cce3840819804d1b8f9795d6d2948ee14a50466f[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:33:02 2017 -0700
+
+    Commit the new README-AI.md file
+
+[33mcommit 7dadf527988ad4a29fe1169e6fb102c05d06d784[m
+Merge: 6f0090da 34a42716
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:26:30 2017 -0700
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 34a4271608e1a37f45d2c57cba832733fd808a26[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:26:06 2017 -0700
+
+    Update README.md
+
+[33mcommit 09e35a8c65b6cee21f6a089ef6bf367a555d6eab[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:16:11 2017 -0700
+
+    Update build-bits.sh
+
+[33mcommit 6f0090dad927f65fe5e8a6b3c55c8390e24377d4[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 13:13:55 2017 -0700
+
+    Update README.md
+
+[33mcommit 8ff4856a89be55d11c6a41aabaef3f5ce71d6ba5[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Oct 2 12:57:19 2017 -0700
+
+    Git test
+
+[33mcommit 883fbbac8eb0792bde32138db450ecf69917d8bd[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 19:49:15 2017 +0200
+
+    Updates marketing.api SF manifest
+
+[33mcommit 4a8cd4d3bb11b1595d615ee9776d29db10136b33[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 17:38:27 2017 +0200
+
+    Updated marketing.api service fabric env. vars
+
+[33mcommit 83f8bd8f5b65380d5b07ef128d272e79f29dd9db[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 16:20:59 2017 +0200
+
+    Added swagger to Payment.api
+
+[33mcommit 99dd90e69947dca93fe49b312b2b1d3e4b31621d[m[33m ([m[1;31morigin/eShopOnServiceFabric-Win[m[33m)[m
+Merge: 90a5784a 3ebaf68a
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 15:04:25 2017 +0200
+
+    Merge Dev
+
+[33mcommit 3ebaf68ab99cb4ec5ebde30212cf64bd037e4466[m
+Merge: 274ddc20 2e463f4b
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 14:40:49 2017 +0200
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 274ddc201640543188fd17a5b2605d6d64ecf935[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Mon Oct 2 14:40:37 2017 +0200
+
+    Integrate HealthCheck with k8s
+
+[33mcommit 2e463f4b250e880376ffa9e1747f570db8f02686[m
+Author: David Britch <davidbritch@Davids-MBP.lan>
+Date:   Fri Sep 29 17:25:49 2017 +0100
+
+    Fixed SplashScreen implementation on Android. Fixes #355
+    
+    The MainTheme set the splash screen image as the window background.
+    I’ve removed this and ensured that the SplashActivity is the launch
+    activity.
+    
+    Also did some code tidy up on the Campaign page classes.
+
+[33mcommit 0348d882f3122e6e0a6c1a1ae13e930cb0d666a4[m
+Author: David Britch <davidbritch@Davids-MBP.lan>
+Date:   Fri Sep 29 16:14:18 2017 +0100
+
+    Fixed relationship between XAML and their code-behind files in the PCL. Fixes #354
+
+[33mcommit 745cb39d768e20b52aa357ae7625af239444cd26[m
+Author: David Britch <davidbritch@users.noreply.github.com>
+Date:   Fri Sep 29 12:50:33 2017 +0100
+
+    UWP campaign icon. Fixes #353
+
+[33mcommit 86af9ec922cec680224711159b54f555186c4939[m
+Author: David Britch <davidbritch@Davids-MBP.lan>
+Date:   Fri Sep 29 12:35:15 2017 +0100
+
+    New campaign icons for iOS + Android #353
+
+[33mcommit bf280abbe8cfeb4f9e98e49683011d95e8d34895[m
+Merge: 0f126407 2d926188
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Fri Sep 29 11:45:33 2017 +0200
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 0f126407257e20d8d377de28ed00c79d12b08df4[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Fri Sep 29 11:45:25 2017 +0200
+
+    Fix issue k8s webstatus: webmvc healthcheck fails
+    Added Payment.api to healthcheck
+
+[33mcommit 2d9261884e3047da72f31b57f0c9ac36a042ec4b[m
+Merge: 49703a81 9bbf29fc
+Author: RamonTC <ramon.tomas84@hotmail.com>
+Date:   Thu Sep 28 18:12:26 2017 +0200
+
+    Merge pull request #334 from SychevIgor/SychevIgor/ExplicitParamsCreateACS
+    
+    Explicitly specifying parameters for az acs create
+
+[33mcommit 49703a814ac8cd9db8e68d314b68bf91fe3a6fc4[m
+Merge: 180efc45 8c8e4cfe
+Author: RamonTC <ramon.tomas84@hotmail.com>
+Date:   Thu Sep 28 17:45:06 2017 +0200
+
+    Merge pull request #345 from ncsurfus/patch-1
+    
+    Fixed miroservices spelling mistake
+
+[33mcommit 180efc45df4ec65247ed83039209c66bbccd5a10[m
+Merge: d987420d aca7779f
+Author: Eduard Tomàs <etomas@gmail.com>
+Date:   Thu Sep 28 16:27:16 2017 +0200
+
+    Merge pull request #347 from jzeferino/feature/readme_fix
+    
+    Fixed header typo.
+
+[33mcommit 9bbf29fc04890709e8d57f66b8e608e18e964ded[m
+Author: Igor Sychev <igorsych@Microsoft.com>
+Date:   Mon Sep 18 09:26:04 2017 +0300
+
+    Explicitly specifying parameters for az acs creat
+    
+    Non-preview parameters specified
+
+[33mcommit d987420d41552915acd7a160f0c0953694ec0462[m
+Merge: 53910388 0c274d46
+Author: David Britch <davidbritch@users.noreply.github.com>
+Date:   Wed Sep 27 16:18:37 2017 +0100
+
+    Merge pull request #350 from dotnet-architecture/xamarin-fake-services-review
+    
+    Fake services now allow creating new orders again.
+
+[33mcommit 90a5784a3a1cffc229deaf308c50490836080d0d[m
+Author: Ramón Tomás <ramon.tomas84@hotmail.com>
+Date:   Wed Sep 27 12:28:45 2017 +0200
+
+    Update cloud manifest
+
+[33mcommit aca7779fd91b613b284028a4960d18fa942e817e[m
+Author: jzeferino <jorgevalentzeferino@gmail.com>
+Date:   Mon Sep 25 21:59:59 2017 +0100
+
+    Fixed header typo.
+
+[33mcommit 539103882e9da1602ea4eb063f201ab250c7d790[m
+Merge: 6d8a33bb f1bdcced
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 25 15:03:32 2017 -0400
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 6d8a33bbb9f3ea87dcf8ebf98ceda3c8362c7251[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 25 14:45:53 2017 -0400
+
+    Set NO-CACHE for HealthCheck to Basket microservice, and MVC and SPA apps so it is faster for demoing HealthChecks.
+
+[33mcommit 0c274d46be9de021007266d98104f29703730c03[m
+Author: Javier Suárez Ruiz <javiersuarezruiz@hotmail.com>
+Date:   Mon Sep 25 08:17:20 2017 +0200
+
+    Fixed bindings errors
+    Fixed Checkout process
+    Changed some UWP icons
+
+[33mcommit 8c8e4cfe960a4d3f6e61e53afcb5e3375a6fc4c3[m
+Author: Nathan Surfus <ncsurfus@gmail.com>
+Date:   Sat Sep 23 13:58:19 2017 -0500
+
+    Fixed miroservices spelling mistake
+
+[33mcommit f1bdcced09593c7dc0d7180c6c9ea88193945743[m
+Merge: 5831c91c e3f98177
+Author: David Britch <davidbritch@users.noreply.github.com>
+Date:   Fri Sep 22 12:40:49 2017 +0100
+
+    Merge pull request #343 from dotnet-architecture/xamarin-pcl-revert
+    
+    Reverted Xamarin projects to use PCL/Mono for the time being
+
+[33mcommit e3f981774582a48a407fa300b7888224cd467ce2[m
+Author: David Britch <davidbritch@users.noreply.github.com>
+Date:   Fri Sep 22 12:37:02 2017 +0100
+
+    Minor solution changes for latest VS2017 release.
+
+[33mcommit 39b3a0ec3bc74e671bf024edb34510d2288845ca[m
+Author: David Britch <davidbritch@users.noreply.github.com>
+Date:   Fri Sep 22 12:35:10 2017 +0100
+
+    Windows test runner uses same target version as Windows app.
+
+[33mcommit 5831c91ced7e13cbcfce45238b46d49e61d2947a[m
+Merge: 2ab5347b df28e4ee
+Author: Eduard Tomàs <etomas@gmail.com>
+Date:   Thu Sep 21 19:02:46 2017 +0200
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 2ab5347b7fb559df7f9336f6bb3bc44d79753380[m
+Author: Eduard Tomàs <etomas@gmail.com>
+Date:   Thu Sep 21 19:02:42 2017 +0200
+
+    fix errors in configmap for k8s
+
+[33mcommit df28e4eeeb34536a8a52e4c9d28bff5a25ed284b[m
+Author: Unai Zorrilla Castro <unai@plainconcepts.com>
+Date:   Thu Sep 21 18:58:53 2017 +0200
+
+    Invert Lat/Long order on Marketing Campaign Views
+
+[33mcommit 68fc5d158ebece264895d3b61536967c65434a17[m
+Author: David Britch <davidbritch@Davids-MBP.lan>
+Date:   Thu Sep 21 17:40:51 2017 +0100
+
+    Removed async warning.
+
+[33mcommit c92b54d29ca176165c9971629b3f0627eac1c008[m
+Author: David Britch <davidbritch@Davids-MBP.lan>
+Date:   Thu Sep 21 17:32:24 2017 +0100
+
+    Changed minimum deployment target to iOS 9.
+    
+    This ensures the launch storyboard doesn’t generate an error, and is
+    line with Xamarin policy for samples.
+
+[33mcommit 20b14edea6206befcef0301528684b6ae16a3fd2[m
+Author: Javier Suárez Ruiz <javiersuarezruiz@hotmail.com>
+Date:   Thu Sep 21 16:20:26 2017 +0200
+
+    Created new PCL projects to fix compilation in Visual Studio for macOS
+
+[33mcommit c22a443cfd909f4795f4067d1b2f31ef45d0bcba[m
+Author: Javier Suárez Ruiz <javiersuarezruiz@hotmail.com>
+Date:   Wed Sep 20 16:44:30 2017 +0200
+
+    Changes in csprojs
+
+[33mcommit cc3b010fcbfeed6e366e5c1fb74f54c1c0862431[m
+Author: Javier Suárez Ruiz <javiersuarezruiz@hotmail.com>
+Date:   Wed Sep 20 16:42:35 2017 +0200
+
+    Reverted net standard libraries to pcl
+
+[33mcommit 0e6c816a961428bbfd52d29988105c8817c6ecb3[m
+Merge: 7d4ddca3 93e2b913
+Author: Unai Zorrilla Castro <unai@plainconcepts.com>
+Date:   Tue Sep 19 15:51:31 2017 +0200
+
+    Merge branch 'dev' of https://github.com/dotnet/eShopOnContainers into dev
+
+[33mcommit 7d4ddca393b51fce24fe00b30f276d92483aac6b[m
+Author: Unai Zorrilla Castro <unai@plainconcepts.com>
+Date:   Tue Sep 19 15:50:51 2017 +0200
+
+    Added missing entries for k8s
+
+[33mcommit 93e2b9137d401d602e8688938f6703eaacd1be7e[m
+Author: Eduard Tomàs <etomas@gmail.com>
+Date:   Tue Sep 19 12:47:29 2017 +0200
+
+    Update k8s deployment and compose files with graceperiodmanager settings missing
+
+[33mcommit 309b6cc43fed9b310e9e43d48bd22ce01c172518[m
+Author: Unai Zorrilla Castro <Unai Zorrilla Castro>
+Date:   Tue Sep 19 12:34:47 2017 +0200
+
+    Update k8s conf_local with GracePeriodManager mandatory settings
+
+[33mcommit 4ea97e241185136d24fd5ad9022efed2f348edfa[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 18:23:49 2017 -0700
+
+    Minor comment fixed
+
+[33mcommit 79d045f897e48b8d065ffa3759572f23fae38371[m
+Merge: ed0ca3e0 f9c7e386
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 16:11:26 2017 -0700
+
+    Merge pull request #320 from SychevIgor/SychevIgor/PaymntHealthCheck
+    
+    payment API require health check
+
+[33mcommit ed0ca3e06195af0a1e0a28ad9f24b021518882cc[m
+Merge: e3c85bab 76dcd66c
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 16:10:14 2017 -0700
+
+    Merge pull request #335 from SychevIgor/SychevIgor/KubeConfigdrop
+    
+    we don't need schema files for k8 in a repo.
+
+[33mcommit e3c85bab9432e12461f7e70530679da40dc82115[m
+Merge: e72e36b9 783dd039
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 16:09:22 2017 -0700
+
+    Merge pull request #321 from SychevIgor/SychevIgor/GracePeriodRudement
+    
+    Grace period rudement fix
+
+[33mcommit e72e36b997a160260f6a0878e2e8adc8008289ac[m
+Merge: 14c3d697 672461e5
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 15:39:05 2017 -0700
+
+    Merge branch 'dev' of https://github.com/dotnet-architecture/eShopOnContainers into dev
+
+[33mcommit 14c3d69784008c05aaa0bcf5dce0c86966e5150d[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 15:38:21 2017 -0700
+
+    Fix namespace in RAZOR page _LoginPartial.cshtml, so nocompilation error when doing dotnet publish from CLI. Like D:\GITREPOS\eShopOnContainers-dev\src\Services\Identity\Identity.API\Views\Shared\_LoginPartial.cshtml(2,20): error CS0234: The type
+     or namespace name 'Models' does not exist in the namespace 'Identity.API' (are you missing an assembly reference?)
+
+[33mcommit 672461e5020b76dbc9fb8d19c2dda3a0b0ae36d6[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 11:37:22 2017 -0700
+
+    Update README.k8s.md
+
+[33mcommit 23a882ec7dda7caff76a3a41c7978fc86b59d706[m
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Mon Sep 18 11:32:51 2017 -0700
+
+    Update README.k8s.md
+
+[33mcommit 76dcd66c735572bef23c73b1d1edbf33dbd26da8[m
+Author: Igor Sychev <igorsych@Microsoft.com>
+Date:   Mon Sep 18 09:56:29 2017 +0300
+
+    we don't need schema files for k8 in a repo.
+
+[33mcommit f9c7e386c7c2e71203ce41a69f88efd4012badf0[m
+Author: Igor Sychev <igorsych@microsoft.com>
+Date:   Wed Sep 6 13:35:15 2017 +0300
+
+    We don't need swagger and MVC contollers in Payment API
+
+[33mcommit 926cc9f5e5ee5018ad5dbf65ebbd811383d1f2f2[m
+Author: Igor Sychev <igorsych@microsoft.com>
+Date:   Wed Sep 6 14:36:22 2017 +0300
+
+    Health check for Payment
+
+[33mcommit 783dd0396b491d826ca6e072f899fb2c070e6bc1[m
+Author: Igor Sychev <igorsych@microsoft.com>
+Date:   Wed Sep 6 17:45:51 2017 +0300
+
+    k8 grace period
+
+[33mcommit 29b3811eead178600c2e3834d46bd5b2f0fb392b[m
+Author: Igor Sychev <igorsych@microsoft.com>
+Date:   Wed Sep 6 13:49:36 2017 +0300
+
+    Grace period rudement fix
+
+[33mcommit 202e663f7781b284d8419ef101a353bfc2e7733f[m
+Merge: cecdc40a 6b2a4ed4
+Author: Cesar De la Torre <cesardl@microsoft.com>
+Date:   Fri Sep 15 14:22:51 2017 -0700
+
+    Merge pull request #333 from ramonsmits/patch-1
+    
+    Treat *.pfx as binary so CRLF 
