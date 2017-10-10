@@ -38,19 +38,19 @@ The ARM template `servicefabricdeploysecured.json` and its parameter file (`serv
 ## Create Azure Keyvault service
 Go to PortalAzure and create a Keyvault service. Make sure Enable access for deployment checkboxes are selected.
 
-<img src="../../../../img/sf/create-kv.png">
+<img src="../../../../img/sf/create-kv.PNG">
 
 ## Generate a certificate in Azure Keyvault
 Execute the gen-keyvaultcert.ps1 script to generate and download a certificate from Keyvault.
 
 ```
-.\gen-cert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westeurope.cloudapp.azure.com -saveDir C:\Users\<user>\Downloads
+.\gen-keyvaultcert.ps1 -vaultName <your_keyvault_service> -certName <your_cert_name> -certPwd <your_cert_pwd> -subjectName CN=<your_sf_dns_name>.westeurope.cloudapp.azure.com -saveDir C:\Users\<user>\Downloads
 
 ```
 ## Install the certificate
 Install the certificate under 'Current User' store location and check it as exportable.
 
-<img src="../../../../img/sf/install-cert.png">
+<img src="../../../../img/sf/install-cert.PNG">
 
 ## Editing servicefabricdeploysecured.parameters.json file
 
@@ -82,7 +82,7 @@ create-resources.cmd servicefabric\WindowsContainers\servicefabricdeploysecured 
 
 Modify the cloud.xml file of each Service Fabric application in PublishProfile directory and set  your certificate settings to be able to deploy eshopOnContainers in the secured cluster:
 
-<img src="../../../../img/sf/cloud_publishProfile.png">
+<img src="../../../../img/sf/cloud_publishProfile.PNG">
 
 
 

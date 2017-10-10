@@ -59,6 +59,26 @@
             "type": "int",
             "defaultValue": 5105
         },
+        "BasketApiHttpRule": { 
+            "type": "int",
+            "defaultValue": 5103
+        },
+        "CatalogApiHttpRule": { 
+            "type": "int",
+            "defaultValue": 5101
+        },
+        "OrderingApiHttpRule": { 
+            "type": "int",
+            "defaultValue": 5102
+        },
+        "MarketingApiHttpRule": { 
+            "type": "int",
+            "defaultValue": 5110
+        },
+        "LocationsApiHttpRule": { 
+            "type": "int",
+            "defaultValue": 5109
+        },
         "subnet0Name": {
             "type": "string",
             "defaultValue": "Subnet-0"
@@ -459,6 +479,86 @@
                             "probe": {
                                 "id": "[variables('lbHttpProbeID0')]"
                             },
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "BasketApiHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('BasketApiHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('BasketApiHttpRule')]",
+                            "idleTimeoutInMinutes": "5",
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "CatalogApiHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('CatalogApiHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('CatalogApiHttpRule')]",
+                            "idleTimeoutInMinutes": "5",
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "OrderingApiHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('OrderingApiHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('OrderingApiHttpRule')]",
+                            "idleTimeoutInMinutes": "5",
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "MarketingApiHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('MarketingApiHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('MarketingApiHttpRule')]",
+                            "idleTimeoutInMinutes": "5",
+                            "protocol": "tcp"
+                        }
+                    },
+                    {
+                        "name": "LocationsApiHttpRule",
+                        "properties": {
+                            "backendAddressPool": {
+                                "id": "[variables('lbPoolID0')]"
+                            },
+                            "backendPort": "[parameters('LocationsApiHttpRule')]",
+                            "enableFloatingIP": "false",
+                            "frontendIPConfiguration": {
+                                "id": "[variables('lbIPConfig0')]"
+                            },
+                            "frontendPort": "[parameters('LocationsApiHttpRule')]",
+                            "idleTimeoutInMinutes": "5",                            
                             "protocol": "tcp"
                         }
                     }
