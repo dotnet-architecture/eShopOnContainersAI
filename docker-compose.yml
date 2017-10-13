@@ -98,6 +98,8 @@ services:
 
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
+    volumes:
+      - ./mssql:/var/opt/bulk
 
   nosql.data:
     image: mongo
