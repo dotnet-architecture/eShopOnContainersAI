@@ -28,13 +28,14 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             try
             {
                 var useCustomizationData = settings.Value.UseCustomizationData;
+                var useCustomizationDataAI = settings.Value.UseCustomizationDataAI;
                 var contentRootPath = env.ContentRootPath;
                 var webroot = env.WebRootPath;
 
                 if (!context.Users.Any())
                 {
                     context.Users.AddRange(useCustomizationData
-                        ? GetUsersFromFile(contentRootPath, logger)
+                        ? GetUsersFromFile(contentRootPath, "Users.csv", logger)
                         : GetDefaultUser());
 
                     await context.SaveChangesAsync();
@@ -43,6 +44,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 if (useCustomizationData)
                 {
                     GetPreconfiguredImages(contentRootPath, webroot, logger);
+                }
+
+                if (useCustomizationDataAI)
+                {
+                    context.Users.AddRange(GetUsersFromFile(contentRootPath, "users.ai.csv", new [] { "id" }, logger));
+                    await context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
@@ -58,9 +65,14 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
             }
         }
 
-        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, ILogger logger)
+        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, string fileName, ILogger logger)
         {
-            string csvFileUsers = Path.Combine(contentRootPath, "Setup", "Users.csv");
+            return GetUsersFromFile(contentRootPath, fileName, Enumerable.Empty<string>(), logger);
+        }
+
+        private IEnumerable<ApplicationUser> GetUsersFromFile(string contentRootPath, string fileName, IEnumerable<string> extraHeaders, ILogger logger)
+        {
+            string csvFileUsers = Path.Combine(contentRootPath, "Setup", fileName);
 
             if (!File.Exists(csvFileUsers))
             {
@@ -76,6 +88,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                     "username", "zipcode", "state", "street", "securitynumber",
                     "normalizedemail", "normalizedusername", "password"
                 };
+                requiredHeaders = requiredHeaders.Concat(extraHeaders).ToArray();
                 csvheaders = GetHeaders(requiredHeaders, csvFileUsers);
             }
             catch (Exception ex)
@@ -118,7 +131,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 Country = column[Array.IndexOf(headers, "country")].Trim('"').Trim(),
                 Email = column[Array.IndexOf(headers, "email")].Trim('"').Trim(),
                 Expiration = column[Array.IndexOf(headers, "expiration")].Trim('"').Trim(),
-                Id = Guid.NewGuid().ToString(),
+                Id = headers.Contains("id") ? 
+                    column[Array.IndexOf(headers, "id")].Trim('"').Trim() : 
+                    Guid.NewGuid().ToString(),
                 LastName = column[Array.IndexOf(headers, "lastname")].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
                 PhoneNumber = column[Array.IndexOf(headers, "phonenumber")].Trim('"').Trim(),
