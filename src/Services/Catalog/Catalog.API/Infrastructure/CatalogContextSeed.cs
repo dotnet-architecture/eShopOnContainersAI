@@ -15,6 +15,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using Dapper;
 
     public class CatalogContextSeed
     {
@@ -25,6 +26,7 @@
             await policy.ExecuteAsync(async () =>
             {
                 var useCustomizationData = settings.Value.UseCustomizationData;
+                var useCustomizationDataAI = settings.Value.UseCustomizationDataAI;
                 var contentRootPath = env.ContentRootPath;
                 var picturePath = env.WebRootPath;
 
@@ -54,7 +56,14 @@
 
                     await context.SaveChangesAsync();
 
-                    GetCatalogItemPictures(contentRootPath, picturePath);
+                    CleanUpItemPictures(picturePath);
+                    GetCatalogItemPictures(contentRootPath, picturePath, "CatalogItems.zip");
+                }
+
+                if (useCustomizationDataAI)
+                {
+                    ExecuteBulkInsertAI(settings.Value, logger);
+                    GetCatalogItemPictures(contentRootPath, picturePath, "CatalogItemsAI.zip");
                 }
             });
         }
@@ -354,19 +363,52 @@
             return csvheaders;
         }
 
-        private void GetCatalogItemPictures(string contentRootPath, string picturePath)
+        private void GetCatalogItemPictures(string contentRootPath, string picturePath, string zipFilePath)
+        {
+            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", zipFilePath);
+            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+        }
+
+        private static void CleanUpItemPictures(string picturePath)
         {
             DirectoryInfo directory = new DirectoryInfo(picturePath);
             foreach (FileInfo file in directory.GetFiles())
             {
                 file.Delete();
             }
-
-            string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
-            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
         }
 
-        private Policy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)
+        private void ExecuteBulkInsertAI(CatalogSettings settings, ILogger<CatalogContextSeed> logger)
+        {
+            const string insertCatalogBrand = @"BULK INSERT [Microsoft.eShopOnContainers.Services.CatalogDb].dbo.CatalogBrand  
+FROM '\var\opt\bulk\catalogBrand.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+
+            const string insertCatalogType = @"BULK INSERT [Microsoft.eShopOnContainers.Services.CatalogDb].dbo.CatalogType  
+FROM '\var\opt\bulk\catalogType.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+
+            const string insertCatalog = @"BULK INSERT [Microsoft.eShopOnContainers.Services.CatalogDb].dbo.Catalog  
+FROM '\var\opt\bulk\catalog.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+
+            using (var conn = new SqlConnection(settings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    conn.Execute(insertCatalogBrand, commandTimeout: 60);
+                    conn.Execute(insertCatalogType, commandTimeout: 60);
+                    conn.Execute(insertCatalog, commandTimeout: 60);
+                }
+                catch (SqlException exception)
+                {
+                    logger.LogCritical($"FATAL ERROR: Inserting rows: {exception.Message}");
+                }
+
+            }
+        }
+
+
+        private Policy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 15)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(
