@@ -1,7 +1,9 @@
 ﻿namespace Microsoft.eShopOnContainers.Services.Ordering.API.Infrastructure
 {
     using AspNetCore.Builder;
+    using Dapper;
     using global::Ordering.API.Extensions;
+    using global::Ordering.API.Infrastructure.HostedServices;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.eShopOnContainers.Services.Ordering.Domain.AggregatesModel.BuyerAggregate;
@@ -27,8 +29,8 @@
             await policy.ExecuteAsync(async () =>
             {
 
-                var useCustomizationData = settings.Value
-                .UseCustomizationData;
+                var useCustomizationData = settings.Value.UseCustomizationData;
+                var useCustomizationDataAI = settings.Value.UseCustomizationDataAI;
 
                 var contentRootPath = env.ContentRootPath;
 
@@ -54,6 +56,11 @@
                     }
 
                     await context.SaveChangesAsync();
+
+                    if (useCustomizationDataAI)
+                    {
+                        ExecuteBulkInsertAI(settings.Value, logger);
+                    }
                 }
             });
         }
@@ -179,8 +186,34 @@
             return csvheaders;
         }
 
-     
-        private Policy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries =3)
+        private void ExecuteBulkInsertAI(OrderingSettings settings, ILogger<OrderingContextSeed> logger)
+        {
+            const string insertBuyers = @"BULK INSERT [Microsoft.eShopOnContainers.Services.OrderingDb].ordering.buyers  
+FROM '\var\opt\bulk\orderBuyers.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+            const string insertOrders = @"BULK INSERT [Microsoft.eShopOnContainers.Services.OrderingDb].ordering.orders  
+FROM '\var\opt\bulk\orders.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+            const string insertOrderItems = @"BULK INSERT [Microsoft.eShopOnContainers.Services.OrderingDb].ordering.orderItems  
+FROM '\var\opt\bulk\orderItems.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+
+            using (var conn = new SqlConnection(settings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    conn.Execute(insertBuyers);
+                    conn.Execute(insertOrders);
+                    conn.Execute(insertOrderItems);
+                }
+                catch (SqlException exception)
+                {
+                    logger.LogCritical($"FATAL ERROR: Database connections could not be opened: {exception.Message}");
+                }
+            }
+        }
+
+
+        private Policy CreatePolicy( ILogger<OrderingContextSeed> logger, string prefix, int retries = 15)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(

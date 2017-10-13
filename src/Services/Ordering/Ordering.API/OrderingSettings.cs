@@ -3,6 +3,8 @@
     public class OrderingSettings
     {
         public bool UseCustomizationData { get; set; }
+        public bool UseCustomizationDataAI { get; set; }
+
         public string ConnectionString { get; set; }
 
         public string EventBusConnection { get; set; }
