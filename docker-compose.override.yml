@@ -36,6 +36,7 @@ services:
       - AzureStorageAccountName=${ESHOP_AZURE_STORAGE_CATALOG_NAME}
       - AzureStorageAccountKey=${ESHOP_AZURE_STORAGE_CATALOG_KEY}
       - UseCustomizationData=True
+      - UseCustomizationDataAI=True
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
@@ -56,6 +57,7 @@ services:
       - BasketApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5103
       - OrderingApiClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5102
       - UseCustomizationData=True  
+      - UseCustomizationDataAI=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -72,6 +74,7 @@ services:
       - EventBusUserName=${ESHOP_SERVICE_BUS_USERNAME}
       - EventBusPassword=${ESHOP_SERVICE_BUS_PASSWORD}          
       - UseCustomizationData=True
+      - UseCustomizationDataAI=True
       - AzureServiceBusEnabled=False
       - CheckUpdateTime=30000
       - GracePeriodTime=1
