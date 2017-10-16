@@ -40,7 +40,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 var requestCancelOrder = new IdentifiedCommand<CancelOrderCommand, bool>(command, guid);
                 commandResult = await _mediator.Send(requestCancelOrder);
             }
-           
+
             return commandResult ? (IActionResult)Ok() : (IActionResult)BadRequest();
 
         }
@@ -62,7 +62,19 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
 
         }
 
-        [Route("{orderId:int}")]
+        [Route("user/{userId}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(List<dynamic>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> OrdersByUser(string userId)
+        {
+            var orderTask = _orderQueries.GetOrdersAsync(userId);
+
+            var orders = await orderTask;
+
+            return Ok(orders);
+        }
+
+        [Route("id/{orderId:int}")]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -81,7 +93,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
             }
         }
 
-        [Route("")]
+        [Route("all")]
         [HttpGet]
         public async Task<IActionResult> GetOrders()
         {
@@ -100,7 +112,7 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Controllers
                 .GetCardTypesAsync();
 
             return Ok(cardTypes);
-        }        
+        }
     }
 }
 
