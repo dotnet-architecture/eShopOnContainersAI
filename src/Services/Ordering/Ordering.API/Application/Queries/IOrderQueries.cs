@@ -9,6 +9,8 @@
 
         Task<IEnumerable<dynamic>> GetOrdersAsync();
 
+        Task<IEnumerable<dynamic>> GetOrdersAsync(string userId);
+
         Task<IEnumerable<dynamic>> GetCardTypesAsync();
     }
 }

@@ -31,12 +31,12 @@ namespace WebMVC.Infrastructure
         {
             public static string GetOrder(string baseUri, string orderId)
             {
-                return $"{baseUri}/{orderId}";
+                return $"{baseUri}/id/{orderId}";
             }
 
-            public static string GetAllMyOrders(string baseUri)
+            public static string GetAllMyOrders(string baseUri, string userId)
             {
-                return baseUri;
+                return $"{baseUri}/user/{userId}";
             }
 
             public static string AddNewOrder(string baseUri)
