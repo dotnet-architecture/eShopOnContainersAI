@@ -10,5 +10,13 @@
         public bool UseCustomizationDataAI { get; set; }
         public bool AzureStorageEnabled { get; set; }
         public string ConnectionString { get; set; }
+
+        public class AzureMachineLearningSchema
+        {
+            public string RecommendationAPIKey { get; set; }
+            public string RecommendationUri { get; set; }
+        }
+
+        public AzureMachineLearningSchema AzureMachineLearning { get; set; }
     }
 }
