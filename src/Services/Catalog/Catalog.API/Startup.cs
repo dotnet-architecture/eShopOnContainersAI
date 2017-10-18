@@ -2,7 +2,6 @@
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
-    using global::Catalog.API.AI;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.ApplicationInsights.Extensibility;
@@ -40,7 +39,7 @@
 
         public IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
 
@@ -124,8 +123,6 @@
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
-            services.AddTransient<IAzureMachineLearningService, AzureMachineLearningService>();
-
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
@@ -178,7 +175,7 @@
 
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             //Configure logs
 
