@@ -2,6 +2,7 @@
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Catalog.API.AI;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.ApplicationInsights.Extensibility;
@@ -122,6 +123,8 @@
                 sp => (DbConnection c) => new IntegrationEventLogService(c));
 
             services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
+
+            services.AddTransient<IAzureMachineLearningService, AzureMachineLearningService>();
 
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
