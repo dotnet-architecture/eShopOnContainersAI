@@ -387,7 +387,7 @@ FROM '\var\opt\bulk\catalogBrand.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
 FROM '\var\opt\bulk\catalogType.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
 
             const string insertCatalog = @"BULK INSERT [Microsoft.eShopOnContainers.Services.CatalogDb].dbo.Catalog  
-FROM '\var\opt\bulk\catalog.csv' WITH (FORMAT='CSV', FIRSTROW=2)";
+FROM '\var\opt\bulk\catalog.csv' WITH (FORMAT='CSV', FIRSTROW=2, ROWTERMINATOR='0x0a')";
 
             using (var conn = new SqlConnection(settings.ConnectionString))
             {
