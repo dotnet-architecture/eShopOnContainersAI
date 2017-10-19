@@ -12,5 +12,7 @@
         Task<IEnumerable<dynamic>> GetOrdersAsync(string userId);
 
         Task<IEnumerable<dynamic>> GetCardTypesAsync();
+
+        Task<IEnumerable<dynamic>> GetRankings();
     }
 }

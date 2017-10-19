@@ -40,6 +40,8 @@ services:
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - AzureMachineLearning__RecommendationAPIKey=${ESHOPAI_AML_RECOM_KEY}
+      - AzureMachineLearning__RecommendationUri=${ESHOPAI_AML_RECOM_URI}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5101:80"
