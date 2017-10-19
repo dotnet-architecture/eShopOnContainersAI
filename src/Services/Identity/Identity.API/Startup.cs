@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.Services.Identity.API.Certificates;
 using Microsoft.eShopOnContainers.Services.Identity.API.Data;
+using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
 using Microsoft.eShopOnContainers.Services.Identity.API.Models;
 using Microsoft.eShopOnContainers.Services.Identity.API.Services;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
+
+            services.AddAIServices();
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -146,6 +149,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 context.Response.Headers.Add("Content-Security-Policy", "script-src 'unsafe-inline'");
                 await next();
             });
+
+            app.UseAIServices();
 
             app.UseAuthentication();
 
