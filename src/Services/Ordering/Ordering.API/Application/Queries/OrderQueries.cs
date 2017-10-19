@@ -66,7 +66,7 @@
                 connection.Open();
 
                 return await connection.QueryAsync<dynamic>(
-                    @"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status],SUM(oi.units*oi.unitprice) as total
+                    @"SELECT o.[Id] as ordernumber,o.[OrderDate] as [date],os.[Name] as [status], COALESCE(SUM(oi.units*oi.unitprice),0) as total
                      FROM [ordering].[Orders] o
                      INNER JOIN [ordering].[buyers] ob ON o.BuyerId = ob.Id AND ob.IdentityGuid = @userId
                      LEFT JOIN[ordering].[orderitems] oi ON  o.Id = oi.orderid 
