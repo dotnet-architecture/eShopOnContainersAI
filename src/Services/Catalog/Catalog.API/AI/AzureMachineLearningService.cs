@@ -25,8 +25,13 @@ namespace Catalog.API.AI
             _catalogSettings = settings.Value;
         }
 
-        public async Task<IEnumerable<string>> Recommendations(string productId)
+        public Task<IEnumerable<string>> Recommendations(string productId) => Recommendations(productId, string.Empty);
+
+        public async Task<IEnumerable<string>> Recommendations(string productId, string customerId)
         {
+            if (String.IsNullOrEmpty(customerId))
+                customerId = "0";
+
             using (var client = new HttpClient())
             {
                 var scoreRequest = new
@@ -35,7 +40,7 @@ namespace Catalog.API.AI
                         {
                             "input1",
                             new List<Dictionary<string, string>>(){new Dictionary<string, string>(){
-                                            {"CustomerId", "0"},
+                                            {"CustomerId", customerId},
                                             {"ProductId", productId},
                                             {"Ranking", "10"},
                                 }
