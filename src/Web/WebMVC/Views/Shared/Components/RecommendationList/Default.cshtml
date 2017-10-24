@@ -1,0 +1,28 @@
+﻿@model List<Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogItem>
+
+<div class="esh-catalog-items row">
+@foreach(var catalogItem in Model) {
+    <div class="esh-catalog-item col-md-4">
+        <form asp-controller="Cart" asp-action="AddRecommendationToCart">
+            <img class="esh-catalog-thumbnail" src="@catalogItem.PictureUri" />
+            <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" />
+
+            <div class="esh-catalog-name">
+                <span>@catalogItem.Name</span>
+            </div>
+            <div class="esh-catalog-price">
+                <span>@catalogItem.Price.ToString("N2")</span>
+            </div>
+            <input type="hidden" asp-for="@catalogItem.CatalogBrand" name="brand" />
+            <input type="hidden" asp-for="@catalogItem.CatalogBrandId" name="brandId" />
+            <input type="hidden" asp-for="@catalogItem.CatalogType" name="type" />
+            <input type="hidden" asp-for="@catalogItem.CatalogTypeId" name="typeId" />
+            <input type="hidden" asp-for="@catalogItem.Description" name="description" />
+            <input type="hidden" asp-for="@catalogItem.Id" name="id" />
+            <input type="hidden" asp-for="@catalogItem.Name" name="name" />
+            <input type="hidden" asp-for="@catalogItem.PictureUri" name="pictureUri" />
+            <input type="hidden" asp-for="@catalogItem.Price" name="price" />
+        </form>
+    </div>
+}
+</div>

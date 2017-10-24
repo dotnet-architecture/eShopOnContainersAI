@@ -14,5 +14,7 @@
             new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
         @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
+
+        @await Component.InvokeAsync("RecommendationList", new { productId = Model.Items.FirstOrDefault()?.ProductId })
     </div>
 </form>
