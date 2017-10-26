@@ -36,8 +36,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             RegisterAppInsights(services);
 
-            services.AddAIServices();
-
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
              options.UseSqlServer(Configuration["ConnectionString"],
@@ -54,7 +52,10 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
 
             services.Configure<AppSettings>(Configuration);
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddControllersAsServices();
+
+            services.AddAIServices();
 
             if (Configuration.GetValue<string>("IsClusterEnv") == bool.TrueString)
             {
@@ -150,8 +151,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 await next();
             });
 
-            app.UseAIServices();
-
             app.UseAuthentication();
 
             // Adds IdentityServer
@@ -163,6 +162,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseAIServices();
         }
 
         private void RegisterAppInsights(IServiceCollection services)
