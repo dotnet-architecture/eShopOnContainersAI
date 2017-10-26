@@ -77,22 +77,20 @@
             }
         }
 
-        public async Task<IEnumerable<dynamic>> GetRankings()
+        public async Task<IEnumerable<dynamic>> GetOrderItems()
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
 
                 return await connection.QueryAsync<dynamic>(
-                    @"  select ss.ProductId, ss.CustomerId, ss.Units, 11-ss.Ranking as Ranking
-                        from (
-                        select oi.ProductId, 
-	                        oo.BuyerId as CustomerId, 
-	                        sum(oi.Units) as Units,
-	                        NTILE(10) OVER (partition by ProductId order by sum(Units) DESC) as Ranking
+                    @"  select oi.ProductId, 
+	                        ob.IdentityGuid as CustomerId, 
+	                        oi.Units
                         from ordering.orderItems oi
                         inner join ordering.orders oo on oi.OrderId = oo.Id
-                        group by oo.BuyerId, oi.ProductId) ss");
+                        inner join ordering.buyers ob on oo.BuyerId = ob.Id
+                        ");
             }
         }
 
