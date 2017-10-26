@@ -58,12 +58,12 @@
 
                     CleanUpItemPictures(picturePath);
                     GetCatalogItemPictures(contentRootPath, picturePath, "CatalogItems.zip");
-                }
 
-                if (useCustomizationDataAI)
-                {
-                    ExecuteBulkInsertAI(settings.Value, logger);
-                    GetCatalogItemPictures(contentRootPath, picturePath, "CatalogItemsAI.zip");
+                    if (useCustomizationDataAI)
+                    {
+                        ExecuteBulkInsertAI(settings.Value, logger);
+                        GetCatalogItemPictures(contentRootPath, picturePath, "CatalogItemsAI.zip");
+                    }
                 }
             });
         }

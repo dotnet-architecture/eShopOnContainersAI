@@ -39,17 +39,17 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                         : GetDefaultUser());
 
                     await context.SaveChangesAsync();
+
+                    if (useCustomizationDataAI)
+                    {
+                        context.Users.AddRange(GetUsersFromFile(contentRootPath, "users.ai.csv", new[] { "id" }, logger));
+                        await context.SaveChangesAsync();
+                    }
                 }
 
                 if (useCustomizationData)
                 {
                     GetPreconfiguredImages(contentRootPath, webroot, logger);
-                }
-
-                if (useCustomizationDataAI)
-                {
-                    context.Users.AddRange(GetUsersFromFile(contentRootPath, "users.ai.csv", new [] { "id" }, logger));
-                    await context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
