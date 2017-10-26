@@ -13,8 +13,11 @@
         @Html.Partial("_Header", new List<Header>() {
             new Header() { Controller = "Catalog", Text = "Back to catalog" } })
 
-        @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
+        <div class="container">
 
-        @await Component.InvokeAsync("RecommendationList", new { productId = Model.Items.FirstOrDefault()?.ProductId })
+            @await Component.InvokeAsync("CartList", new { user = UserManager.Parse(User) })
+
+            @await Component.InvokeAsync("RecommendationList", new { productId = Model.Items.FirstOrDefault()?.ProductId })
+        </div>
     </div>
 </form>
