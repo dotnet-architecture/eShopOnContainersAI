@@ -55,4 +55,8 @@
     <None Include="ViewModels\CampaignItem.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\RecommendationList\" />
+  </ItemGroup>
+
 </Project>

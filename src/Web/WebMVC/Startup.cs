@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.eShopOnContainers.BuildingBlocks;
 using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+using Microsoft.eShopOnContainers.WebMVC.Extensions;
 using Microsoft.eShopOnContainers.WebMVC.Infrastructure;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
@@ -35,6 +36,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public void ConfigureServices(IServiceCollection services)
         {
             RegisterAppInsights(services);
+
+            services.AddAIServices();
 
             services.AddMvc();            
             services.AddSession();

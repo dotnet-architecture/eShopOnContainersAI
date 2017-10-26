@@ -2,9 +2,12 @@
 using Catalog.API.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -17,20 +20,25 @@ namespace Catalog.API.Controllers
     {
         private readonly CatalogContext _catalogContext;
         private readonly IAzureMachineLearningService _amlService;
+        private readonly CatalogSettings _settings;
 
-        public CatalogAIController(CatalogContext context, IAzureMachineLearningService amlService)
+        public CatalogAIController(CatalogContext context, IAzureMachineLearningService amlService, IOptionsSnapshot<CatalogSettings> settings)
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
             _amlService = amlService ?? throw new ArgumentNullException(nameof(amlService));
+            _settings = settings.Value;
         }
 
         [HttpGet]
-        [Route("[action]/{productId}")]
+        [Route("[action]/product/{productId}/customer/{customerId}")]
         [ProducesResponseType(typeof(CatalogItem[]), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Recommendation(string productId)
+        public async Task<IActionResult> Recommendation(string productId, string customerId)
         {
-            var recommendations = await _amlService.Recommendations(productId);
+            if (customerId == "null")
+                customerId = String.Empty;
+
+            var recommendations = await _amlService.Recommendations(productId, customerId);
 
             if (recommendations == null)
                 return BadRequest();
@@ -41,7 +49,9 @@ namespace Catalog.API.Controllers
 
             var items = await _catalogContext.CatalogItems
                 .Where(c => recommendationsInt.Contains(c.Id))
-                .ToArrayAsync();
+                .ToListAsync();
+
+            items = ChangeUriPlaceholder(items);
 
             return Ok(items);
         }
@@ -58,5 +68,20 @@ namespace Catalog.API.Controllers
             csvFile.FileDownloadName = "catalog.csv";
             return csvFile;
         }
+
+        private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)
+        {
+            var baseUri = _settings.PicBaseUrl;
+
+            items.ForEach(catalogItem =>
+            {
+                catalogItem.PictureUri = _settings.AzureStorageEnabled
+                    ? baseUri + catalogItem.PictureFileName
+                    : baseUri.Replace("[0]", catalogItem.Id.ToString());
+            });
+
+            return items;
+        }
+
     }
 }

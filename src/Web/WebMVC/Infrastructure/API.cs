@@ -82,6 +82,14 @@ namespace WebMVC.Infrastructure
             }
         }
 
+        public static class CatalogAI
+        {
+            public static string GetRecommendations(string baseUri, string productId)
+            {
+                return $"{baseUri}recommendation/product/{productId}/customer/null";
+            }
+        }
+
         public static class Marketing
         {
             public static string GetAllCampaigns(string baseUri, int take, int page)
