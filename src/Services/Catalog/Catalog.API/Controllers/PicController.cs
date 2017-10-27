@@ -39,8 +39,15 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
 
             if (item != null)
             {
+                if (string.IsNullOrEmpty(item.PictureFileName))
+                    return BlankImage();
+
                 var webRoot = _env.WebRootPath;
+
                 var path = Path.Combine(webRoot, item.PictureFileName);
+
+                if (!System.IO.File.Exists(path))
+                    return BlankImage();
 
                 string imageFileExtension = Path.GetExtension(item.PictureFileName);
                 string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
@@ -50,7 +57,20 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API.Controllers
                 return File(buffer, mimetype);
             }
 
-            return NotFound();
+            return BlankImage();
+        }
+
+        private IActionResult BlankImage()
+        {
+            const string blankImage = "Setup/coming_soon.png";
+            var pathBlankImage = Path.Combine(_env.ContentRootPath, blankImage);
+
+            string imageFileExtension = Path.GetExtension(pathBlankImage);
+            string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
+
+            var buffer = System.IO.File.ReadAllBytes(pathBlankImage);
+
+            return File(buffer, mimetype);
         }
 
         private string GetImageMimeTypeFromImageFileExtension(string extension)
