@@ -33,10 +33,10 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Extensions
         public static IApplicationBuilder UseAIServices(this IApplicationBuilder app)
         {
             app.UseSwagger()
-              .UseSwaggerUI(c =>
-              {
-                  c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-              });
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+               });
 
             return app;
         }

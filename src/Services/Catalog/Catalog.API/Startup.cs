@@ -2,6 +2,7 @@
 {
     using Autofac;
     using Autofac.Extensions.DependencyInjection;
+    using global::Catalog.API.Extensions;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
     using Microsoft.ApplicationInsights.Extensibility;
@@ -168,6 +169,8 @@
             }
 
             RegisterEventBus(services);
+
+            services.AddAIServices();
 
             var container = new ContainerBuilder();
             container.Populate(services);

@@ -13,6 +13,6 @@
 
         Task<IEnumerable<dynamic>> GetCardTypesAsync();
 
-        Task<IEnumerable<dynamic>> GetRankings();
+        Task<IEnumerable<dynamic>> GetOrderItems();
     }
 }

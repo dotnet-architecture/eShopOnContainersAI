@@ -25,6 +25,7 @@ services:
 
     ports:
       - "5103:80"
+      - "51032:22"
 
   catalog.api:
     environment:
@@ -47,6 +48,7 @@ services:
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5101:80"
+      - "51012:22"
 
   identity.api:
     environment:
@@ -66,6 +68,7 @@ services:
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5105:80"
+      - "51052:22"
 
   ordering.api:
     environment:
@@ -87,6 +90,7 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5102:80"
+      - "51022:22"
 
   marketing.api:
     environment:
@@ -156,6 +160,7 @@ services:
       - UseLoadTest=${USE_LOADTEST:-False}
     ports:
       - "5100:80"
+      - "51002:22"
 
   webstatus:
     environment:

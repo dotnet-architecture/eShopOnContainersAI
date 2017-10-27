@@ -57,7 +57,7 @@
 
                     await context.SaveChangesAsync();
 
-                    if (useCustomizationDataAI)
+                    if (!context.OrderItems.Any() && useCustomizationDataAI)
                     {
                         ExecuteBulkInsertAI(settings.Value, logger);
                     }

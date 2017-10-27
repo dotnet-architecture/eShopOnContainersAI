@@ -31,7 +31,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-             .UseStartup<StartupAI>()
+             .UseStartup<Startup>()
                 .UseApplicationInsights()
                 .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
