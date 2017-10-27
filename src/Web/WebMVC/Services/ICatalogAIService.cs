@@ -6,6 +6,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public interface ICatalogAIService
     {
-        Task<List<CatalogItem>> GetRecommendationsAsync(string productId);
+        Task<List<CatalogItem>> GetRecommendationsAsync(string productId, string customerId);
     }
 }

@@ -24,9 +24,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _remoteServiceBaseUrl = $"{settings.Value.CatalogUrl}/api/v1/catalogAI/";
         }
 
-        public async Task<List<CatalogItem>> GetRecommendationsAsync(string productId)
+        public async Task<List<CatalogItem>> GetRecommendationsAsync(string productId, string customerId)
         {
-            var recommendationsUri = API.CatalogAI.GetRecommendations(_remoteServiceBaseUrl, productId);
+            var recommendationsUri = API.CatalogAI.GetRecommendations(_remoteServiceBaseUrl, productId, customerId);
 
             var dataString = await _apiClient.GetStringAsync(recommendationsUri);
 

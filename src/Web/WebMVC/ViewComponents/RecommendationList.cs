@@ -15,7 +15,7 @@ namespace WebMVC.ViewComponents
 
         public RecommendationList(ICatalogAIService catalogAIService) => _catalogAIService = catalogAIService;
 
-        public async Task<IViewComponentResult> InvokeAsync(string productId)
+        public async Task<IViewComponentResult> InvokeAsync(string productId, string customerId)
         {
             const int maxProductRecommendations = 3;
 
@@ -24,7 +24,7 @@ namespace WebMVC.ViewComponents
 
             try
             {
-                var recommendations = await _catalogAIService.GetRecommendationsAsync(productId);
+                var recommendations = await _catalogAIService.GetRecommendationsAsync(productId, customerId);
                 return View(recommendations.Take(maxProductRecommendations).ToList());
 
             } catch (BrokenCircuitException)

@@ -84,9 +84,9 @@ namespace WebMVC.Infrastructure
 
         public static class CatalogAI
         {
-            public static string GetRecommendations(string baseUri, string productId)
+            public static string GetRecommendations(string baseUri, string productId, string customerId)
             {
-                return $"{baseUri}recommendation/product/{productId}/customer/null";
+                return $"{baseUri}recommendation/product/{productId}/customer/{customerId}";
             }
         }
 
