@@ -40,9 +40,9 @@ namespace Catalog.API.AI
                         {
                             "input1",
                             new List<Dictionary<string, string>>(){new Dictionary<string, string>(){
-                                            {"User", customerId},
-                                            {"Item", productId},
-                                            {"Rating", "10"},
+                                            {"CustomerId", customerId},
+                                            {"ProductId", productId},
+                                            {"Units", "10"},
                                 }
                             }
                         },
