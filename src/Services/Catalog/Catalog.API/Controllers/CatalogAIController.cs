@@ -1,5 +1,6 @@
 ﻿using Catalog.API.AI;
 using Catalog.API.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
@@ -8,6 +9,7 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -20,12 +22,14 @@ namespace Catalog.API.Controllers
     {
         private readonly CatalogContext _catalogContext;
         private readonly IAzureMachineLearningService _amlService;
+        private readonly IComputerVisionService _cvService;
         private readonly CatalogSettings _settings;
 
-        public CatalogAIController(CatalogContext context, IAzureMachineLearningService amlService, IOptionsSnapshot<CatalogSettings> settings)
+        public CatalogAIController(CatalogContext context, IAzureMachineLearningService amlService, IComputerVisionService cvService, IOptionsSnapshot<CatalogSettings> settings)
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
             _amlService = amlService ?? throw new ArgumentNullException(nameof(amlService));
+            _cvService = cvService ?? throw new ArgumentNullException(nameof(cvService));
             _settings = settings.Value;
         }
 
@@ -67,6 +71,21 @@ namespace Catalog.API.Controllers
             var csvFile = File(Encoding.UTF8.GetBytes(catalog.FormatAsCSV()), "text/csv");
             csvFile.FileDownloadName = "catalog.csv";
             return csvFile;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> AnalyzeImage(IFormFile imageFile)
+        {
+            if (imageFile.Length == 0)
+                return NoContent();
+
+            using (var image = new MemoryStream())
+            {
+                await imageFile.CopyToAsync(image);
+                var tags = await _cvService.AnalyzeImageAsync(image.ToArray());
+                return Ok(tags);
+            }
         }
 
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)

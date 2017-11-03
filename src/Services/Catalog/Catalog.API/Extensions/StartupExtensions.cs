@@ -8,6 +8,7 @@ namespace Catalog.API.Extensions
         public static IServiceCollection AddAIServices(this IServiceCollection services)
         {
             services.AddTransient<IAzureMachineLearningService, AzureMachineLearningService>();
+            services.AddTransient<IComputerVisionService, ComputerVisionService>();
             return services;
         }
     }
