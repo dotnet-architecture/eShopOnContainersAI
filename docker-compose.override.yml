@@ -45,6 +45,8 @@ services:
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - AzureMachineLearning__RecommendationAPIKey=${ESHOPAI_AML_RECOM_KEY}
       - AzureMachineLearning__RecommendationUri=${ESHOPAI_AML_RECOM_URI}
+      - CognitiveService__VisionAPIKey=${ESHOPAI_CS_VIS_KEY}
+      - CognitiveService__VisionUri=${ESHOPAI_CS_VIS_URI}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5101:80"
