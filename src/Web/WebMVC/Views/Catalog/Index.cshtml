@@ -10,13 +10,22 @@
 
 <section class="esh-catalog-filters">
     <div class="container">
-        <form asp-action="Index" asp-controller="Catalog" method="post">
+        <form asp-action="Index" asp-controller="Catalog" method="post" enctype="multipart/form-data">
             <label class="esh-catalog-label" data-title="brand">
                 <select asp-for="@Model.BrandFilterApplied" asp-items="@Model.Brands" class="esh-catalog-filter"></select>
             </label>
             <label class="esh-catalog-label" data-title="type">
                 <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
             </label>
+
+            <input class="esh-catalog-file" type="file" src="~/images/arrow-right.svg" asp-for="@Model.ImageFilter" />
+            <label asp-for="@Model.ImageFilter" class="esh-catalog-label" data-title="image filter">
+                <span class="esh-catalog-filter caption">Choose file</span>
+                @*<select class="esh-catalog-filter" disabled="disabled">
+                    <option>Choose file</option>
+                </select>*@
+            </label>
+
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
         </form>
     </div>

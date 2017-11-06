@@ -1,4 +1,19 @@
-﻿.esh-catalog-hero {
+﻿.esh-catalog-file {
+  display: inline-block !important;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.esh-catalog-file + label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.esh-catalog-hero {
   background-image: url("../../images/main_banner.png");
   background-size: cover;
   height: 260px;
@@ -33,6 +48,11 @@
 
 .esh-catalog-filter option {
   background-color: #00A69C;
+}
+
+.esh-catalog-filter.caption {
+  display: block;
+  border-width: 1px;
 }
 
 .esh-catalog-label {

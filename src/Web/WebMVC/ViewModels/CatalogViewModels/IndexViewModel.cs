@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.Pagination;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels
         public IEnumerable<SelectListItem> Types { get; set; }
         public int? BrandFilterApplied { get; set; }
         public int? TypesFilterApplied { get; set; }
+        public IFormFile ImageFilter { get; set; }
         public PaginationInfo PaginationInfo { get; set; }
     }
 }
