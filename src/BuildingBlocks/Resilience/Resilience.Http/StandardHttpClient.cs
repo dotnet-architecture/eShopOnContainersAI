@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -78,6 +79,41 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
             return response;
         }
 
+        public async Task<HttpResponseMessage> PostFileAsync(string uri, byte[] fileRaw, string apiParamName, string fileName = null, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
+        {
+            var method = HttpMethod.Post;
+
+            var requestMessage = new HttpRequestMessage(method, uri);
+
+            SetAuthorizationHeader(requestMessage);
+
+            requestMessage.Content = new MultipartFormDataContent
+                    {
+                        { new ByteArrayContent(fileRaw), $"\"{apiParamName}\"", $"\"{fileName ?? apiParamName}\"" }
+                    };
+
+            if (authorizationToken != null)
+            {
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
+            }
+
+            if (requestId != null)
+            {
+                requestMessage.Headers.Add("x-requestid", requestId);
+            }
+
+            var response = await _client.SendAsync(requestMessage);
+
+            // raise exception if HttpResponseCode 500
+            // needed for circuit breaker to track fails
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new HttpRequestException();
+            }
+
+            return response;
+        }
 
         public async Task<HttpResponseMessage> PostAsync<T>(string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
         {

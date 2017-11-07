@@ -3,6 +3,21 @@
 .esh-catalog {
     $banner-height: 260px;
 
+    &-file {
+        display: inline-block !important;
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    &-file + label {
+        display: inline-block;
+        cursor: pointer;
+    }
+
     &-hero {
         background-image: url($image-main_banner);
         background-size: cover;
@@ -42,6 +57,11 @@
         option {
             background-color: $color-brand;
         }
+    }
+
+    &-filter.caption {
+        display: block;
+        border-width: 1px;
     }
 
     &-label {

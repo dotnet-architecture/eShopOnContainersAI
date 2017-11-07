@@ -88,6 +88,11 @@ namespace WebMVC.Infrastructure
             {
                 return $"{baseUri}recommendation/product/{productId}/customer/{customerId}";
             }
+
+            public static string AnalyzeImage(string baseUri)
+            {
+                return $"{baseUri}analyzeImage";
+            }
         }
 
         public static class Marketing

@@ -24,6 +24,18 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             _remoteServiceBaseUrl = $"{settings.Value.CatalogUrl}/api/v1/catalogAI/";
         }
 
+        public async Task<string[]> AnalyzeImage(byte[] imageFile)
+        {
+            var analyzeImageUri = API.CatalogAI.AnalyzeImage(_remoteServiceBaseUrl);
+
+            var response = await _apiClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            var tags = JsonConvert.DeserializeObject<string[]>(responseString);
+
+            return tags;
+        }
+
         public async Task<List<CatalogItem>> GetRecommendationsAsync(string productId, string customerId)
         {
             var recommendationsUri = API.CatalogAI.GetRecommendations(_remoteServiceBaseUrl, productId, customerId);

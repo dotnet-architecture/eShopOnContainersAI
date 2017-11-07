@@ -108,6 +108,8 @@
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = "Terms Of Service"
                 });
+
+                options.OperationFilter<FormFileOperationFilter>();
             });
 
             services.AddCors(options =>

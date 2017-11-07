@@ -7,5 +7,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public interface ICatalogAIService
     {
         Task<List<CatalogItem>> GetRecommendationsAsync(string productId, string customerId);
+        Task<string[]> AnalyzeImage(byte[] imageFile);
     }
 }

@@ -12,5 +12,7 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
         Task<HttpResponseMessage> DeleteAsync(string uri, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer");
 
         Task<HttpResponseMessage> PutAsync<T>(string uri, T item, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer");
+
+        Task<HttpResponseMessage> PostFileAsync(string uri, byte[] fileRaw, string apiParamName, string fileName = null, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer");
     }
 }

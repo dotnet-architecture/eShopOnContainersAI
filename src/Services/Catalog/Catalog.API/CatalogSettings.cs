@@ -17,6 +17,13 @@
             public string RecommendationUri { get; set; }
         }
 
+        public class CognitiveServiceSchema
+        {
+            public string VisionAPIKey { get; set; }
+            public string VisionUri { get; set; }
+        }
+
         public AzureMachineLearningSchema AzureMachineLearning { get; set; }
+        public CognitiveServiceSchema CognitiveService { get; set; }
     }
 }

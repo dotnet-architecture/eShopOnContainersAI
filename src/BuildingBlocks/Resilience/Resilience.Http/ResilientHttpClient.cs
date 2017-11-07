@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
 {
@@ -143,6 +144,50 @@ namespace Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http
                return response;
            });
         }
+
+        public Task<HttpResponseMessage> PostFileAsync(string uri, byte[] fileRaw, string apiParamName, string fileName = null, string authorizationToken = null, string requestId = null, string authorizationMethod = "Bearer")
+        {
+            var method = HttpMethod.Post;
+
+            // a new StringContent must be created for each retry 
+            // as it is disposed after each call
+            var origin = GetOriginFromUri(uri);
+
+            return HttpInvoker(origin, async () =>
+            {
+                var requestMessage = new HttpRequestMessage(method, uri);
+
+                SetAuthorizationHeader(requestMessage);
+
+                requestMessage.Content = new MultipartFormDataContent
+                    {
+                        { new ByteArrayContent(fileRaw), $"\"{apiParamName}\"", $"\"{fileName ?? apiParamName}\"" }
+                    };
+
+                if (authorizationToken != null)
+                {
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue(authorizationMethod, authorizationToken);
+                }
+
+                if (requestId != null)
+                {
+                    requestMessage.Headers.Add("x-requestid", requestId);
+                }
+
+                var response = await _client.SendAsync(requestMessage);
+
+                // raise exception if HttpResponseCode 500 
+                // needed for circuit breaker to track fails
+
+                if (response.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    throw new HttpRequestException();
+                }
+
+                return response;
+            });
+        }
+
 
         private async Task<T> HttpInvoker<T>(string origin, Func<Task<T>> action)
         {
