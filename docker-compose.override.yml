@@ -43,6 +43,8 @@ services:
       - AzureServiceBusEnabled=False
       - AzureStorageEnabled=False
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - MongoConnectionString=${ESHOP_AZURE_COSMOSDB:-mongodb://nosql.data}
+      - MongoDatabase=CatalogTagDb
       - AzureMachineLearning__RecommendationAPIKey=${ESHOPAI_AML_RECOM_KEY}
       - AzureMachineLearning__RecommendationUri=${ESHOPAI_AML_RECOM_URI}
       - CognitiveService__VisionAPIKey=${ESHOPAI_CS_VIS_KEY}

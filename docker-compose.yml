@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile    
     depends_on:
       - sql.data
+      - nosql.data
       - rabbitmq
 
   identity.api:
