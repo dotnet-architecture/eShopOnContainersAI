@@ -1,4 +1,5 @@
 ﻿using Catalog.API.AI;
+using Catalog.API.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.API.Extensions
@@ -9,6 +10,8 @@ namespace Catalog.API.Extensions
         {
             services.AddTransient<IAzureMachineLearningService, AzureMachineLearningService>();
             services.AddTransient<IComputerVisionService, ComputerVisionService>();
+            services.AddTransient<ICatalogTagsRepository, CatalogTagsRepository>();
+            services.AddTransient<ICatalogTagsContextSeed, CatalogTagsContextSeed>();
             return services;
         }
     }
