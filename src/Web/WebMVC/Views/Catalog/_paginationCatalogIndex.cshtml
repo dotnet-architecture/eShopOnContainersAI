@@ -1,0 +1,38 @@
+﻿@model Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels.IndexViewModel
+
+<div class="esh-pager">
+    <div class="container">
+        <article class="esh-pager-wrapper row">
+            <nav>
+                <a class="esh-pager-item esh-pager-item--navigable @Model.PaginationInfo.Previous"
+                    id="Previous"                    
+                    asp-controller="Catalog"
+                    asp-action="Index"
+                    asp-route-page="@(Model.PaginationInfo.ActualPage -1)"
+                    asp-route-BrandFilterApplied="@(Model.BrandFilterApplied == 0 ? null : Model.BrandFilterApplied)"
+                    asp-route-TypesFilterApplied="@(Model.TypesFilterApplied == 0 ? null : Model.TypesFilterApplied)"
+                    asp-route-Tags="@Model.Tags"
+                    aria-label="Previous">
+                    Previous
+                </a>
+
+                <span class="esh-pager-item">
+                    Showing @Model.PaginationInfo.ItemsPerPage of @Model.PaginationInfo.TotalItems products - Page @(Model.PaginationInfo.ActualPage + 1) - @Model.PaginationInfo.TotalPages
+                </span>
+
+                <a class="esh-pager-item esh-pager-item--navigable @Model.PaginationInfo.Next"
+                    id="Next"                    
+                    asp-controller="Catalog"
+                    asp-action="Index"
+                    asp-route-page="@(Model.PaginationInfo.ActualPage + 1)"
+                    asp-route-BrandFilterApplied="@(Model.BrandFilterApplied == 0 ? null : Model.BrandFilterApplied)"
+                    asp-route-TypesFilterApplied="@(Model.TypesFilterApplied == 0 ? null : Model.TypesFilterApplied)"
+                    asp-route-Tags="@Model.Tags"
+                    aria-label="Next">
+                    Next
+                </a>
+            </nav>
+        </article>
+    </div>
+</div>
+

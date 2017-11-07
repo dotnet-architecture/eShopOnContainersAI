@@ -44,7 +44,7 @@
 
     @if (Model.CatalogItems.Count() > 0)
     {
-        @Html.Partial("_pagination", Model.PaginationInfo)
+        @Html.Partial("_paginationCatalogIndex", Model)
 
         <div class="esh-catalog-items row">
             @foreach (var catalogItem in Model.CatalogItems)
@@ -55,7 +55,7 @@
             }
         </div>
 
-        @Html.Partial("_pagination", Model.PaginationInfo)
+        @Html.Partial("_paginationCatalogIndex", Model)
     }
     else
     {
