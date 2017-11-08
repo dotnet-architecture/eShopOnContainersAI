@@ -1,4 +1,4 @@
-﻿using Catalog.API.AI;
+﻿using Catalog.API.ServicesAI;
 using Catalog.API.Extensions;
 using Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
