@@ -6,8 +6,8 @@ namespace Catalog.API.Infrastructure
 {
     public interface ICatalogTagsRepository
     {
-        IEnumerable<CatalogTag> FindMatchingCatalogTag(IEnumerable<string> tags);
-        Task Insert(IEnumerable<CatalogTag> catalogTags);
+        Task<List<CatalogTag>> FindMatchingCatalogTagAsync(IEnumerable<string> tags);
+        Task InsertAsync(IEnumerable<CatalogTag> catalogTags);
         bool Empty { get; }
     }
 }

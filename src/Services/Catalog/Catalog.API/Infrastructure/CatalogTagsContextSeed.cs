@@ -34,7 +34,7 @@ namespace Catalog.API.Infrastructure
                 var catalogTagsSeed = await GetCatalogTagsFromFile(contentRootPath, logger);
                 if (catalogTagsSeed.Any())
                 {
-                    await catalogTagsRepository.Insert(catalogTagsSeed);
+                    await catalogTagsRepository.InsertAsync(catalogTagsSeed);
                     logger.LogInformation("CatalogTags inserted into database.");
                 }
             }

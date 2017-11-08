@@ -19,17 +19,16 @@ namespace Catalog.API.Infrastructure
 
         public bool Empty => dbContext.CatalogTags.Count(Builders<CatalogTag>.Filter.Empty) == 0;
 
-        public IEnumerable<CatalogTag> FindMatchingCatalogTag(IEnumerable<string> tags)
+        public Task<List<CatalogTag>> FindMatchingCatalogTagAsync(IEnumerable<string> tags)
         {
             var filter = Builders<CatalogTag>.Filter.AnyIn(x => x.Tagrams, tags);
 
-            // ASYNC ?? 
             return dbContext.CatalogTags
                 .Find(filter)
-                .ToEnumerable();
+                .ToListAsync();
         }
 
-        public async Task Insert(IEnumerable<CatalogTag> catalogTags)
+        public async Task InsertAsync(IEnumerable<CatalogTag> catalogTags)
         {
             // InsertManyAsync uses internally BulkWriteAsync
             // https://stackoverflow.com/questions/32921533/mongodb-c-sharp-driver-2-0-insertmanyasync-vs-bulkwriteasync

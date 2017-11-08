@@ -105,7 +105,7 @@ namespace Catalog.API.Controllers
 
             if (!String.IsNullOrEmpty(tags))
             {
-                var catalogTags = _catalogTagsRepository.FindMatchingCatalogTag(tags.Split(','));
+                var catalogTags = await _catalogTagsRepository.FindMatchingCatalogTagAsync(tags.Split(','));
                 var catalogTagsIds = catalogTags.Select(x => x.ProductId);
                 root = root.Where(ci => catalogTagsIds.Contains(ci.Id));
             }
