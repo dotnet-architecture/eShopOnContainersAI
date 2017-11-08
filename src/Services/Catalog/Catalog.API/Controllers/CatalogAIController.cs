@@ -88,7 +88,7 @@ namespace Catalog.API.Controllers
             [FromQuery]string tags,
             [FromQuery]int? pageIndex, [FromQuery]int? pageSize)
         {
-            var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
+            var root = _catalogContext.CatalogItems.AsQueryable();
 
             var validatedPageSize = pageSize ?? 10;
             var validatedPageIndex = pageIndex ?? 0;
@@ -106,8 +106,9 @@ namespace Catalog.API.Controllers
             if (!String.IsNullOrEmpty(tags))
             {
                 var catalogTags = await _catalogTagsRepository.FindMatchingCatalogTagAsync(tags.Split(','));
-                var catalogTagsIds = catalogTags.Select(x => x.ProductId);
-                root = root.Where(ci => catalogTagsIds.Contains(ci.Id));
+                var catalogTagsProductIds = catalogTags.Select(x => x.ProductId);
+                if (catalogTagsProductIds.Any())
+                    root = root.Where(ci => catalogTagsProductIds.Contains(ci.Id));
             }
 
             var totalItems = await root

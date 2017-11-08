@@ -57,7 +57,7 @@ namespace Catalog.API.ServicesAI
                 if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(uri))
                 {
                     _logger.LogError("Please provide apiKey and URI to the Machine Learning WebService");
-                    return null;
+                    return Enumerable.Empty<string>();
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
@@ -71,7 +71,7 @@ namespace Catalog.API.ServicesAI
                     _logger.LogError($"The request failed with status code: {response.StatusCode}");
                     _logger.LogDebug(response.Headers.ToString());
                     _logger.LogDebug(jsonResponse);
-                    return null;
+                    return Enumerable.Empty<string>();
                 }
 
                 var result = (JsonConvert
