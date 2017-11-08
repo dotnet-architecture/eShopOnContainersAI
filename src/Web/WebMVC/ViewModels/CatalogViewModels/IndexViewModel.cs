@@ -18,5 +18,6 @@ namespace Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels
         public IFormFile ImageFilter { get; set; }
         public PaginationInfo PaginationInfo { get; set; }
         public string Tags { get; set; }
+        public string TagsActive { get; set; }
     }
 }

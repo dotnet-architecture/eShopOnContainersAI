@@ -18,9 +18,9 @@
                 <select asp-for="@Model.TypesFilterApplied" asp-items="@Model.Types" class="esh-catalog-filter"></select>
             </label>
 
-            <input class="esh-catalog-file" type="file" src="~/images/arrow-right.svg" asp-for="@Model.ImageFilter" />
+            <input class="esh-catalog-file" type="file" src="~/images/arrow-right.svg" asp-for="@Model.ImageFilter" onchange='javascript: document.querySelector(".esh-catalog-filter.caption").className += "active"' />
             <label asp-for="@Model.ImageFilter" class="esh-catalog-label" data-title="image filter">
-                <span class="esh-catalog-filter caption">Choose file</span>
+                <span class="esh-catalog-filter caption @Model.TagsActive">Choose file</span>
                 @*<select class="esh-catalog-filter" disabled="disabled">
                     <option>Choose file</option>
                 </select>*@

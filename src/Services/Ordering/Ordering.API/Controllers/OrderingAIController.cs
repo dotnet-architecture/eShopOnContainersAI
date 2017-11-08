@@ -20,7 +20,7 @@ namespace Ordering.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> Dump()
+        public async Task<IActionResult> DumpToCSV()
         {
             var orderItems = await _orderQueries.GetOrderItems();
 

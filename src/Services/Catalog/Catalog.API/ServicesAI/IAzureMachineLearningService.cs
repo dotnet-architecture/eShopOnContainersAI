@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Catalog.API.AI
+namespace Catalog.API.ServicesAI
 {
     public interface IAzureMachineLearningService
     {

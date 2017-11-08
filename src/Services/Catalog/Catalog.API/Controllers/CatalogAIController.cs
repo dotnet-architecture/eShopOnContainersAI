@@ -1,4 +1,4 @@
-﻿using Catalog.API.AI;
+﻿using Catalog.API.ServicesAI;
 using Catalog.API.Extensions;
 using Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -41,10 +41,10 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/product/{productId}/customer/{customerId}")]
+        [Route("[action]")]
         [ProducesResponseType(typeof(CatalogItem[]), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Recommendation(string productId, string customerId)
+        public async Task<IActionResult> RecommendProducts([FromQuery]string productId, [FromQuery]string customerId)
         {
             if (customerId == "null")
                 customerId = String.Empty;
@@ -69,7 +69,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> Dump()
+        public async Task<IActionResult> DumpToCSV()
         {
             var catalog = await _catalogContext.CatalogItems
                 .Select(c => new {c.Id, c.CatalogBrandId, c.CatalogTypeId, c.Description, c.Price })
@@ -88,7 +88,7 @@ namespace Catalog.API.Controllers
             [FromQuery]string tags,
             [FromQuery]int? pageIndex, [FromQuery]int? pageSize)
         {
-            var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
+            var root = _catalogContext.CatalogItems.AsQueryable();
 
             var validatedPageSize = pageSize ?? 10;
             var validatedPageIndex = pageIndex ?? 0;
@@ -106,8 +106,9 @@ namespace Catalog.API.Controllers
             if (!String.IsNullOrEmpty(tags))
             {
                 var catalogTags = await _catalogTagsRepository.FindMatchingCatalogTagAsync(tags.Split(','));
-                var catalogTagsIds = catalogTags.Select(x => x.ProductId);
-                root = root.Where(ci => catalogTagsIds.Contains(ci.Id));
+                var catalogTagsProductIds = catalogTags.Select(x => x.ProductId);
+                if (catalogTagsProductIds.Any())
+                    root = root.Where(ci => catalogTagsProductIds.Contains(ci.Id));
             }
 
             var totalItems = await root

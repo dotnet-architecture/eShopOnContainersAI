@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Catalog.API.AI
+namespace Catalog.API.ServicesAI
 {
     public class ComputerVisionService : IComputerVisionService
     {

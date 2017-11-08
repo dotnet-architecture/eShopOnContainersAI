@@ -20,7 +20,7 @@ namespace Identity.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> Dump()
+        public async Task<IActionResult> DumpToCSV()
         {
             var users = await _applicationContext.Users
                 .Select(c => new {

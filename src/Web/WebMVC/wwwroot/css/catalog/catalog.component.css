@@ -55,6 +55,10 @@
   border-width: 1px;
 }
 
+.esh-catalog-filter.caption.active {
+  background-color: #008075;
+}
+
 .esh-catalog-label {
   display: inline-block;
   position: relative;

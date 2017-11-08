@@ -62,6 +62,10 @@
     &-filter.caption {
         display: block;
         border-width: 1px;
+
+        &.active {
+            background-color: #008075;
+        }
     }
 
     &-label {

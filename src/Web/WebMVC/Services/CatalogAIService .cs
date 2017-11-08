@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 
@@ -36,13 +38,15 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             return tags;
         }
 
-        public async Task<List<CatalogItem>> GetRecommendationsAsync(string productId, string customerId)
+        public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, string customerId)
         {
             var recommendationsUri = API.CatalogAI.GetRecommendations(_remoteServiceBaseUrl, productId, customerId);
 
             var dataString = await _apiClient.GetStringAsync(recommendationsUri);
 
-            var response = JsonConvert.DeserializeObject<List<CatalogItem>>(dataString);
+            var response = String.IsNullOrEmpty(dataString) ? 
+                Enumerable.Empty<CatalogItem>() : 
+                JsonConvert.DeserializeObject<List<CatalogItem>>(dataString);
 
             return response;
         }
