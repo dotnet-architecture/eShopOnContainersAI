@@ -1,7 +1,6 @@
 ﻿using Catalog.API.AI;
 using Catalog.API.Extensions;
 using Catalog.API.Infrastructure;
-using Catalog.API.Infrastructure.Conventions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
