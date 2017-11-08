@@ -1,6 +1,7 @@
 ﻿@model List<Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogItem>
 
 <div class="esh-catalog-items row">
+    <h4>Customers who bought this item also bought</h4>
 @foreach(var catalogItem in Model) {
     <div class="esh-catalog-item col-md-4">
         <form asp-controller="Cart" asp-action="AddRecommendationToCart">
