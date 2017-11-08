@@ -38,6 +38,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 tags = Tags.Split(',');
 
             var catalog = await _catalogAISvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied, tags);
+            var tagsAvailable = (tags == null || !tags.Any());
 
             var vm = new IndexViewModel()
             {
@@ -46,7 +47,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 Types = await _catalogSvc.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
-                Tags = (tags == null || !tags.Any()) ? String.Empty : String.Join(',',tags),
+                Tags = tagsAvailable ? String.Empty : String.Join(',',tags),
+                TagsActive = tagsAvailable ? String.Empty : "active",
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
