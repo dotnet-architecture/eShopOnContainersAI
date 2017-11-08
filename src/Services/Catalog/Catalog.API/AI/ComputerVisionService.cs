@@ -1,4 +1,5 @@
 ﻿using Microsoft.eShopOnContainers.Services.Catalog.API;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -13,10 +14,12 @@ namespace Catalog.API.AI
     public class ComputerVisionService : IComputerVisionService
     {
         private readonly CatalogSettings _catalogSettings;
+        private readonly ILogger<ComputerVisionService> _logger;
 
-        public ComputerVisionService(IOptionsSnapshot<CatalogSettings> settings)
+        public ComputerVisionService(IOptionsSnapshot<CatalogSettings> settings, ILogger<ComputerVisionService> logger)
         {
             _catalogSettings = settings.Value;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<string>> AnalyzeImageAsync(byte[] image)
@@ -30,6 +33,13 @@ namespace Catalog.API.AI
             var apiKey = _catalogSettings.CognitiveService.VisionAPIKey;
             var apiUri = _catalogSettings.CognitiveService.VisionUri;
 
+            if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(apiUri))
+            {
+                _logger.LogError("Please provide apiKey and URI to the Machine Learning WebService");
+                return Enumerable.Empty<string>();
+            }
+
+
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
 
             string uri = $"{apiUri}/tag";
@@ -39,8 +49,16 @@ namespace Catalog.API.AI
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
                 var response = await client.PostAsync(uri, content);
-
                 string contentString = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogError($"The request failed with status code: {response.StatusCode}");
+                    _logger.LogDebug(response.Headers.ToString());
+                    _logger.LogDebug(contentString);
+                    return Enumerable.Empty<string>();
+                }
+
                 var visionApiResponse = JsonConvert.DeserializeObject<VisionApiResponse>(contentString);
 
                 var query = visionApiResponse.tags.AsQueryable();
