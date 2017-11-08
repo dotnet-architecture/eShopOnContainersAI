@@ -88,7 +88,7 @@ namespace WebMVC.Infrastructure
         {
             public static string GetRecommendations(string baseUri, string productId, string customerId)
             {
-                return $"{baseUri}recommendation/product/{productId}/customer/{customerId}";
+                return $"{baseUri}recommendProducts?productId={productId}&customerId={customerId}";
             }
 
             public static string AnalyzeImage(string baseUri)

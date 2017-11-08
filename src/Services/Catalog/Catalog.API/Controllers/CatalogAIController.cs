@@ -41,10 +41,10 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]/product/{productId}/customer/{customerId}")]
+        [Route("[action]")]
         [ProducesResponseType(typeof(CatalogItem[]), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Recommendation(string productId, string customerId)
+        public async Task<IActionResult> RecommendProducts([FromQuery]string productId, [FromQuery]string customerId)
         {
             if (customerId == "null")
                 customerId = String.Empty;
