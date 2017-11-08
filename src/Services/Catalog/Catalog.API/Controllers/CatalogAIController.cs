@@ -1,11 +1,14 @@
 ﻿using Catalog.API.AI;
 using Catalog.API.Extensions;
+using Catalog.API.Infrastructure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Model;
+using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -23,14 +26,18 @@ namespace Catalog.API.Controllers
         private readonly CatalogContext _catalogContext;
         private readonly IAzureMachineLearningService _amlService;
         private readonly IComputerVisionService _cvService;
+        private readonly ICatalogTagsRepository _catalogTagsRepository;
         private readonly CatalogSettings _settings;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public CatalogAIController(CatalogContext context, IAzureMachineLearningService amlService, IComputerVisionService cvService, IOptionsSnapshot<CatalogSettings> settings)
+        public CatalogAIController(CatalogContext context, ICatalogTagsRepository catalogTagsRepository, IAzureMachineLearningService amlService, IComputerVisionService cvService, IOptionsSnapshot<CatalogSettings> settings, IHostingEnvironment hostingEnvironment)
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
             _amlService = amlService ?? throw new ArgumentNullException(nameof(amlService));
             _cvService = cvService ?? throw new ArgumentNullException(nameof(cvService));
+            _catalogTagsRepository = catalogTagsRepository;
             _settings = settings.Value;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -73,6 +80,54 @@ namespace Catalog.API.Controllers
             return csvFile;
         }
 
+        [HttpGet]
+        [Route("[action]")]
+        [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Items(            
+            [FromQuery]int? catalogTypeId, [FromQuery]int? catalogBrandId,
+            [FromQuery]string tags,
+            [FromQuery]int? pageIndex, [FromQuery]int? pageSize)
+        {
+            var root = (IQueryable<CatalogItem>)_catalogContext.CatalogItems;
+
+            var validatedPageSize = pageSize ?? 10;
+            var validatedPageIndex = pageIndex ?? 0;
+
+            if (catalogTypeId.HasValue)
+            {
+                root = root.Where(ci => ci.CatalogTypeId == catalogTypeId);
+            }
+
+            if (catalogBrandId.HasValue)
+            {
+                root = root.Where(ci => ci.CatalogBrandId == catalogBrandId);
+            }
+
+            if (!String.IsNullOrEmpty(tags))
+            {
+                var catalogTags = await _catalogTagsRepository.FindMatchingCatalogTagAsync(tags.Split(','));
+                var catalogTagsIds = catalogTags.Select(x => x.ProductId);
+                root = root.Where(ci => catalogTagsIds.Contains(ci.Id));
+            }
+
+            var totalItems = await root
+                .LongCountAsync();
+
+            var itemsOnPage = await root
+                .OrderBy(c => c.Name)
+                .Skip(validatedPageSize * validatedPageIndex)
+                .Take(validatedPageSize)
+                .ToListAsync();
+
+            itemsOnPage = ChangeUriPlaceholder(itemsOnPage);
+
+            var model = new PaginatedItemsViewModel<CatalogItem>(
+                validatedPageIndex, validatedPageSize, totalItems, itemsOnPage);
+
+            return Ok(model);
+        }
+
+
         [HttpPost]
         [Route("[action]")]
         public async Task<IActionResult> AnalyzeImage(IFormFile imageFile)
@@ -80,12 +135,14 @@ namespace Catalog.API.Controllers
             if (imageFile.Length == 0)
                 return NoContent();
 
+            IEnumerable<string> tags;
             using (var image = new MemoryStream())
             {
                 await imageFile.CopyToAsync(image);
-                var tags = await _cvService.AnalyzeImageAsync(image.ToArray());
-                return Ok(tags);
+                tags = await _cvService.AnalyzeImageAsync(image.ToArray());
             }
+
+            return Ok(tags);
         }
 
         private List<CatalogItem> ChangeUriPlaceholder(List<CatalogItem> items)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebMVC.Infrastructure
 {
@@ -92,6 +94,15 @@ namespace WebMVC.Infrastructure
             public static string AnalyzeImage(string baseUri)
             {
                 return $"{baseUri}analyzeImage";
+            }
+
+            public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type, IEnumerable<string> tags)
+            {
+                var brandQs = (brand.HasValue) ? $"&catalogBrandId={brand.Value.ToString()}" : String.Empty;
+                var typeQs = (type.HasValue) ? $"&catalogTypeId={type.Value.ToString()}" : String.Empty;
+                var tagsQs = (tags != null && tags.Any()) ? $"&tags={String.Join(',', tags)}" : String.Empty; 
+
+                return $"{baseUri}items?pageIndex={page}&pageSize={take}{brandQs}{typeQs}{tagsQs}";
             }
         }
 

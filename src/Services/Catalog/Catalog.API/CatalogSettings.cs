@@ -25,5 +25,8 @@
 
         public AzureMachineLearningSchema AzureMachineLearning { get; set; }
         public CognitiveServiceSchema CognitiveService { get; set; }
+
+        public string MongoConnectionString { get; set; }
+        public string MongoDatabase { get; set; }
     }
 }

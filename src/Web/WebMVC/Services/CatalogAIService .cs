@@ -46,5 +46,17 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
             return response;
         }
+
+        public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type, IEnumerable<string> tags)
+        {
+            var allcatalogItemsUri = API.CatalogAI.GetAllCatalogItems(_remoteServiceBaseUrl, page, take, brand, type, tags);
+
+            var dataString = await _apiClient.GetStringAsync(allcatalogItemsUri);
+
+            var response = JsonConvert.DeserializeObject<Catalog>(dataString);
+
+            return response;
+        }
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore;
+﻿using Catalog.API.Extensions;
+using Catalog.API.Infrastructure;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
 using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
@@ -26,6 +28,9 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
                 })
                 .MigrateDbContext<IntegrationEventLogContext>((_,__)=> { })
+                .SeedDbContext<CatalogTagsContext>((services) => {
+                    services.GetService<ICatalogTagsContextSeed>().SeedAsync().Wait();
+                })
                 .Run();
         }
 
