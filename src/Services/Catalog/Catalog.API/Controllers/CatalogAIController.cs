@@ -69,7 +69,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> Dump()
+        public async Task<IActionResult> DumpToCSV()
         {
             var catalog = await _catalogContext.CatalogItems
                 .Select(c => new {c.Id, c.CatalogBrandId, c.CatalogTypeId, c.Description, c.Price })
