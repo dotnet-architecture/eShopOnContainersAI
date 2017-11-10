@@ -94,6 +94,10 @@
             width: 10px; //png width
             z-index: 1;
         }
+
+        &.cs {
+            width: 150px; // force to display text correctly
+        }
     }
 
     &-send {

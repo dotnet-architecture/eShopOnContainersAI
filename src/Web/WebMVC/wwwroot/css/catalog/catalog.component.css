@@ -87,6 +87,10 @@
   z-index: 1;
 }
 
+.esh-catalog-label.cs {
+  width: 150px;
+}
+
 .esh-catalog-send {
   background-color: #83D01B;
   color: #FFFFFF;
