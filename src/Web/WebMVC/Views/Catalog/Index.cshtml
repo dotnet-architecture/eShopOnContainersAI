@@ -19,11 +19,8 @@
             </label>
 
             <input class="esh-catalog-file" type="file" src="~/images/arrow-right.svg" asp-for="@Model.ImageFilter" onchange='javascript: document.querySelector(".esh-catalog-filter.caption").className += "active"' />
-            <label asp-for="@Model.ImageFilter" class="esh-catalog-label" data-title="image filter">
+            <label asp-for="@Model.ImageFilter" class="esh-catalog-label cs" data-title="image search (cognitive service)">
                 <span class="esh-catalog-filter caption @Model.TagsActive">Choose file</span>
-                @*<select class="esh-catalog-filter" disabled="disabled">
-                    <option>Choose file</option>
-                </select>*@
             </label>
 
             <input class="esh-catalog-send" type="image" src="~/images/arrow-right.svg" />
