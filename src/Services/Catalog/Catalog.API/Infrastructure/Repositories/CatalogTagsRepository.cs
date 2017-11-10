@@ -17,22 +17,42 @@ namespace Catalog.API.Infrastructure
             dbContext = new CatalogTagsContext(settings);
         }
 
-        public bool Empty => dbContext.CatalogTags.Count(Builders<CatalogTag>.Filter.Empty) == 0;
+        public bool IsEmpty => dbContext.CatalogFullTags.Count(Builders<CatalogFullTag>.Filter.Empty) == 0;
 
-        public Task<List<CatalogTag>> FindMatchingCatalogTagAsync(IEnumerable<string> tags)
+        public Task<List<CatalogTag>> FindMatchingTagsAsync(IEnumerable<string> tags)
         {
-            var filter = Builders<CatalogTag>.Filter.AnyIn(x => x.Tagrams, tags);
+            var filter = Builders<CatalogFullTag>.Filter.AnyIn(x => x.Tagrams, tags);
+            var projection = Builders<CatalogFullTag>.Projection.Expression(c => c as CatalogTag);
 
-            return dbContext.CatalogTags
+            return dbContext.CatalogFullTags
                 .Find(filter)
+                .Project(projection)
                 .ToListAsync();
         }
 
-        public async Task InsertAsync(IEnumerable<CatalogTag> catalogTags)
+        public Task<List<CatalogTag>> FindMatchingProductsAsync(IEnumerable<int> productIds)
+        {
+            var filter = Builders<CatalogFullTag>.Filter.In(x => x.ProductId, productIds);
+            var projection = Builders<CatalogFullTag>.Projection.Expression(c => c as CatalogTag);
+
+            return dbContext.CatalogFullTags
+                .Find(filter)
+                .Project(projection)
+                .ToListAsync();
+        }
+
+        public async Task InsertAsync(IEnumerable<CatalogFullTag> catalogTags)
         {
             // InsertManyAsync uses internally BulkWriteAsync
             // https://stackoverflow.com/questions/32921533/mongodb-c-sharp-driver-2-0-insertmanyasync-vs-bulkwriteasync
-            await dbContext.CatalogTags.InsertManyAsync(catalogTags);
+            await dbContext.CatalogFullTags.InsertManyAsync(catalogTags);
+        }
+
+        public Task<List<CatalogFullTag>> All {
+            get
+            {
+                return dbContext.CatalogFullTags.AsQueryable().ToListAsync();
+            }
         }
 
     }
