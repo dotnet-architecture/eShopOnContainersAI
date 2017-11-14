@@ -19,11 +19,11 @@ namespace Catalog.API.Infrastructure
             }
         }
 
-        public IMongoCollection<CatalogTag> CatalogTags
+        public IMongoCollection<CatalogFullTag> CatalogFullTags
         {
             get
             {
-                return _database.GetCollection<CatalogTag>("CatalogTags");
+                return _database.GetCollection<CatalogFullTag>("CatalogTags");
             }
         }
     }

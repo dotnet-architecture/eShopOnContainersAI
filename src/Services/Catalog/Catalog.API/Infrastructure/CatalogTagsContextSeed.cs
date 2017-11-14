@@ -29,7 +29,7 @@ namespace Catalog.API.Infrastructure
 
             var contentRootPath = env.ContentRootPath;
 
-            if (catalogTagsRepository.Empty)
+            if (catalogTagsRepository.IsEmpty)
             {
                 var catalogTagsSeed = await GetCatalogTagsFromFile(contentRootPath, logger);
                 if (catalogTagsSeed.Any())
@@ -40,24 +40,24 @@ namespace Catalog.API.Infrastructure
             }
         }
 
-        private async Task<IEnumerable<CatalogTag>> GetCatalogTagsFromFile(string contentRootPath, ILogger<CatalogTagsContextSeed> logger)
+        private async Task<IEnumerable<CatalogFullTag>> GetCatalogTagsFromFile(string contentRootPath, ILogger<CatalogTagsContextSeed> logger)
         {
             string jsonCatalogTagsFile = Path.Combine(contentRootPath, "Setup", "CatalogTags.txt");
 
             if (!File.Exists(jsonCatalogTagsFile))
             {
                 logger.LogInformation($"File {jsonCatalogTagsFile} not found. No tags added to database.");
-                return Enumerable.Empty<CatalogTag>();
+                return Enumerable.Empty<CatalogFullTag>();
             }
 
             try
             {
                 var jsonContent = await File.ReadAllTextAsync(jsonCatalogTagsFile);
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CatalogTag>>(jsonContent);
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CatalogFullTag>>(jsonContent);
             } catch (Exception ex)
             {
                 logger.LogError(ex.Message);
-                return Enumerable.Empty<CatalogTag>();
+                return Enumerable.Empty<CatalogFullTag>();
             }
         }
     }

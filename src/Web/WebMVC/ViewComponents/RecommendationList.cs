@@ -17,7 +17,7 @@ namespace WebMVC.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string productId, string customerId)
         {
-            const int maxProductRecommendations = 3;
+            const int maxProductRecommendations = 9;
 
             if (String.IsNullOrEmpty(productId))
                 return View();
