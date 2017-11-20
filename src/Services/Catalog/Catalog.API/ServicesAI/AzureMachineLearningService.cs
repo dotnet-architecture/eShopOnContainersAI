@@ -53,15 +53,15 @@ namespace Catalog.API.ServicesAI
                 };
 
                 string apiKey = _catalogSettings.AzureMachineLearning.RecommendationAPIKey;
-                string uri = _catalogSettings.AzureMachineLearning.RecommendationUri;
-                if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(uri))
+                string apiUri = _catalogSettings.AzureMachineLearning.RecommendationUri;
+                if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(apiUri))
                 {
                     _logger.LogError("Please provide apiKey and URI to the Machine Learning WebService");
                     return Enumerable.Empty<string>();
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-                client.BaseAddress = new Uri(uri);
+                client.BaseAddress = new Uri(apiUri);
 
                 HttpResponseMessage response = await client.PostAsync(String.Empty, new JsonContent(scoreRequest));
 

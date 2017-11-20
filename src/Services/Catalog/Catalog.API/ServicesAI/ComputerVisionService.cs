@@ -28,53 +28,55 @@ namespace Catalog.API.ServicesAI
             const double confidenceThreshold = 0.85;
             const int maxLength = 5;
 
-            var client = new HttpClient();
-
-            var apiKey = _catalogSettings.CognitiveService.VisionAPIKey;
-            var apiUri = _catalogSettings.CognitiveService.VisionUri;
-
-            if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(apiUri))
+            using (var client = new HttpClient())
             {
-                _logger.LogError("Please provide apiKey and URI to the Machine Learning WebService");
-                return Enumerable.Empty<string>();
-            }
 
+                var apiKey = _catalogSettings.CognitiveService.VisionAPIKey;
+                var apiUri = _catalogSettings.CognitiveService.VisionUri;
 
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
-
-            string uri = $"{apiUri}/tag";
-
-            using (ByteArrayContent content = new ByteArrayContent(image))
-            {
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-
-                var response = await client.PostAsync(uri, content);
-                string contentString = await response.Content.ReadAsStringAsync();
-
-                if (!response.IsSuccessStatusCode)
+                if (String.IsNullOrEmpty(apiKey) || String.IsNullOrEmpty(apiUri))
                 {
-                    _logger.LogError($"The request failed with status code: {response.StatusCode}");
-                    _logger.LogDebug(response.Headers.ToString());
-                    _logger.LogDebug(contentString);
+                    _logger.LogError("Please provide apiKey and URI to the Machine Learning WebService");
                     return Enumerable.Empty<string>();
                 }
 
-                var visionApiResponse = JsonConvert.DeserializeObject<VisionApiResponse>(contentString);
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", apiKey);
 
-                var query = visionApiResponse.tags.AsQueryable();
+                string apiUriTag = $"{apiUri}/tag";
 
-                if (query.Any(t => t.confidence > confidenceThreshold))
-                    query = query
-                        .Where(t => t.confidence > confidenceThreshold)
-                        .OrderByDescending(t => t.confidence)
-                        .Take(maxLength);
-                else
-                    // In case we don't find any element matching threshold, we match only first one
-                    query = query
-                        .OrderByDescending(t => t.confidence)
-                        .Take(1);
+                using (ByteArrayContent requestContent = new ByteArrayContent(image))
+                {
+                    requestContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-                return  query.Select(t => t.name);
+                    var response = await client.PostAsync(apiUriTag, requestContent);
+
+                    string contentString = await response.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        _logger.LogError($"The request failed with status code: {response.StatusCode}");
+                        _logger.LogDebug(response.Headers.ToString());
+                        _logger.LogDebug(contentString);
+                        return Enumerable.Empty<string>();
+                    }
+
+                    var visionApiResponse = JsonConvert.DeserializeObject<VisionApiResponse>(contentString);
+
+                    var query = visionApiResponse.tags.AsQueryable();
+
+                    if (query.Any(t => t.confidence > confidenceThreshold))
+                        query = query
+                            .Where(t => t.confidence > confidenceThreshold)
+                            .OrderByDescending(t => t.confidence)
+                            .Take(maxLength);
+                    else
+                        // In case we don't find any element matching threshold, we match only first one
+                        query = query
+                            .OrderByDescending(t => t.confidence)
+                            .Take(1);
+
+                    return query.Select(t => t.name);
+                }
             }
         }
 
