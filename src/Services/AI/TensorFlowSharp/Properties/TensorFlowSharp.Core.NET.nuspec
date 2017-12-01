@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>TensorFlowSharp.Core.NET</id>
+    <version>1.4.0-pre3</version>
+    <authors>Fran Pérez</authors>
+    <owners>Fran Pérez</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.NET API for TensorFlow, Google's Machine Intelligence framework</description>
+    <releaseNotes>Adds support for TensorFlor 1.4
+This brings support for the TensorFlow 1.4 API.</releaseNotes>
+    <tags>machine-learning tensorflow c#</tags>
+    <dependencies>
+      <group targetFramework=".NETCoreApp2.0" />
+    </dependencies>
+    <contentFiles>
+      <files include="any/netcoreapp2.0/libtensorflow.dll" buildAction="Content" copyToOutput="true" />
+      <files include="any/netcoreapp2.0/libtensorflow.so" buildAction="Content" copyToOutput="true" />
+      <files include="any/netcoreapp2.0/libtensorflow_framework.so" buildAction="Content" copyToOutput="true" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="bin\Debug\netcoreapp2.0\TensorFlowSharp.dll" target="lib\netcoreapp2.0\TensorFlowSharp.dll" />
+    <file src="libtensorflow.dll" target="content\libtensorflow.dll" />
+    <file src="libtensorflow.dll" target="contentFiles\any\netcoreapp2.0\libtensorflow.dll" />
+    <file src="libtensorflow.so" target="content\libtensorflow.so" />
+    <file src="libtensorflow.so" target="contentFiles\any\netcoreapp2.0\libtensorflow.so" />
+    <file src="libtensorflow_framework.so" target="content\libtensorflow_framework.so" />
+    <file src="libtensorflow_framework.so" target="contentFiles\any\netcoreapp2.0\libtensorflow_framework.so" />
+  </files>
+</package>

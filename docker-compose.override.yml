@@ -27,6 +27,16 @@ services:
       - "5103:80"
       - "51032:22"
 
+
+  ai.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+    ports:
+      - "5109:80"
+      - "51092:22"
+
+
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

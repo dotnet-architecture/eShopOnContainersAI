@@ -1,0 +1,30 @@
+# Spark configuration and packages specification. The dependencies defined in
+# this file will be automatically provisioned for runs that use Spark.
+
+# For managing third-party python libraries, see conda_dependencies.yml.
+
+# Spark configuration properties.
+configuration:
+  "spark.app.name": "Azure ML Experiment"
+  "spark.yarn.maxAppAttempts": 1
+
+# Repositories to search for the specified Spark packages.
+repositories:
+  - "https://mmlspark.azureedge.net/maven"
+
+# Spark packages to include in the run.
+packages:
+  # Microsoft Machine Learning for Apache Spark provides a number of deep
+  # learning and data science tools, including seamless integration of Spark
+  # Machine Learning pipelines with Microsoft Cognitive Toolkit (CNTK) and
+  # OpenCV, enabling you to quickly create powerful, highly-scalable
+  # predictive and analytical models for large image and text datasets.
+  # Details: https://github.com/Azure/mmlspark
+  - group: "com.microsoft.ml.spark"
+    artifact: "mmlspark_2.11"
+    version: "0.7.91"
+
+  #	Required for SQL Server data sources.
+  - group: "com.microsoft.sqlserver"
+    artifact: "mssql-jdbc"
+    version: "6.2.1.jre8"

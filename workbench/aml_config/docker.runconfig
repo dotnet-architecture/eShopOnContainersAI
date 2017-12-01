@@ -1,0 +1,55 @@
+# The program name and arguments to run when they aren't specified through
+# other means. The $file token is replaced with the currently selected file
+# by the Workbench application.
+ArgumentVector:
+  - "$file"
+
+# The name of the compute target to use for this run.
+Target: "docker"
+
+# Environment variables set for the run.
+EnvironmentVariables:
+  "EXAMPLE_ENV_VAR": "Example Value"
+
+# Framework to execute inside. Allowed values are "Python" and "PySpark".
+Framework: "Python"
+
+# Path to the Conda dependencies file to use for this run. If a project
+# contains multiple programs with different sets of dependencies, it may be
+# convenient to manage those environments with separate files.
+CondaDependenciesFile: "aml_config/conda_dependencies.yml"
+
+# Path to the Spark dependencies file to use for this run. If a project
+# contains multiple programs with different sets of dependencies, it may be
+# convenient to manage those environments with separate files.
+#SparkDependenciesFile: "aml_config/spark_dependencies.yml"
+
+# Automatically prepare the run environment as part of the run itself.
+# Manual preparation of a compute target can be perfomed with:
+# az ml experiment prepare --run-configuration <run configuration name>
+PrepareEnvironment: true
+
+# Enable history tracking -- this allows status, logs, metrics, and outputs
+# to be collected by Azure ML Workbench and uploaded to the cloud project.
+TrackedRun: true
+
+# The UseSampling setting controls the use of sample data or complete data on 
+# all .dsource and .dprep files. Setting this to false will read all the data 
+# when loading data using either a .dsource or .dprep file.
+UseSampling: true
+
+# For each data source (.dsource or .dprep file), the Sample setting allows a 
+# specific named sample to be used, overriding the active sample set in the 
+# .dsource or .dprep file.
+# DataSourceSettings:
+#   my.dsource:
+#     Sampling:
+#       Sample: MySampleName
+
+# Data source substitutions allows all references to a .dsource, be it in a 
+# .dprep file or in your code to load data, to instead use a different .dsource. 
+# It can be useful to setup two .dsources and then substitute the second one 
+# when running in some compute targets.
+# DataSourceSubstitutions:
+#     my.dsource: replacement.dsource
+
