@@ -1,0 +1,17 @@
+# Defines a local compute target that uses an existing python environment.
+type: "local"
+
+# Specifies the user-managed python environment for the run. By default this
+# is "python" which uses the currently active python environment. The Azure ML
+# Workbench will use the python environment installed with it and the Azure ML
+# CLI will use whatever python environment it was installed into.
+#
+# You can change this to point at any python environment on your system,
+# including virtual environments and Conda environments. Note that backslashes
+# need to be escaped in this path, so it's easier to use forward slashes.
+pythonLocation: "python"
+
+# The $AZUREML_NATIVE_SHARE_DIRECTORY environment variable inside runs points
+# at a persistent directory that is shared between all runs of the same project
+# on the same target. This specifies the base path for those directories.
+nativeSharedDirectory: "~/.azureml/share/"
