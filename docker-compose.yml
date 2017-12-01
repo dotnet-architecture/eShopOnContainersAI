@@ -12,6 +12,13 @@ services:
       - identity.api
       - rabbitmq
 
+  ai.api:
+    image: eshop/ai.api:${TAG:-latest}
+    build:
+      context: ./src/Services/AI/ArtificialIntelligence.API
+      dockerfile: Dockerfile    
+
+
   catalog.api:
     image: eshop/catalog.api:${TAG:-latest}
     build:
