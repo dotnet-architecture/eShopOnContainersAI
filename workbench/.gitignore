@@ -4,4 +4,5 @@ azureml-logs
 *.dprep.user
 .vscode/settings.json
 data/
-output/
+outputs/
+.azureml/project.json

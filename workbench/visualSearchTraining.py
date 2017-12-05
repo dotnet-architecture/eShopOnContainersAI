@@ -1,6 +1,21 @@
 import sys, os, os.path, glob
+os.environ['PYTHONHASHSEED'] = '0'
+seed = 1343
+import numpy as np
+np.random.seed(seed)
+import random as rn
+rn.seed(seed)
 import tensorflow as tf
+
+session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
+
 from keras import backend as K
+tf.set_random_seed(seed)
+K.set_learning_phase(False)
+
+sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
+K.set_session(sess)
+
 from keras.applications import InceptionV3
 from keras.applications.inception_v3 import preprocess_input
 from keras.layers import Dense, GlobalAveragePooling2D
@@ -11,8 +26,10 @@ from keras.models import Model
 from azureml.logging import get_azureml_logger
 logger = get_azureml_logger()
 
+IM_WIDTH, IM_HEIGHT, IM_CHANNELS = 224, 224, 3 #fixed size for InceptionV3
+
 def setup_dnn():
-    model = InceptionV3(weights="imagenet", include_top=False) #include_top=False excludes final FC layer
+    model = InceptionV3(weights="imagenet", include_top=False, input_shape=(IM_WIDTH, IM_HEIGHT, IM_CHANNELS)) #include_top=False excludes final FC layer
     return model
 
 def setup_transfer_learninig(model, base_model):
@@ -55,7 +72,12 @@ def setup_finetune(model):
 def save_dnn(model, folder, filename):
     filepath = os.path.join(folder, filename)
     sess = K.get_session()
-    tf.train.write_graph(sess.graph.as_graph_def(), folder, filename, as_text=False)
+    
+    outputs = ["input_1", "dense_2/Softmax"]
+    constant_graph = tf.graph_util.convert_variables_to_constants(sess, sess.graph.as_graph_def(), outputs)
+    tf.train.write_graph(constant_graph,folder,filename,as_text=False)
+    #tf.train.write_graph(sess.graph.as_graph_def(), folder, filename, as_text=False)
+    #tf.train.export_meta_graph()
     print('saved the graph definition in tensorflow format at: ', filepath)
 
 def utils_files_count(directory):
@@ -69,7 +91,6 @@ def utils_files_count(directory):
     return cnt
 
 def train_generator(folder, batch_size=16, save_to_dir=None):
-    IM_WIDTH, IM_HEIGHT = 299, 299 #fixed size for InceptionV3
     datagen =  ImageDataGenerator(
         preprocessing_function=preprocess_input,
         rotation_range=30,
@@ -95,7 +116,7 @@ def train_generator(folder, batch_size=16, save_to_dir=None):
     return generator
 
 def validation_generator(folder, batch_size=16):
-    IM_WIDTH, IM_HEIGHT = 299, 299 #fixed size for InceptionV3
+    #IM_WIDTH, IM_HEIGHT = 299, 299 #fixed size for InceptionV3
     datagen =  ImageDataGenerator(
         preprocessing_function=preprocess_input,
         rotation_range=45,
@@ -126,14 +147,14 @@ def utils_generated_sample (data_folder, generated_folder, batches_length=1):
         i += 1
         if i > batches_length:
             break  # otherwise the generator would loop indefinitely
-
+    
 if __name__ == '__main__':
     project_folder = os.path.dirname(os.path.realpath(__file__))
     print("Project folder: ", project_folder)
     data_folder = os.path.join(project_folder, 'data')
     train_folder = os.path.join(data_folder, 'train')
     validation_folder = os.path.join(data_folder, 'validation')
-    output_folder = os.path.join(project_folder,'output')
+    output_folder = os.path.join(project_folder,'outputs')
     model_filename = 'model.pb'
 
     nb_classes = len(glob.glob(train_folder + "/*"))
