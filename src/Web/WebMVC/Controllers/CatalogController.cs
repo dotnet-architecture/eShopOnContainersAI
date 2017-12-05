@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             _catalogAISvc = catalogAIService;
         }
 
-        public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page, IFormFile ImageFilter, string Tags)
+		public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page, IFormFile ImageFilter, string Tags, [FromQuery]string errorMsg)
         {
             var itemsPage = 12;
 
@@ -60,6 +60,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 
             vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
+
+            ViewBag.BasketInoperativeMsg = errorMsg;
 
             return View(vm);
         }
