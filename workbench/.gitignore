@@ -6,3 +6,4 @@ azureml-logs
 data/
 outputs/
 .azureml/project.json
+.vscode/settings.json
