@@ -56,18 +56,15 @@ namespace ArtificialIntelligence.API.Services
             TFGraph graph = new TFGraph();
             TFOutput input = graph.Placeholder(TFDataType.String);
 
-            TFOutput output = graph.Cast(graph.Div(
-                x: graph.Sub(
-                    x: graph.ResizeBilinear(
-                        images: graph.ExpandDims(
-                            input: graph.Cast(
-                                graph.DecodeJpeg(contents: input, channels: 3), DstT: TFDataType.Float),
-                            dim: graph.Const(0, "make_batch")),
-                        size: graph.Const(new int[] { W, H }, "size")),
-                    y: graph.Const(Mean, "mean")),
-                y: graph.Const(Scale, "scale")), destinationDataType);
+            var decodeJpeg = graph.DecodeJpeg(contents: input, channels: 3);
+            var castToFloat = graph.Cast(decodeJpeg, DstT: TFDataType.Float);
+            var expandDims = graph.ExpandDims(castToFloat, dim: graph.Const(0, "make_batch")); // shape: [1, height, width, channels]
+            var resize = graph.ResizeBilinear(expandDims, size: graph.Const(new int[] { W, H }, "size"));
+            var substractMean = graph.Sub(resize, y: graph.Const(Mean, "mean"));
+            var divByScale = graph.Div(substractMean, y: graph.Const(Scale, "scale"));
+            var castToDestinationDataType = graph.Cast(divByScale, destinationDataType);
 
-            return (graph, input, output);
+            return (graph, input, castToDestinationDataType);
         }
 
         //

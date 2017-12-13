@@ -32,28 +32,13 @@ namespace ArtificialIntelligence.API.Services
 
         public IEnumerable<string> AnalyzeImageWithTensor(byte[] image)
         {
-            return AnalyzeImageWithInceptionModel(image);
+            return AnalyzeImageWithCustomInceptionModel(image);
         }
 
         protected IEnumerable<string> AnalyzeImageWithCustomInceptionModel(byte[] image)
         {
             var (modelFile, labelsFile) = TensorFlowSharpHelpers.GetCustomInceptionModel(Path.Combine(environment.ContentRootPath, settings.AIModelsPath));
-            const string inputTensorName = "input_1:0", outputTensorName = "dense_2/Softmax:0";
-
-            return DoAnalyzeImageWithTensor(image, modelFile, labelsFile, inputTensorName, outputTensorName);
-        }
-
-        protected IEnumerable<string> AnalyzeImageWithInceptionModel(byte[] image)
-        {
-            var (modelFile, labelsFile) = TensorFlowSharpHelpers.GetOrDownloadInceptionModel(Path.Combine(environment.ContentRootPath, settings.AIModelsPath));
-            const string inputTensorName = "input", outputTensorName = "output";
-
-            return DoAnalyzeImageWithTensor(image, modelFile, labelsFile, inputTensorName, outputTensorName);
-        }
-
-        private IEnumerable<string> DoAnalyzeImageWithTensor(byte[] image, string modelFile, string labelsFile, string inputTensorName, string outputTensorName)
-        {
-            var tensor = TensorFlowSharpHelpers.CreateTensorFromImageFile(image);
+            const string inputTensorName = "input_1", outputTensorName = "dense_2/Softmax";
 
             // Construct an in-memory graph from the serialized form.
             var graph = new TFGraph();
@@ -63,6 +48,29 @@ namespace ArtificialIntelligence.API.Services
 
             graph.Import(model, "");
 
+            return DoAnalyzeImageWithTensor(image, graph, labels, inputTensorName, outputTensorName);
+        }
+
+        protected IEnumerable<string> AnalyzeImageWithInceptionModel(byte[] image)
+        {
+            var (modelFile, labelsFile) = TensorFlowSharpHelpers.GetOrDownloadInceptionModel(Path.Combine(environment.ContentRootPath, settings.AIModelsPath));
+            const string inputTensorName = "input", outputTensorName = "output";
+
+            // Construct an in-memory graph from the serialized form.
+            var graph = new TFGraph();
+            // Load the serialized GraphDef from a file.
+            var model = File.ReadAllBytes(modelFile);
+            var labels = File.ReadAllLines(labelsFile);
+
+            graph.Import(model, "");
+
+            return DoAnalyzeImageWithTensor(image, graph, labels, inputTensorName, outputTensorName);
+        }
+
+        private IEnumerable<string> DoAnalyzeImageWithTensor(byte[] image, TFGraph graph, string[] labels, string inputTensorName, string outputTensorName)
+        {
+            var tensor = TensorFlowSharpHelpers.CreateTensorFromImageFile(image);
+
             using (var session = new TFSession(graph))
             {
                 var runner = session.GetRunner();
@@ -70,7 +78,9 @@ namespace ArtificialIntelligence.API.Services
                 // Create an input layer to feed (tensor) image, 
                 // fetch label in output layer
                 var input = graph[inputTensorName][0];
+                //var input2 = graph["batch_normalization_1/keras_learning_phase"][0];
                 var output = graph[outputTensorName][0];
+                
                 runner.AddInput(input, tensor)
                       .Fetch(output);
 

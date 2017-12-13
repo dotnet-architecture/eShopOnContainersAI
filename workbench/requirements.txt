@@ -1,4 +1,0 @@
-tensorflow_gpu==1.4.0
-Keras==2.0.9
-h5py
-pillow
