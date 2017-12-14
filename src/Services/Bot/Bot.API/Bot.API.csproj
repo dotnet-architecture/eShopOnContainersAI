@@ -7,7 +7,9 @@
     <AssemblyName>Bot.API</AssemblyName>
     <PackageId>Bot.API</PackageId>  
     
-    <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath> 
+    <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>  
+    
+    <UserSecretsId>5ac68541-37b2-4fc9-a750-5240d3b63dbf</UserSecretsId> 
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +28,7 @@
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder" Version="3.12.2.5" />
     <PackageReference Include="CXuesong.Ported.Microsoft.Bot.Builder.Autofac" Version="3.12.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
   </ItemGroup>
  
   <ItemGroup>
@@ -36,6 +39,10 @@
       <None Update="Dockerfile">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\" />
     </ItemGroup>
 
 </Project>
