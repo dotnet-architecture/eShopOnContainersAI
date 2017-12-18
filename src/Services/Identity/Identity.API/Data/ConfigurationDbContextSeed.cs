@@ -18,6 +18,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 
             clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
             clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Bot", configuration.GetValue<string>("BotClient"));
             clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
             clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
             clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));

@@ -21,8 +21,38 @@ namespace Bot.API
         public void ConfigureServices(IServiceCollection services)
         {
             SettingsUtils.AttachConfiguration(Configuration);
-            services.AddMvc();           
-            services.Configure<BotSettings>(Configuration);          
+            services.AddMvc();   
+            
+            services.AddSession();
+            services.Configure<BotSettings>(Configuration);
+
+            var identityUrl = Configuration.GetValue<string>("IdentityUrl");
+            var callBackUrl = Configuration.GetValue<string>("CallBackUrl");
+
+            // Add Authentication services          
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect(options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = identityUrl.ToString();
+                options.SignedOutRedirectUri = callBackUrl.ToString();
+                options.ClientId = "Bot";
+                options.ClientSecret = "secret";
+                options.ResponseType = "code id_token";
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = false;
+                options.Scope.Add("openid");
+                options.Scope.Add("profile");
+                options.Scope.Add("orders");
+                options.Scope.Add("basket");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,7 +62,10 @@ namespace Bot.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+        
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -40,8 +73,6 @@ namespace Bot.API
                     template: "{controller=Bot}/{action=Index}/{id?}");
             });
 
-
-            app.UseStaticFiles();
         }
     }
 }
