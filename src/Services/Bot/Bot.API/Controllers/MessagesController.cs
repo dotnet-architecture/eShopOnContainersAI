@@ -13,7 +13,6 @@ using Bot.API.Dialogs;
 namespace Bot.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [BotAuthentication]
     public class MessagesController : Controller
     {
 
@@ -35,7 +34,8 @@ namespace Bot.API.Controllers
                 switch (activity.GetActivityType())
                 {
                     case ActivityTypes.Message:
-                        await Conversation.SendAsync(activity, () => new EchoDialog());
+                        await Conversation.SendAsync(activity, () => new LoginDialog());
+                        // await Conversation.SendAsync(activity, () => new EchoDialog());
                         break;
 
                     case ActivityTypes.ConversationUpdate:
