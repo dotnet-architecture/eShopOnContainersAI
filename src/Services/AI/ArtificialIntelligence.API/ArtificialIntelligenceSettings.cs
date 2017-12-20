@@ -8,5 +8,6 @@ namespace ArtificialIntelligence.API
     public class ArtificialIntelligenceSettings
     {
         public string AIModelsPath { get; set; }
+        public string DefaultModel { get; set; }
     }
 }
