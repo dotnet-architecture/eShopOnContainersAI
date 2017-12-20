@@ -9,20 +9,26 @@ using Autofac;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Bot.API.Dialogs;
+using Microsoft.Bot.Builder.Internals.Fibers;
+using System.Threading;
+using Bot.API.Services;
 
 namespace Bot.API.Controllers
 {
     [Route("api/v1/[controller]")]
+    [BotAuthentication]
     public class MessagesController : Controller
     {
 
-        private readonly ILogger<MessagesController> _logger;
-        private readonly BotSettings _botSettings;
+        private readonly ILifetimeScope scope;
+        private readonly ILogger<MessagesController> logger;
+        private readonly BotSettings settings;
 
-        public MessagesController(ILoggerFactory loggerFactory, IOptionsSnapshot<BotSettings> settings)
+        public MessagesController(ILifetimeScope scope, ILogger<MessagesController> logger, IOptionsSnapshot<BotSettings> settings)
         {
-            _logger = loggerFactory.CreateLogger<MessagesController>();
-            _botSettings = settings.Value;
+            SetField.NotNull(out this.scope, nameof(scope), scope);
+            SetField.NotNull(out this.logger, nameof(logger), logger);
+            SetField.NotNull(out this.settings, nameof(settings), settings.Value);  
         }
 
         // POST api/values
@@ -34,8 +40,7 @@ namespace Bot.API.Controllers
                 switch (activity.GetActivityType())
                 {
                     case ActivityTypes.Message:
-                        await Conversation.SendAsync(activity, () => new LoginDialog());
-                        // await Conversation.SendAsync(activity, () => new EchoDialog());
+                        await Conversation.SendAsync(activity, () => this.scope.Resolve<CatalogDialog>());
                         break;
 
                     case ActivityTypes.ConversationUpdate:
@@ -46,7 +51,7 @@ namespace Bot.API.Controllers
                     case ActivityTypes.DeleteUserData:
                     case ActivityTypes.Ping:
                     default:
-                        _logger.LogWarning("Unknown activity type ignored: {0}", activity.GetActivityType());
+                        logger.LogWarning("Unknown activity type ignored: {0}", activity.GetActivityType());
                         break;
                 }
             }
@@ -71,7 +76,7 @@ namespace Bot.API.Controllers
                         {
                             reply.Text = $"{activity.From.Name} has joined";      
                         }
-                        _logger.LogInformation("User joinned: {0}",activity.From.Name);
+                        logger.LogInformation("User joinned: {0}",activity.From.Name);
                         await client.Conversations.ReplyToActivityAsync(reply);
                     }
                 }
