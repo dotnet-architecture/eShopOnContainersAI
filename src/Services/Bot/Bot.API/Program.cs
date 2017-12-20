@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Autofac.Extensions.DependencyInjection;
 
 namespace Bot.API
 {
@@ -18,19 +15,20 @@ namespace Bot.API
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-             .UseStartup<Startup>()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureAppConfiguration((builderContext, config) =>
-                {
-                    config.AddEnvironmentVariables();
-                })
-                .ConfigureLogging((hostingContext, builder) =>
-                {
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
-                })                
-                .Build();    
+            WebHost.CreateDefaultBuilder(args)          
+            .UseKestrel()          
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureAppConfiguration((builderContext, config) =>
+            {
+                config.AddEnvironmentVariables();
+            })
+            .ConfigureLogging((hostingContext, builder) =>
+            {
+                builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                builder.AddConsole();
+                builder.AddDebug();
+            }) 
+            .UseStartup<Startup>()               
+            .Build();    
     }
 }

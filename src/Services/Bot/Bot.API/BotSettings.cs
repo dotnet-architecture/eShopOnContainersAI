@@ -4,9 +4,10 @@ namespace Bot.API
 {
     public class BotSettings
     {
-        public String BotId { get; set; }
-        public String MicrosoftAppId { get; set; }
-        public String MicrosoftAppPassword { get; set; }
-        public String WebChatSecret { get; set; }
+        public string CatalogUrl { get; set; }
+        public string BotId { get; set; }
+        public string MicrosoftAppId { get; set; }
+        public string MicrosoftAppPassword { get; set; }
+        public string WebChatSecret { get; set; }
     }
 }
