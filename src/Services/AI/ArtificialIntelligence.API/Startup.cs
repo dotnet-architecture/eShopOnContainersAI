@@ -28,7 +28,7 @@ namespace ArtificialIntelligence.API
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<ArtificialIntelligenceSettings>(Configuration);
-            services.AddTransient<IPrediction, Prediction>();
+            services.AddTransient<IComputerVisionServices, ComputerVisionServices>();
 
             services.AddMvc(options =>
             {
