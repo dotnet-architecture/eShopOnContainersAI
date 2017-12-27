@@ -9,5 +9,8 @@ namespace ArtificialIntelligence.API
     {
         public string AIModelsPath { get; set; }
         public string DefaultModel { get; set; }
+
+        public string ModelManagementServiceUri { get; set; }
+        public string ModelManagementServiceKey { get; set; }
     }
 }
