@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TensorFlow;
 
-namespace ArtificialIntelligence.API.Services
+namespace ArtificialIntelligence.API.Services.ComputerVision.Models
 {
     public interface IClassifier
     {
-        IEnumerable<LabelConfidence> ClassifyImage(byte[] image);
+        Task<IEnumerable<LabelConfidence>> ClassifyImageAsync(byte[] image);
     }
 
     public class LabelConfidence
@@ -34,9 +35,10 @@ namespace ArtificialIntelligence.API.Services
         /// </summary>
         /// <param name="image">image (jpeg) file to be analyzed</param>
         /// <returns>labels related to the image</returns>
-        public IEnumerable<LabelConfidence> ClassifyImage(byte[] image)
+        public Task<IEnumerable<LabelConfidence>> ClassifyImageAsync(byte[] image)
         {
-            return Process(image, modelSettings);
+            // TODO: new Task
+            return Task.FromResult(Process(image, modelSettings));
         }
 
         protected IEnumerable<LabelConfidence> Process(byte[] image, TensorFlowPredictionSettings settings)

@@ -5,11 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
-using ArtificialIntelligence.API.Services;
+using ArtificialIntelligence.API.Services.ComputerVision;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace ArtificialIntelligence.API.Controllers
 {
@@ -19,7 +17,8 @@ namespace ArtificialIntelligence.API.Controllers
         Default,
         TensorFlowInception,
         TensorFlowModel,
-        CNTKModel
+        CNTKModel,
+        ModelManagement
     } 
 
     [Produces("application/json")]
@@ -44,7 +43,7 @@ namespace ArtificialIntelligence.API.Controllers
             using (var image = new MemoryStream())
             {
                 await imageFile.CopyToAsync(image);
-                tags = predictionServices.ClassifyImage(image.ToArray(), model);
+                tags = await predictionServices.ClassifyImageAsync(image.ToArray(), model);
             }
 
             return Ok(tags);

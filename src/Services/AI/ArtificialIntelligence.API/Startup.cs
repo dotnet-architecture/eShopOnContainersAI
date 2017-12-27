@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ArtificialIntelligence.API.Infrastructure.Filters;
-using ArtificialIntelligence.API.Services;
+using ArtificialIntelligence.API.Services.ComputerVision;
+using ArtificialIntelligence.API.Services.ComputerVision.Client;
+using ArtificialIntelligence.API.Services.ComputerVision.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace ArtificialIntelligence.API
 {
@@ -29,6 +29,8 @@ namespace ArtificialIntelligence.API
         {
             services.Configure<ArtificialIntelligenceSettings>(Configuration);
             services.AddTransient<IComputerVisionServices, ComputerVisionServices>();
+            services.AddTransient<IModelManagementClient, ModelManagementClient>();
+            services.AddTransient<IModelManagementService, ModelManagementService>();
 
             services.AddMvc(options =>
             {
