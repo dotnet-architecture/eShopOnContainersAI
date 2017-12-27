@@ -20,7 +20,17 @@ dependencies:
   # Required for Jupyter Notebooks.
   - ipykernel=4.6.1
 
+  # opencv and scikit-learn are needed for CNTK library
+  #- opencv
+  #- scikit-learn
+
   - pip:
+    # CNTK library for running on Linux GPU 
+    #- https://cntk.ai/PythonWheel/GPU/cntk-2.3.1-cp35-cp35m-linux_x86_64.whl
+
+    # CNTK with 1-bit SGD library for running on Linux GPU 
+    #- https://cntk.ai/PythonWheel/GPU-1bit-SGD/cntk-2.3.1-cp35-cp35m-linux_x86_64.whl
+
     # The API for Azure Machine Learning Model Management Service.
     # Details: https://github.com/Azure/Machine-Learning-Operationalization
     - azure-ml-api-sdk==0.1.0a11

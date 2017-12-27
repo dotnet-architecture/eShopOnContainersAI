@@ -20,6 +20,10 @@ dependencies:
   # Required for Jupyter Notebooks.
   - ipykernel=4.6.1
 
+  # opencv and scikit-learn are needed for CNTK library
+  #- opencv
+  #- scikit-learn
+
   - pip:
     # The API for Azure Machine Learning Model Management Service.
     # Details: https://github.com/Azure/Machine-Learning-Operationalization
@@ -29,6 +33,9 @@ dependencies:
     - h5py
     - pillow
     - azure-storage-blob
+
+    # CNTK library for running on Linux CPU 
+    #- https://cntk.ai/PythonWheel/CPU-Only/cntk-2.3.1-cp35-cp35m-linux_x86_64.whl
 
     # Library for collecting data from operationalized models
     - azureml-model-management-sdk==1.0.1b6
