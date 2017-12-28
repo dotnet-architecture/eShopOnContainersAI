@@ -1,8 +1,7 @@
-namespace Bot.API.Infrastructure
+namespace Bot46.API.Infrastructure.API
 {
-    public static class API
-    {
-        public static class Catalog
+  
+        public static class CatalogAPI
         {
             public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type)
             {
@@ -28,7 +27,6 @@ namespace Bot.API.Infrastructure
                 return $"{baseUri}catalogTypes";
             }
         }
-
         public static class Basket
         {
             public static string GetBasket(string baseUri, string basketId)
@@ -51,5 +49,5 @@ namespace Bot.API.Infrastructure
                 return $"{baseUri}/{basketId}";
             }
         }
-    }
+
 }
