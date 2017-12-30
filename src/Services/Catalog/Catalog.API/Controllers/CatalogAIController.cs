@@ -1,8 +1,6 @@
 ﻿using Catalog.API.ServicesAI;
 using Catalog.API.Extensions;
 using Catalog.API.Infrastructure;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Catalog.API;
@@ -12,10 +10,8 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Catalog.API.Controllers
@@ -24,20 +20,16 @@ namespace Catalog.API.Controllers
     public class CatalogAIController : ControllerBase
     {
         private readonly CatalogContext _catalogContext;
-        private readonly IAzureMachineLearningService _amlService;
-        private readonly IComputerVisionService _cvService;
         private readonly ICatalogTagsRepository _catalogTagsRepository;
+        private readonly IRecommendation _recommendationService;
         private readonly CatalogSettings _settings;
-        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public CatalogAIController(CatalogContext context, ICatalogTagsRepository catalogTagsRepository, IAzureMachineLearningService amlService, IComputerVisionService cvService, IOptionsSnapshot<CatalogSettings> settings, IHostingEnvironment hostingEnvironment)
+        public CatalogAIController(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings, ICatalogTagsRepository catalogTagsRepository, IRecommendation recommendation)
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
-            _amlService = amlService ?? throw new ArgumentNullException(nameof(amlService));
-            _cvService = cvService ?? throw new ArgumentNullException(nameof(cvService));
             _catalogTagsRepository = catalogTagsRepository;
+            _recommendationService = recommendation;
             _settings = settings.Value;
-            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -49,7 +41,7 @@ namespace Catalog.API.Controllers
             if (customerId == "null")
                 customerId = String.Empty;
 
-            var recommendations = await _amlService.Recommendations(productId, customerId);
+            var recommendations = await _recommendationService.RecommendAsync(productId, customerId);
 
             if (recommendations == null)
                 return BadRequest();
@@ -69,7 +61,7 @@ namespace Catalog.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> DumpToCSV()
+        public async Task<IActionResult> All()
         {
             var catalog = await _catalogContext.CatalogItems
                 .Select(c => new {c.Id, c.CatalogBrandId, c.CatalogTypeId, c.Description, c.Price })
@@ -91,9 +83,8 @@ namespace Catalog.API.Controllers
                     b.ygram, b.zgram, b.yzgram
                 }).ToList();
 
-            var csvFile = File(Encoding.UTF8.GetBytes(join.FormatAsCSV()), "text/csv");
-            csvFile.FileDownloadName = "catalog.csv";
-            return csvFile;
+
+            return new JsonResult(join);
         }
 
         [HttpGet]
@@ -142,24 +133,6 @@ namespace Catalog.API.Controllers
                 validatedPageIndex, validatedPageSize, totalItems, itemsOnPage);
 
             return Ok(model);
-        }
-
-
-        [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> AnalyzeImage(IFormFile imageFile)
-        {
-            if (imageFile.Length == 0)
-                return NoContent();
-
-            IEnumerable<string> tags;
-            using (var image = new MemoryStream())
-            {
-                await imageFile.CopyToAsync(image);
-                tags = await _cvService.AnalyzeImageAsync(image.ToArray());
-            }
-
-            return Ok(tags);
         }
 
         private Task<IEnumerable<int>> SortRecommendations(string productId, IEnumerable<string> recommendations)
