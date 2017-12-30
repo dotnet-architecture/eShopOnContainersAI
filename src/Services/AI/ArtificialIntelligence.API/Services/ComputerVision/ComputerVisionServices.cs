@@ -18,10 +18,16 @@ namespace ArtificialIntelligence.API.Services.ComputerVision
     {
         private readonly Dictionary<AnalyzeImageModel, IClassifier> models;
         private readonly AnalyzeImageModel defaultModel;
+        private readonly ICognitiveServicesComputerVisionClient cognitiveServicesClient;
 
-        public ComputerVisionServices(IOptionsSnapshot<ArtificialIntelligenceSettings> settings, IHostingEnvironment environment, IModelManagementClient modelManagementClient)
+        public ComputerVisionServices(IOptionsSnapshot<ArtificialIntelligenceSettings> settings, IHostingEnvironment environment, IModelManagementClient modelManagementClient, ICognitiveServicesComputerVisionClient cognitiveServicesClient)
         {
-            defaultModel = (AnalyzeImageModel)Enum.Parse(typeof(AnalyzeImageModel), settings.Value.DefaultModel);
+            object parseDefaultModel;
+            defaultModel =
+                (Enum.TryParse(typeof(AnalyzeImageModel), settings.Value.ComputerVisionDefaultModel, ignoreCase: true, result: out parseDefaultModel)) ?
+                (AnalyzeImageModel) parseDefaultModel :
+                 AnalyzeImageModel.Default;
+
             if (defaultModel == AnalyzeImageModel.Default)
                 defaultModel = AnalyzeImageModel.TensorFlowInception;
 
@@ -29,8 +35,10 @@ namespace ArtificialIntelligence.API.Services.ComputerVision
             {
                 { AnalyzeImageModel.TensorFlowInception, new TensorFlowInceptionPrediction(settings, environment) },
                 { AnalyzeImageModel.TensorFlowModel, new TensorFlowModelPrediction(settings, environment) },
-                { AnalyzeImageModel.ModelManagement, new ModelManagementService (settings, modelManagementClient) }
+                { AnalyzeImageModel.ModelManagement, new ModelManagementService (settings, modelManagementClient) },
+                { AnalyzeImageModel.CognitiveServicesComputerVision, new CognitiveServicesComputerVision(settings, cognitiveServicesClient) }
             };
+            this.cognitiveServicesClient = cognitiveServicesClient;
         }
 
         /// <summary>

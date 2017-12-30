@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ArtificialIntelligence.API.Controllers
 {
-
     public enum AnalyzeImageModel
     {
         Default,
+        CognitiveServicesComputerVision,
         TensorFlowInception,
         TensorFlowModel,
         CNTKModel,
@@ -22,19 +22,19 @@ namespace ArtificialIntelligence.API.Controllers
     } 
 
     [Produces("application/json")]
-    [Route("api/models")]
-    public class ModelsController : Controller
+    [Route("api/v1/computerVision")]
+    public class ComputerVisionController : Controller
     {
         private readonly IComputerVisionServices predictionServices;
 
-        public ModelsController(IComputerVisionServices predictionServices)
+        public ComputerVisionController(IComputerVisionServices predictionServices)
         {
             this.predictionServices = predictionServices;
         }
 
         [HttpPost]
-        [Route("analyzeImage/predict/{model}")]
-        public async Task<IActionResult> AnalyzeImage(IFormFile imageFile, AnalyzeImageModel model)
+        [Route("classifyImage/{model}")]
+        public async Task<IActionResult> ClassifyImage(IFormFile imageFile, AnalyzeImageModel model)
         {
             if (imageFile.Length == 0)
                 return NoContent();

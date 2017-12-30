@@ -5,6 +5,7 @@ using ArtificialIntelligence.API.Services.ComputerVision.Client;
 using ArtificialIntelligence.API.Services.ComputerVision.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Catalog.API.ServicesAI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +32,13 @@ namespace ArtificialIntelligence.API
             services.AddTransient<IComputerVisionServices, ComputerVisionServices>();
             services.AddTransient<IModelManagementClient, ModelManagementClient>();
             services.AddTransient<IModelManagementService, ModelManagementService>();
+            services.AddTransient<IAzureMachineLearningService, AzureMachineLearningService>();
+            services.AddTransient<ICognitiveServicesComputerVisionClient, CognitiveServicesComputerVisionClient>();
+            services.AddTransient<Services.ICatalog, Services.Catalog>();
+            services.AddTransient<Services.IOrderItems, Services.OrderItems>();
+            services.AddTransient<Services.IUsers, Services.Users>();
+            //TODO: update to ResilientHttpClient
+            services.AddSingleton<IHttpClient, StandardHttpClient>();
 
             services.AddMvc(options =>
             {
