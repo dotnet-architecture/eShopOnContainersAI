@@ -20,7 +20,7 @@ namespace Identity.API.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public async Task<IActionResult> DumpToCSV()
+        public async Task<IActionResult> All()
         {
             var users = await _applicationContext.Users
                 .Select(c => new {
@@ -31,9 +31,7 @@ namespace Identity.API.Controllers
                     c.ZipCode })
                 .ToListAsync();
 
-            var csvFile = File(Encoding.UTF8.GetBytes(users.FormatAsCSV()), "text/csv");
-            csvFile.FileDownloadName = "users.csv";
-            return csvFile;
+            return new JsonResult(users);
         }
     }
 }
