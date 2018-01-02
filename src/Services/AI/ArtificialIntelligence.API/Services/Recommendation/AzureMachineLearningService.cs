@@ -1,5 +1,4 @@
-﻿using Catalog.API.Controllers;
-using Microsoft.eShopOnContainers.Services.Catalog.API;
+﻿using ArtificialIntelligence.API;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -16,18 +15,18 @@ namespace Catalog.API.ServicesAI
 {
     public class AzureMachineLearningService : IAzureMachineLearningService
     {
-        private readonly ILogger<CatalogAIController> _logger;
-        private readonly CatalogSettings _catalogSettings;
+        private readonly ILogger<AzureMachineLearningService> _logger;
+        private readonly ArtificialIntelligenceSettings _catalogSettings;
 
-        public AzureMachineLearningService(IOptionsSnapshot<CatalogSettings> settings, ILogger<CatalogAIController> logger)
+        public AzureMachineLearningService(IOptionsSnapshot<ArtificialIntelligenceSettings> settings, ILogger<AzureMachineLearningService> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _catalogSettings = settings.Value;
         }
 
-        public Task<IEnumerable<string>> Recommendations(string productId) => Recommendations(productId, string.Empty);
+        public Task<IEnumerable<string>> RecommendationsAsync(string productId) => RecommendationsAsync(productId, string.Empty);
 
-        public async Task<IEnumerable<string>> Recommendations(string productId, string customerId)
+        public async Task<IEnumerable<string>> RecommendationsAsync(string productId, string customerId)
         {
             if (String.IsNullOrEmpty(customerId))
                 customerId = "0";

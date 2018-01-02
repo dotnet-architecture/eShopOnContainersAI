@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Ordering.API.Extensions
+namespace ArtificialIntelligence.API.Extensions
 {
     public static class StringExtensions
     {
@@ -15,7 +15,7 @@ namespace Ordering.API.Extensions
             foreach (var csvLine in value)
             {
                 var columnValues = properties
-                    .Select(p => p.GetValue(csvLine).ToString())
+                    .Select(p => p.GetValue(csvLine)?.ToString())
                     .Select(p => p.FormatAsCSV());
 
                 stringBuilder.AppendLine(String.Join(",", columnValues));
@@ -30,9 +30,18 @@ namespace Ordering.API.Extensions
 
         public static string FormatAsCSV(this string value)
         {
-            return value.IsValidCSV() ?
-                value :
-                String.Format("\"{0}\"", value.Replace("\"", "\"\""));
+            return String.IsNullOrEmpty(value) ? 
+                String.Empty :
+                (
+                    value.IsValidCSV() ?
+                    value :
+                    String.Format("\"{0}\"", value.Replace("\"", "\"\""))
+                );
+        }
+
+        public static string JoinTags(this IEnumerable<string> items)
+        {
+            return String.Join('-', items ?? new[] { String.Empty });
         }
     }
 }

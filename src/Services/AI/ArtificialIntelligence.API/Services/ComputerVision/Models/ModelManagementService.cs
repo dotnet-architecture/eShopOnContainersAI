@@ -19,8 +19,8 @@ namespace ArtificialIntelligence.API.Services.ComputerVision.Models
             //TODO: move these settings to setting file
             modelManagementPredictionSettings = new ModelManagementPredictionSettings
             {
-                ServiceKey = settings.Value.ModelManagementServiceKey,
-                ServiceUri = settings.Value.ModelManagementServiceUri,
+                ServiceKey = settings.Value.ModelManagement.ServiceKey,
+                ServiceUri = settings.Value.ModelManagement.ServiceUri,
                 Threshold = 0.9f
             };
         }

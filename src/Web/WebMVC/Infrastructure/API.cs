@@ -91,11 +91,6 @@ namespace WebMVC.Infrastructure
                 return $"{baseUri}recommendProducts?productId={productId}&customerId={customerId}";
             }
 
-            public static string AnalyzeImage(string baseUri)
-            {
-                return $"{baseUri}analyzeImage";
-            }
-
             public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type, IEnumerable<string> tags)
             {
                 var brandQs = (brand.HasValue) ? $"&catalogBrandId={brand.Value.ToString()}" : String.Empty;
@@ -103,6 +98,14 @@ namespace WebMVC.Infrastructure
                 var tagsQs = (tags != null && tags.Any()) ? $"&tags={String.Join(',', tags)}" : String.Empty; 
 
                 return $"{baseUri}items?pageIndex={page}&pageSize={take}{brandQs}{typeQs}{tagsQs}";
+            }
+        }
+
+        public static class ComputerVision
+        {
+            public static string ClassifyImage(string baseUri)
+            {                
+                return $"{baseUri}classifyImage/default";
             }
         }
 
