@@ -1,11 +1,8 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using Bot46.API.Infrastructure.Helpers;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
-using Microsoft.Bot.Connector;
 
 namespace Bot46.API.Infrastructure.Dialogs
 {
@@ -30,10 +27,10 @@ namespace Bot46.API.Infrastructure.Dialogs
         [LuisIntent("Login")]
         public Task Login(IDialogContext context, LuisResult result)
         {
-            context.Call(new LoginDialog(), ResumeAfterDialog);
+            context.Call(new LoginDialog(), ResumeAfterLoginDialog);
             return Task.CompletedTask;
         }
-        
+
         [LuisIntent("Catalog")]
         public Task Catalog(IDialogContext context, LuisResult result)
         {
@@ -48,7 +45,20 @@ namespace Bot46.API.Infrastructure.Dialogs
             return Task.CompletedTask;
         }
 
+        [LuisIntent("Order")]
+        public Task Order(IDialogContext context, LuisResult result)
+        {
+            context.Call(new MyOrdersDialog(), ResumeAfterDialog);
+            return Task.CompletedTask;
+        }
+
         private Task ResumeAfterDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            context.Wait(MessageReceived);
+            return Task.CompletedTask;
+        }
+
+        private Task ResumeAfterLoginDialog(IDialogContext context, IAwaitable<bool> result)
         {
             context.Wait(MessageReceived);
             return Task.CompletedTask;

@@ -258,8 +258,8 @@
     <Compile Include="Controllers\BotController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Infrastructure\Dialogs\Basket\BasketDialog.cs" />
-    <Compile Include="Infrastructure\Dialogs\Scorable\ActionScorable.cs" />
-    <Compile Include="Infrastructure\Dialogs\Scorable\Actions\AddBasketAction.cs" />
+    <Compile Include="Infrastructure\Dialogs\Order\MyOrdersDialog.cs" />
+    <Compile Include="Infrastructure\Dialogs\Order\OrderDialog.cs" />
     <Compile Include="Infrastructure\Dialogs\Scorable\CommandScorable.cs" />
     <Compile Include="Infrastructure\Dialogs\Scorable\Commands\CancelCommand.cs" />
     <Compile Include="Infrastructure\Dialogs\Scorable\Commands\LoginCommand.cs" />
@@ -281,8 +281,10 @@
     <Compile Include="Infrastructure\Models\Basket\Basket.cs" />
     <Compile Include="Infrastructure\Models\Basket\BasketDTO.cs" />
     <Compile Include="Infrastructure\Models\Basket\BasketItem.cs" />
+    <Compile Include="Infrastructure\Models\Order\OrderDTO.cs" />
     <Compile Include="Infrastructure\Models\Order\OrderItem.cs" />
     <Compile Include="Infrastructure\Models\Order\OrderProcessAction.cs" />
+    <Compile Include="Infrastructure\Models\UserData.cs" />
     <Compile Include="Infrastructure\Services\Basket\BasketService.cs" />
     <Compile Include="Infrastructure\Services\Basket\IBasketService.cs" />
     <Compile Include="Infrastructure\Services\Catalog\CatalogService.cs" />
@@ -299,6 +301,8 @@
     <Compile Include="Infrastructure\Modules\Dialogs.cs" />
     <Compile Include="Infrastructure\Modules\Services.cs" />
     <Compile Include="Infrastructure\Modules\Settings.cs" />
+    <Compile Include="Infrastructure\Services\Order\IOrderingService.cs" />
+    <Compile Include="Infrastructure\Services\Order\OrderingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

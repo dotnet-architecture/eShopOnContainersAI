@@ -33,6 +33,10 @@ namespace Bot46.API.Infrastructure.Modules
                    .AsSelf()
                    .InstancePerDependency();
 
+            builder.RegisterType<OrderDialog>()
+               .AsSelf()
+               .InstancePerDependency();
+
             // register scorables
 
             builder.Register(c => new CancelCommand(c.Resolve<IBotToUser>(), c.Resolve<IDialogTask>()))
@@ -49,6 +53,7 @@ namespace Bot46.API.Infrastructure.Modules
                     .Keyed<LoginCommand>(typeof(LoginCommand).Name)
                     .AsImplementedInterfaces()
                     .InstancePerMatchingLifetimeScope(DialogModule.LifetimeScopeTag);
+
 
         }
     }

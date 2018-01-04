@@ -44,6 +44,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task ShowCatalog(IDialogContext context)
         {
+            var logged = await context.IsAuthenticated();
             var reply = context.MakeMessage();
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
@@ -52,9 +53,9 @@ namespace Bot46.API.Infrastructure.Dialogs
 
             reply.Text = $"Page {_currentPage + 1} of {pageCount} ( {catalog.Count} items )";
 
-            List<CardAction> cardActions = CardActions(pageCount);
+            List<CardAction> cardActions = CardActions(pageCount, logged);
 
-            reply.Attachments = CatalogCarousel(catalog, await context.IsAuthenticated());
+            reply.Attachments = CatalogCarousel(catalog, logged);
             reply.SuggestedActions = new SuggestedActions()
             {
                 Actions = cardActions
@@ -63,29 +64,32 @@ namespace Bot46.API.Infrastructure.Dialogs
             await context.PostAsync(reply);
         }
 
-        private List<CardAction> CardActions(int pageCount)
+        private List<CardAction> CardActions(int pageCount, bool logged)
         {
             var cardActions = new List<CardAction>();
-            if (_currentPage >= 1)
-            {
-                cardActions.Add(new CardAction()
-                {
-                    Title = "◀ Previous",
-                    Type = ActionTypes.PostBack,
-                    Value = $@"{{ 'ActionType': '{BotActionTypes.PreviousPage}'}}"
-                });
-            }
+
             cardActions.Add(new CardAction()
             {
                 Title = "🏠",
                 Type = ActionTypes.PostBack,
                 Value = $@"{{ 'ActionType': '{BotActionTypes.Back}'}}"
             });
+
+            if (!logged)
+            {
+                cardActions.Add(new CardAction()
+                {
+                    Title = "👤",
+                    Type = ActionTypes.PostBack,
+                    Value = $@"{{ 'ActionType': '{BotActionTypes.Login}'}}"
+                });
+            }
+
             if (_currentPage < pageCount)
             {
                 cardActions.Add(new CardAction()
                 {
-                    Title = "Next ▶",
+                    Title = "Show more",
                     Type = ActionTypes.PostBack,
                     Value = $@"{{ 'ActionType': '{BotActionTypes.NextPage}'}}"
                 });
@@ -107,7 +111,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                     {
                         Value = $@"{{ 'ActionType': '{BotActionTypes.AddBasket}', 'ProductId': '{item.Id}' , 'ProductName': '{item.Name}', 'PictureUrl': '{item.PictureUri}', 'UnitPrice': '{item.Price}'}}",
                         Type = "postBack",
-                        Title = "Buy"
+                        Title = "Add to cart"
                     };
                     cardButtons.Add(plButton);
                 }
@@ -122,6 +126,28 @@ namespace Bot46.API.Infrastructure.Dialogs
 
                 attachments.Add(plCard.ToAttachment());
             }
+
+            List<CardImage> moreImages = new List<CardImage>();
+            // Todo add more image
+            //moreImage.Add(new CardImage(url: item.PictureUri));
+
+            List<CardAction> moreButtons = new List<CardAction>();
+            CardAction moreButton = new CardAction()
+            {
+                Value = $@"{{ 'ActionType': '{BotActionTypes.NextPage}'}}",
+                Type = "postBack",
+                Title = "More"
+            };
+            moreButtons.Add(moreButton);
+            ThumbnailCard moreCard = new ThumbnailCard()
+            {
+                Title = "More",
+                Text = $"Show more items",
+                Images = moreImages,
+                Buttons = moreButtons
+            };
+
+
             return attachments;
         }
 
@@ -150,12 +176,15 @@ namespace Bot46.API.Infrastructure.Dialogs
                             case BotActionTypes.AddBasket:
                                 await AddToBasket(context, json);
                                 break;
+                            case BotActionTypes.Login:
+                                context.Call(new LoginDialog(), LoginReceivedAsync);
+                                break;
                             case BotActionTypes.Back:
-                                    context.Done<object>(null);
-                                    break;
+                                        context.Done<object>(null);
+                                        break;
                         }
                     }
-                    catch (JsonReaderException e)
+                    catch (JsonReaderException)
                     {
                         // is not a Json
                         await context.PostAsync("Please make a selection");
@@ -172,9 +201,15 @@ namespace Bot46.API.Infrastructure.Dialogs
            
         }
 
+        private async Task LoginReceivedAsync(IDialogContext context, IAwaitable<bool> result)
+        {
+            await ShowCatalog(context);
+            context.Wait(MessageReceivedAsync);
+        }
+
         private async Task AddToBasket(IDialogContext context, JObject json)
         {
-            BotData userData = await context.UserData();
+            BotData userData = await context.GetUserData();
             AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
             // TODO Check Expired
             if (authUser != null)

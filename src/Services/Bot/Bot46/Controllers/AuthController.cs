@@ -134,7 +134,8 @@ namespace Bot46.API.Controllers
 
                 BotState botState = new BotState(stateClient);
 
-                var userState = botState.GetUserData(Session["channelId"].ToString(), userId: Session["userBotId"].ToString());
+                var userState = botState.GetUserData(Session["channelId"].ToString(), 
+                                                     Session["userBotId"].ToString());
 
                 AuthUser authUser = new AuthUser() {
                     AccessToken = token.AccessToken,
@@ -143,7 +144,11 @@ namespace Bot46.API.Controllers
                     UserId = userAppId
                 };
 
+                UserData userData = new UserData(user.Claims);
+
+
                 userState.SetProperty("authUser", authUser);
+                userState.SetProperty("userData", userData);
 
                 await stateClient.BotState.SetUserDataAsync(
                                     Session["channelId"].ToString(),
@@ -153,6 +158,20 @@ namespace Bot46.API.Controllers
                 // resolve BotToUser
                 IBotToUser boToUser = scope.Resolve<IBotToUser>();
                 var reply = activity.CreateReply($"{userName} you are now logeed, you can continue.");
+                var cardActions = new List<CardAction>();
+
+                cardActions.Add(new CardAction()
+                {
+                    Title = "Continue",
+                    Type = ActionTypes.ImBack,
+                    Value = "Continue"
+                });
+
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = cardActions
+                };
+
                 await boToUser.PostAsync(reply);
               
             }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Bot46.API.Infrastructure.Models
 {
+    [Serializable]
     public class Order
     {
         public string OrderNumber { get; set; }

@@ -12,9 +12,7 @@ namespace Bot46.API.Infrastructure.Extensions
         public static async Task<bool> IsAuthenticatedAsync(this IActivity activity, string userId)
         {
             bool userAuthenticated = false;
-            var state = activity.GetStateClient();
-            BotData userData = await state.BotState.GetUserDataAsync(activity.ChannelId, userId);
-            AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
+            AuthUser authUser = await activity.GetAuthUser(userId);
             if (authUser != null)
             {
                 if (!authUser.IsExpired)
@@ -26,7 +24,7 @@ namespace Bot46.API.Infrastructure.Extensions
             return userAuthenticated;
         }
 
-        public static async Task<BotData> UserData(this IActivity activity, string userId)
+        public static async Task<BotData> GetUserData(this IActivity activity, string userId)
         {
             var state = activity.GetStateClient();
             return await state.BotState.GetUserDataAsync(activity.ChannelId, userId);
@@ -60,11 +58,15 @@ namespace Bot46.API.Infrastructure.Extensions
             return plAttachment;
         }
 
+        public static async Task<AuthUser> GetAuthUser(this IActivity activity, string userId) {
+            var botData = await activity.GetUserData(userId);
+            AuthUser authUser = botData.GetProperty<AuthUser>("authUser");
+            return authUser;
+        }
+
         public static async Task<Attachment> UserCard(this IActivity activity, string userId)
         {
-            var state = activity.GetStateClient();
-            BotData userData = await state.BotState.GetUserDataAsync(activity.ChannelId, userId);
-            AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
+            AuthUser authUser = await activity.GetAuthUser(userId);
 
             HeroCard userCard = new HeroCard()
             {

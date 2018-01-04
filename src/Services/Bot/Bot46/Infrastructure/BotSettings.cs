@@ -8,6 +8,7 @@ namespace Bot46.API.Infrastructure
         public string BasketUrl {get;set;}
         public string CatalogUrl { get; set; }
         public string IdentityUrl { get; set; }
+        public string OrderingUrl { get; set; }
 
         public string ApiClient { get; set; }
         public string ApiClientSecret { get; set; }
@@ -29,6 +30,7 @@ namespace Bot46.API.Infrastructure
             BasketUrl = ConfigurationManager.AppSettings["BasketUrl"];
             CatalogUrl = ConfigurationManager.AppSettings["CatalogUrl"];
             IdentityUrl = ConfigurationManager.AppSettings["IdentityUrl"];
+            OrderingUrl = ConfigurationManager.AppSettings["OrderingUrl"];
 
             TokenEndPoint = ConfigurationManager.AppSettings["TokenEndPoint"];
             UserInfoEndpoint = ConfigurationManager.AppSettings["UserInfoEndpoint"];
