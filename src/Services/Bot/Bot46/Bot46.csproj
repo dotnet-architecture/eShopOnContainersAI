@@ -285,6 +285,10 @@
     <Compile Include="Infrastructure\Models\Order\OrderItem.cs" />
     <Compile Include="Infrastructure\Models\Order\OrderProcessAction.cs" />
     <Compile Include="Infrastructure\Models\UserData.cs" />
+    <Compile Include="Infrastructure\Services\AI\CatalogAIService .cs" />
+    <Compile Include="Infrastructure\Services\AI\ComputerVisionService.cs" />
+    <Compile Include="Infrastructure\Services\AI\ICatalogAIService.cs" />
+    <Compile Include="Infrastructure\Services\AI\IComputerVisionService.cs" />
     <Compile Include="Infrastructure\Services\Basket\BasketService.cs" />
     <Compile Include="Infrastructure\Services\Basket\IBasketService.cs" />
     <Compile Include="Infrastructure\Services\Catalog\CatalogService.cs" />

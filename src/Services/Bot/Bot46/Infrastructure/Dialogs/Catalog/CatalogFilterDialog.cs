@@ -15,7 +15,8 @@ namespace Bot46.API.Infrastructure.Dialogs
     public class CatalogFilterDialog : IDialog<CatalogFilter>
     {
         protected int count = 1;
-        private static readonly ICatalogService service = ServiceResolver.Get<ICatalogService>();
+        private static readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
+        private static readonly IComputerVisionService serviceComputerVision = ServiceResolver.Get<IComputerVisionService>();
 
         public CatalogFilterDialog() {
         }
@@ -30,9 +31,12 @@ namespace Bot46.API.Infrastructure.Dialogs
         private async Task ShowFilter(IDialogContext context)
         {
             var reply = context.MakeMessage();
-            var attachement = await AdaptiveCatalogFilter();
-            reply.Attachments = new List<Attachment>() { attachement };
+            reply.Text = "Choose your selecttion or upload a image to search by image.";
             await context.PostAsync(reply);
+            var replyFilter = context.MakeMessage();
+            var attachement = await AdaptiveCatalogFilter();
+            replyFilter.Attachments = new List<Attachment>() { attachement };
+            await context.PostAsync(replyFilter);
         }
 
         public async Task<Attachment> AdaptiveCatalogFilter()
@@ -52,7 +56,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Weight = AdaptiveTextWeight.Bolder
             });
          
-            var brands = await service.GetBrands();
+            var brands = await serviceCatalog.GetBrands();
             var brandChoices = new List<AdaptiveChoice>();
             foreach ( var brand in brands){
                 brandChoices.Add( new AdaptiveChoice() { Title = brand.Text, Value = brand.Id });
@@ -72,7 +76,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Text = "Type",
                 Weight = AdaptiveTextWeight.Bolder
             });         
-            var types = await service.GetTypes();
+            var types = await serviceCatalog.GetTypes();
             var typeChoices = new List<AdaptiveChoice>();
             foreach (var type in types){
                 typeChoices.Add( new AdaptiveChoice() { Title = type.Text, Value = type.Id });
@@ -103,7 +107,6 @@ namespace Bot46.API.Infrastructure.Dialogs
         public virtual async Task AdaptiveMessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
             var message = await result;
-
             if (message.Value != null)
             {
                 // Got an Action Submit
@@ -112,26 +115,36 @@ namespace Bot46.API.Infrastructure.Dialogs
                 {
                     case BotActionTypes.CatalogFilter:
                         CatalogFilter filter = CatalogFilter.Map(value);
-                        context.Done<CatalogFilter>(filter);
+                        context.Done(filter);
                         break;
                 }
                 return;
             }
-            await context.PostAsync("Please make a selection");
+            else
+            {
+                var content = await HandleAttachments(context, message);
+                if(content != null)
+                {
+                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    CatalogFilter filter = new CatalogFilter() { Tags = tags };
+                    context.Done(filter);
+                    return;
+                }
+            }
+            await context.PostAsync("Please choose your selection or upload a image.");
             await ShowFilter(context);
             context.Wait(AdaptiveMessageReceivedAsync);
         }
 
-
-
-
-        public async Task HandleAttachments(IDialogContext context, IMessageActivity message){
+        public async Task<byte[]> HandleAttachments(IDialogContext context, IMessageActivity message){
+            byte[] content = null;
             if (message.Attachments != null && message.Attachments.Count > 0)
             {
                 var attachment = message.Attachments[0];
                 var client = new ConnectorClient(new Uri(context.Activity.ServiceUrl), new MicrosoftAppCredentials());
-                var content = await client.HttpClient.GetByteArrayAsync(attachment.ContentUrl);
+                content = await client.HttpClient.GetByteArrayAsync(attachment.ContentUrl);
             }
+            return content;
         }
     }
 }

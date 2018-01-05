@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Bot46.API.Infrastructure.API
 {
   
-        public static class CatalogAPI
+    public static class CatalogAPI
         {
             public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type)
             {
@@ -79,4 +83,28 @@ namespace Bot46.API.Infrastructure.API
             }
         }
 
+    public static class CatalogAI
+    {
+        public static string GetRecommendations(string baseUri, string productId, string customerId)
+        {
+            return $"{baseUri}recommendProducts?productId={productId}&customerId={customerId}";
+        }
+
+        public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type, IEnumerable<string> tags)
+        {
+            var brandQs = (brand.HasValue) ? $"&catalogBrandId={brand.Value.ToString()}" : String.Empty;
+            var typeQs = (type.HasValue) ? $"&catalogTypeId={type.Value.ToString()}" : String.Empty;
+            var tagsQs = (tags != null && tags.Any()) ? $"&tags={String.Join(",", tags)}" : String.Empty;
+
+            return $"{baseUri}items?pageIndex={page}&pageSize={take}{brandQs}{typeQs}{tagsQs}";
+        }
+    }
+
+    public static class ComputerVision
+    {
+        public static string ClassifyImage(string baseUri)
+        {
+            return $"{baseUri}classifyImage/default";
+        }
+    }
 }
