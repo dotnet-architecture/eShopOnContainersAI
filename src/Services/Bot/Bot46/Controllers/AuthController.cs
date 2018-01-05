@@ -42,6 +42,7 @@ namespace Bot46.API.Controllers
 
             // basic scenarios perform well using in-memory session
             // advanced scenarios, please check session store
+            Session.Add("BotId", authDataDecoded.BotId);
             Session.Add("userBotId", authDataDecoded.UserId);
             Session.Add("channelId", authDataDecoded.ChannelId);
             Session.Add("conversationId", authDataDecoded.ConversationId);
@@ -95,7 +96,7 @@ namespace Bot46.API.Controllers
             var address = new Address
                 (
                     // purposefully using named arguments because these all have the same type
-                    botId: _botSettings.BotId,
+                    botId: Session["BotId"].ToString(),//_botSettings.BotId,
                     channelId: Session["channelId"].ToString(),
                     userId: Session["userBotId"].ToString(),
                     conversationId: Session["conversationId"].ToString(),
@@ -118,24 +119,9 @@ namespace Bot46.API.Controllers
 
             using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, activity))
             {
-
-
-                var botCred = new MicrosoftAppCredentials(_botSettings.MicrosoftAppId, _botSettings.MicrosoftAppPassword);
-                StateClient stateClient;
-                if (Session["channelId"].ToString().Equals("emulator"))
-                {
-                    // for emulator we should use serviceUri of the emulator for storage
-                    var serviceUri = new Uri(Session["serviceUrl"].ToString());
-                    stateClient = new StateClient(serviceUri, botCred);
-                }
-                else {
-                    stateClient = new StateClient(botCred);
-                }
-
-                BotState botState = new BotState(stateClient);
-
-                var userState = botState.GetUserData(Session["channelId"].ToString(), 
-                                                     Session["userBotId"].ToString());
+                var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                var key = Address.FromActivity(activity);
+                var userState = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
 
                 AuthUser authUser = new AuthUser() {
                     AccessToken = token.AccessToken,
@@ -146,14 +132,11 @@ namespace Bot46.API.Controllers
 
                 UserData userData = new UserData(user.Claims);
 
-
                 userState.SetProperty("authUser", authUser);
                 userState.SetProperty("userData", userData);
 
-                await stateClient.BotState.SetUserDataAsync(
-                                    Session["channelId"].ToString(),
-                                    Session["userBotId"].ToString(),
-                                    userState);
+                await botDataStore.SaveAsync(key, BotStoreType.BotUserData, userState, CancellationToken.None);
+                await botDataStore.FlushAsync(key, CancellationToken.None);
 
                 // resolve BotToUser
                 IBotToUser boToUser = scope.Resolve<IBotToUser>();

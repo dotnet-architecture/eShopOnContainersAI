@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Bot46.API.Infrastructure.Models;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 
 namespace Bot46.API.Infrastructure.Extensions
@@ -24,14 +27,21 @@ namespace Bot46.API.Infrastructure.Extensions
 
         public static async Task<BotData> GetUserDataAsync(this IDialogContext context)
         {
-            var state = context.Activity.GetStateClient();
-            return await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
+            BotData userState = null;
+            using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, context.Activity.AsMessageActivity()))
+            {
+                var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                var key = Address.FromActivity(context.Activity);
+                userState = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
+
+            }
+            return userState;
         }
 
         public static async Task<AuthUser> GetAuthUserAsync(this IDialogContext context) {
-            var state = context.Activity.GetStateClient();
-            BotData userData = await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
-            AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
+            AuthUser authUser = null;
+            var userState = await context.GetUserDataAsync();
+            authUser = userState.GetProperty<AuthUser>("authUser");
             return authUser;
         }
 
@@ -40,6 +50,7 @@ namespace Bot46.API.Infrastructure.Extensions
             List<CardAction> cardButtons = new List<CardAction>();
 
             AuthData authData = new AuthData() { 
+                BotId = context.Activity.Recipient.Id,
                 ChannelId = context.Activity.ChannelId,
                 UserId    = context.Activity.From.Id,
                 ConversationId = context.Activity.Conversation.Id,

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using Autofac;
 using Bot46.API.Infrastructure.Models;
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 
 namespace Bot46.API.Infrastructure.Extensions
@@ -26,8 +29,15 @@ namespace Bot46.API.Infrastructure.Extensions
 
         public static async Task<BotData> GetUserDataAsync(this IActivity activity, string userId)
         {
-            var state = activity.GetStateClient();
-            return await state.BotState.GetUserDataAsync(activity.ChannelId, userId);
+            BotData userState = null;
+            using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, activity.AsMessageActivity()))
+            {
+                var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                var key = Address.FromActivity(activity);
+                userState = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
+
+            }
+            return userState;
         }
 
         public static Attachment LoginCard(this IActivity activity, string userId){

@@ -29,7 +29,6 @@ namespace Bot46.API.Infrastructure.Dialogs
             if (authUser != null && !authUser.IsExpired)
             {
                 await ShowOrders(context, authUser);
-                context.Wait(MessageReceivedAsync);
             }
             else
             {
@@ -42,13 +41,20 @@ namespace Bot46.API.Infrastructure.Dialogs
             var reply = context.MakeMessage();
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
             var orders = await service.GetMyOrders(authUser.UserId, authUser.AccessToken);
-            reply.Attachments = ReceiptOrders(reply, orders);
-
-            reply.SuggestedActions = new SuggestedActions()
+            if (orders.Count > 0)
             {
-                Actions = CardBackAction()
-            };
-            await context.PostAsync(reply);
+                reply.Attachments = ReceiptOrders(reply, orders);
+                reply.SuggestedActions = new SuggestedActions()
+                {
+                    Actions = CardBackAction()
+                };
+                await context.PostAsync(reply);
+                context.Wait(MessageReceivedAsync);
+            }
+            else {
+                reply.Text = "You dont have any order.";
+                context.Done<object>(null);
+            }
         }
 
         private static List<CardAction> CardBackAction()
