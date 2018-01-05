@@ -21,7 +21,7 @@ namespace ArtificialIntelligence.API.Services.ComputerVision.Models
             {
                 InputTensorName = "input_1",
                 OutputTensorName = "dense_2/Softmax",
-                ModelFilename = "model.pb",
+                ModelFilename = "model_tf.pb",
                 LabelsFilename = "labels.txt",
                 Threshold = 0.9f
             };
