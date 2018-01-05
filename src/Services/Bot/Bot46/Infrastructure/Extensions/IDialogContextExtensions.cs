@@ -10,7 +10,7 @@ namespace Bot46.API.Infrastructure.Extensions
     public static class IDialogContextExtensions {
         public static async Task< bool> IsAuthenticated(this IDialogContext context){
             bool userAuthenticated = false;
-            AuthUser authUser = await context.GetAuthUser();
+            AuthUser authUser = await context.GetAuthUserAsync();
             if (authUser != null)
             {
                 if (!authUser.IsExpired)
@@ -22,13 +22,13 @@ namespace Bot46.API.Infrastructure.Extensions
             return userAuthenticated;
         }
 
-        public static async Task<BotData> GetUserData(this IDialogContext context)
+        public static async Task<BotData> GetUserDataAsync(this IDialogContext context)
         {
             var state = context.Activity.GetStateClient();
             return await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
         }
 
-        public static async Task<AuthUser> GetAuthUser(this IDialogContext context) {
+        public static async Task<AuthUser> GetAuthUserAsync(this IDialogContext context) {
             var state = context.Activity.GetStateClient();
             BotData userData = await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
             AuthUser authUser = userData.GetProperty<AuthUser>("authUser");

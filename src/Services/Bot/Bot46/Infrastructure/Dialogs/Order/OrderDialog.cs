@@ -40,7 +40,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task GetOrder(IDialogContext context)
         {
-            var botUserData = await  context.GetUserData();
+            var botUserData = await  context.GetUserDataAsync();
             AuthUser authUser = botUserData.GetProperty<AuthUser>("authUser");
             UserData userData = botUserData.GetProperty<UserData>("userData");
 
@@ -131,7 +131,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task OrderNow(IDialogContext context)
         {
-            AuthUser authUser = await context.GetAuthUser();
+            AuthUser authUser = await context.GetAuthUserAsync();
             var basket = serviceOrder.MapOrderToBasket(order);
             await serviceBasket.Checkout(basket, authUser.AccessToken);
         }

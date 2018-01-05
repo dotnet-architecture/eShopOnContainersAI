@@ -12,7 +12,7 @@ namespace Bot46.API.Infrastructure.Extensions
         public static async Task<bool> IsAuthenticatedAsync(this IActivity activity, string userId)
         {
             bool userAuthenticated = false;
-            AuthUser authUser = await activity.GetAuthUser(userId);
+            AuthUser authUser = await activity.GetAuthUserAsync(userId);
             if (authUser != null)
             {
                 if (!authUser.IsExpired)
@@ -24,7 +24,7 @@ namespace Bot46.API.Infrastructure.Extensions
             return userAuthenticated;
         }
 
-        public static async Task<BotData> GetUserData(this IActivity activity, string userId)
+        public static async Task<BotData> GetUserDataAsync(this IActivity activity, string userId)
         {
             var state = activity.GetStateClient();
             return await state.BotState.GetUserDataAsync(activity.ChannelId, userId);
@@ -58,15 +58,15 @@ namespace Bot46.API.Infrastructure.Extensions
             return plAttachment;
         }
 
-        public static async Task<AuthUser> GetAuthUser(this IActivity activity, string userId) {
-            var botData = await activity.GetUserData(userId);
+        public static async Task<AuthUser> GetAuthUserAsync(this IActivity activity, string userId) {
+            var botData = await activity.GetUserDataAsync(userId);
             AuthUser authUser = botData.GetProperty<AuthUser>("authUser");
             return authUser;
         }
 
         public static async Task<Attachment> UserCard(this IActivity activity, string userId)
         {
-            AuthUser authUser = await activity.GetAuthUser(userId);
+            AuthUser authUser = await activity.GetAuthUserAsync(userId);
 
             HeroCard userCard = new HeroCard()
             {

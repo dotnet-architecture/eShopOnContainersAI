@@ -27,7 +27,7 @@ namespace Bot46.API.Infrastructure.Dialogs
         private async Task ShowBasket(IDialogContext context)
         {         
             Basket basket = null;
-            AuthUser authUser = await context.GetAuthUser();
+            AuthUser authUser = await context.GetAuthUserAsync();
             // Todo check Expired
             if (authUser != null)
             {

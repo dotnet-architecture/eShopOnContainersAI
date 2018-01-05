@@ -24,7 +24,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task ShowOrders(IDialogContext context)
         {
-            AuthUser authUser = await context.GetAuthUser();
+            AuthUser authUser = await context.GetAuthUserAsync();
 
             if (authUser != null && !authUser.IsExpired)
             {
@@ -141,7 +141,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task ShowOrderDetail(IDialogContext context, string orderNumber)
         {
-            AuthUser authUser = await context.GetAuthUser();
+            AuthUser authUser = await context.GetAuthUserAsync();
             var order = await service.GetOrder(orderNumber, authUser.AccessToken);
             OrderReceipt(context, order);
         }

@@ -209,7 +209,7 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private async Task AddToBasket(IDialogContext context, JObject json)
         {
-            BotData userData = await context.GetUserData();
+            BotData userData = await context.GetUserDataAsync();
             AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
             // TODO Check Expired
             if (authUser != null)
