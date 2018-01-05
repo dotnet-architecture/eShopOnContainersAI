@@ -5,6 +5,7 @@ using System.Web;
 
 namespace Bot46.API.Infrastructure.Models
 {
+    [Serializable]
     public class OrderItem
     {
         public int ProductId { get; set; }

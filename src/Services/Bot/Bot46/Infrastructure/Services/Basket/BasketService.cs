@@ -23,7 +23,7 @@ namespace Bot46.API.Infrastructure.Services
 
         public async Task<Basket> GetBasket(string userId, string userToken)
         {
-            var getBasketUri = Infrastructure.API.Basket.GetBasket(_remoteServiceBaseUrl, userId);
+            var getBasketUri = API.Basket.GetBasket(_remoteServiceBaseUrl, userId);
 
             var dataString = await _apiClient.GetStringAsync(getBasketUri, userToken);
 
@@ -39,7 +39,7 @@ namespace Bot46.API.Infrastructure.Services
 
         public async Task<Basket> UpdateBasket(Basket basket, string userToken)
         {
-            var updateBasketUri = Infrastructure.API.Basket.UpdateBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = API.Basket.UpdateBasket(_remoteServiceBaseUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, userToken);
 
@@ -50,7 +50,7 @@ namespace Bot46.API.Infrastructure.Services
 
         public async Task Checkout(BasketDTO basket, string userToken)
         {
-            var updateBasketUri = Infrastructure.API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = API.Basket.CheckoutBasket(_remoteServiceBaseUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, userToken);
 

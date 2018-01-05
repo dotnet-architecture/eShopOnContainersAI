@@ -86,8 +86,17 @@ namespace Bot46.API.Controllers
                         if (newMember.Id != activity.Recipient.Id)
                         {
                             var reply = activity.CreateReply();
-                            reply.Text = $"Welcome {newMember.Name}!";
+                            // TODO change to HeroCard
+                            reply.Text = $"Welcome {newMember.Name}!. I am Eshop-Bot.";
                             await client.Conversations.ReplyToActivityAsync(reply);
+
+                            var replyActions = activity.CreateReply();
+                            replyActions.Text = $"I can show you Eshop Catalog, add items to your cart, place a new order and explorer your orders.";
+                            await client.Conversations.ReplyToActivityAsync(replyActions);
+
+                            var replyInitialHelp = activity.CreateReply();
+                            replyInitialHelp.Text = $"Just type what ever you want to do, for example: Catalog";
+                            await client.Conversations.ReplyToActivityAsync(replyInitialHelp);
                         }                        
                     }
                 }

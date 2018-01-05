@@ -10,8 +10,7 @@ namespace Bot46.API.Infrastructure.Extensions
     public static class IDialogContextExtensions {
         public static async Task< bool> IsAuthenticated(this IDialogContext context){
             bool userAuthenticated = false;
-            BotData userData = await context.UserData();
-            AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
+            AuthUser authUser = await context.GetAuthUserAsync();
             if (authUser != null)
             {
                 if (!authUser.IsExpired)
@@ -23,10 +22,17 @@ namespace Bot46.API.Infrastructure.Extensions
             return userAuthenticated;
         }
 
-        public static async Task<BotData> UserData(this IDialogContext context)
+        public static async Task<BotData> GetUserDataAsync(this IDialogContext context)
         {
             var state = context.Activity.GetStateClient();
             return await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
+        }
+
+        public static async Task<AuthUser> GetAuthUserAsync(this IDialogContext context) {
+            var state = context.Activity.GetStateClient();
+            BotData userData = await state.BotState.GetUserDataAsync(context.Activity.ChannelId, context.Activity.From.Id);
+            AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
+            return authUser;
         }
 
         public static Attachment LoginCard(this IDialogContext context)
@@ -58,7 +64,7 @@ namespace Bot46.API.Infrastructure.Extensions
             return plAttachment;
         }
 
-        public static async Task<Attachment> UserCard(this IDialogContext context)
+        public static Attachment UserCard(this IDialogContext context)
         {
             AuthUser authUser = context.UserData.GetValueOrDefault<AuthUser>("authUser");
 

@@ -8,28 +8,20 @@ using System.Threading.Tasks;
 namespace Bot46.API.Infrastructure.Dialogs
 {
     [Serializable]
-    public class LoginDialog : IDialog<object>
+    public class LoginDialog : IDialog<bool>
     {
-        private bool _isUserDataShown;
 
         public async Task StartAsync(IDialogContext context)
         {
             if (await context.IsAuthenticated())
             {
-                context.Done<object>(true);
+                context.Done(true);
             }
             else
             {
                 await SendAuthCard(context);
             }
             context.Wait(MessageReceivedAsync);
-        }
-
-        private async Task SendUserData(IDialogContext context){
-            var message = context.MakeMessage();
-            message.Attachments = new List<Attachment>();
-            message.Attachments.Add(await context.UserCard());
-            await context.PostAsync(message);
         }
 
         private async Task SendAuthCard(IDialogContext context)
@@ -46,12 +38,12 @@ namespace Bot46.API.Infrastructure.Dialogs
             await HandelAttachements(context, message);
             if(await context.IsAuthenticated())
             {
-                context.Done<object>(true);
+                context.Done(true);
             }
             else{
                 await SendAuthCard(context);
+                context.Wait(MessageReceivedAsync);
             }
-            context.Wait(MessageReceivedAsync);
         }
 
         private static async Task HandelAttachements(IDialogContext context, IMessageActivity message)

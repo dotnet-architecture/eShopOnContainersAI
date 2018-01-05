@@ -20,9 +20,10 @@ namespace Bot46.API.Infrastructure.Dialogs
             }
         }
 
-        protected override async Task PostAsync(IActivity item, bool state, CancellationToken token)
+        protected override  Task PostAsync(IActivity item, bool state, CancellationToken token)
         {
             this.task.Reset();
+            return Task.CompletedTask;
         }
 
         private async Task<IMessageActivity> GetLoginAsync(IMessageActivity message)

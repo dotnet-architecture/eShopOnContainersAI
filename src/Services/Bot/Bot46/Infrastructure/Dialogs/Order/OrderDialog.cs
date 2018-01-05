@@ -14,46 +14,45 @@ using System.Threading.Tasks;
 namespace Bot46.API.Infrastructure.Dialogs
 {
     [Serializable]
-    public class BasketDialog : IDialog<object>
+    public class OrderDialog : IDialog<object>
     {
+        private readonly IBasketService serviceBasket = ServiceResolver.Get<IBasketService>();
+        private readonly IOrderingService serviceOrder = ServiceResolver.Get<IOrderingService>();
 
-        private readonly IBasketService service = ServiceResolver.Get<IBasketService>();
+        private Order order;
 
         public async Task StartAsync(IDialogContext context)
         {
-            await ShowBasket(context);
+            await ShowOrderCheckout(context);
+
+            context.Wait(MessageReceivedAsync);
         }
 
-        private async Task ShowBasket(IDialogContext context)
-        {         
-            Basket basket = null;
-            AuthUser authUser = await context.GetAuthUserAsync();
-            // Todo check Expired
-            if (authUser != null)
-            {
-                basket = await service.GetBasket(authUser.UserId, authUser.AccessToken);
-                var reply = context.MakeMessage();
-                reply.Attachments = new List<Attachment>();
-                reply.Attachments.Add(RecipeCard(context, basket));
-                await context.PostAsync(reply);
-                context.Wait(MessageReceivedAsync);
-            }
-            else
-            {
-                context.Call(new LoginDialog(), ExecutedLoginAsync);
-            }
-
-        }
-
-        private async Task ExecutedLoginAsync(IDialogContext context, IAwaitable<bool> result)
+        private async Task ShowOrderCheckout(IDialogContext context)
         {
-            var o = await result;
-            await ShowBasket(context);
+            await GetOrder(context);
+
+            var reply = context.MakeMessage();
+            reply.Attachments = new List<Attachment>();
+            reply.Attachments.Add(ShowOrder());
+            await context.PostAsync(reply);
         }
 
-        private Attachment RecipeCard(IDialogContext context, Basket basket)
+        private async Task GetOrder(IDialogContext context)
         {
+            var botUserData = await  context.GetUserDataAsync();
+            AuthUser authUser = botUserData.GetProperty<AuthUser>("authUser");
+            UserData userData = botUserData.GetProperty<UserData>("userData");
 
+            var basket = await serviceBasket.GetBasket(authUser.UserId, authUser.AccessToken);
+            var orderFromBasket = serviceBasket.MapBasketToOrder(basket);
+            order = serviceOrder.MapUserInfoIntoOrder(userData, orderFromBasket);
+            order.CardExpirationShortFormat();
+            order.RequestId = Guid.NewGuid();
+        }
+
+        private Attachment ShowOrder()
+        {
             List<CardImage> cardImages = new List<CardImage>();
             // TODO EShop Logo
             // cardImages.Add(new CardImage(url: "https://<imageUrl1>"));
@@ -63,22 +62,13 @@ namespace Bot46.API.Infrastructure.Dialogs
             CardAction plButton = new CardAction()
             {
                 Type = ActionTypes.PostBack,
-                Value = $@"{{ 'ActionType': '{BotActionTypes.BasketCheckout}'}}",
-                Title = "Checkout"
+                Value = $@"{{ 'ActionType': '{BotActionTypes.OrderNow}'}}",
+                Title = "Order Now"
             };
             cardButtons.Add(plButton);
 
-            CardAction plButton2 = new CardAction()
-            {
-                Type = ActionTypes.PostBack,
-                Value = $@"{{ 'ActionType': '{BotActionTypes.ContinueShopping}'}}",
-                Title = "Continue shoping"
-            };
-            cardButtons.Add(plButton2);
-
-
             List<ReceiptItem> receiptList = new List<ReceiptItem>();
-            foreach (var item in basket.Items)
+            foreach (var item in order.OrderItems)
             {
                 ReceiptItem lineItem = new ReceiptItem()
                 {
@@ -87,17 +77,17 @@ namespace Bot46.API.Infrastructure.Dialogs
                     Text = null,
                     Image = new CardImage(url: $"{item.PictureUrl}"),
                     Price = $"{item.UnitPrice}$",
-                    Quantity = $"{item.Quantity}",
+                    Quantity = $"{item.Units}",
                     Tap = null
                 };
                 receiptList.Add(lineItem);
             }
 
-            decimal total = basket.Items.Sum(i => i.UnitPrice * i.Quantity);
+            decimal total = order.OrderItems.Sum(i => i.UnitPrice * i.Units);
 
             ReceiptCard plCard = new ReceiptCard()
             {
-                Title = "EShop receipt",
+                Title = "EShop Order",
                 Buttons = cardButtons,
                 Items = receiptList,
                 Total = $"{total} $"
@@ -117,12 +107,10 @@ namespace Bot46.API.Infrastructure.Dialogs
                     var action = json.GetValue("ActionType");
                     switch (action.ToString())
                     {
-                        case BotActionTypes.ContinueShopping:
-                            await context.PostAsync("You can continue shopping.");
+                        case BotActionTypes.OrderNow:
+                            await OrderNow(context);
+                            await context.PostAsync("Your order has been processed.");
                             context.Done<object>(false);
-                            break;
-                        case BotActionTypes.BasketCheckout:
-                            context.Call(new OrderDialog(), AfterOrderAsync);
                             break;
                     }
                 }
@@ -141,10 +129,11 @@ namespace Bot46.API.Infrastructure.Dialogs
             }
         }
 
-        private Task AfterOrderAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task OrderNow(IDialogContext context)
         {
-            context.Done<object>(false);
-            return Task.CompletedTask;
+            AuthUser authUser = await context.GetAuthUserAsync();
+            var basket = serviceOrder.MapOrderToBasket(order);
+            await serviceBasket.Checkout(basket, authUser.AccessToken);
         }
     }
 }
