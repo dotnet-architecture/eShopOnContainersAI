@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Bot46.API.Infrastructure.Models
 {
@@ -7,6 +8,7 @@ namespace Bot46.API.Infrastructure.Models
     {
         public int? Brand { get; set; }
         public int? Type { get; set; }
+        public IEnumerable<string> Tags { get; set; }
 
         public static CatalogFilter Map( dynamic value)
         {
@@ -20,7 +22,6 @@ namespace Bot46.API.Infrastructure.Models
             {
                 filter.Type = Convert.ToInt32(value.Type);
             }
-
             return filter;
         }
     }

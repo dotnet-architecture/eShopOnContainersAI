@@ -18,6 +18,7 @@ namespace Bot46.API.Infrastructure.Dialogs
     {
         private readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
         private readonly IBasketService serviceBasket = ServiceResolver.Get<IBasketService>();
+        private static readonly ICatalogAIService serviceCatalogAI = ServiceResolver.Get<ICatalogAIService>();
 
         private readonly int _itemsPage = 10;
         private int _currentPage = 0;
@@ -48,7 +49,16 @@ namespace Bot46.API.Infrastructure.Dialogs
             var reply = context.MakeMessage();
             reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
-            var catalog = await serviceCatalog.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type);
+            Catalog catalog;
+            if(_filter.Tags != null)
+            {
+                catalog = await serviceCatalogAI.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type, _filter.Tags);
+            }
+            else
+            {
+                 catalog = await serviceCatalog.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type);
+            }
+
             int pageCount = (catalog.Count + _itemsPage - 1) / _itemsPage;
 
             reply.Text = $"Page {_currentPage + 1} of {pageCount} ( {catalog.Count} items )";
@@ -85,7 +95,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 });
             }
 
-            if (_currentPage < pageCount)
+            if (_currentPage + 1 < pageCount)
             {
                 cardActions.Add(new CardAction()
                 {
