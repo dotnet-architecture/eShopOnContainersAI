@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Bot46.API.Infrastructure.Services;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Luis;
 using Microsoft.Bot.Builder.Luis.Models;
@@ -9,8 +10,18 @@ namespace Bot46.API.Infrastructure.Dialogs
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        public RootDialog(ILuisService luis) : base(luis) {
+        private readonly ICatalogService catalogService;
+        private readonly IBasketService basketService;
+        private readonly ICatalogAIService catalogAIService;
+        private readonly IComputerVisionService computerVisionService;
 
+        public RootDialog(ICatalogService catalogService, IBasketService basketService, 
+            ICatalogAIService catalogAIService, IComputerVisionService computerVisionService, 
+            ILuisService luis) : base(luis) {
+            this.catalogService = catalogService;
+            this.basketService = basketService;
+            this.catalogAIService = catalogAIService;
+            this.computerVisionService = computerVisionService;
         }
 
         [LuisIntent("")]
@@ -34,7 +45,7 @@ namespace Bot46.API.Infrastructure.Dialogs
         [LuisIntent("Catalog")]
         public Task Catalog(IDialogContext context, LuisResult result)
         {
-            context.Call(new CatalogDialog(), ResumeAfterDialog);
+            context.Call(new CatalogDialog(catalogService, basketService, catalogAIService, computerVisionService), ResumeAfterDialog);
             return Task.CompletedTask;
         }
 

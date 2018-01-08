@@ -32,7 +32,7 @@ namespace Bot46.API.Controllers
             {
                 using (var scope = DialogModule.BeginLifetimeScope(this.scope, activity))
                 {
-                    await Conversation.SendAsync(activity, () => scope.Resolve<RootDialog>());
+                    await Conversation.SendAsync(activity, () => scope.Resolve<IDialog<object>>());
                 }
             }
             else

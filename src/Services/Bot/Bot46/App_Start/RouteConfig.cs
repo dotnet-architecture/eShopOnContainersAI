@@ -11,7 +11,9 @@ namespace Bot46.API
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-           // routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            // routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
                 name: "Default",
