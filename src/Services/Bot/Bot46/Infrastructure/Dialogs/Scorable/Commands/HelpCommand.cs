@@ -21,11 +21,11 @@ namespace Bot46.API.Infrastructure.Dialogs
         protected override async Task PostAsync(IActivity item, bool state, CancellationToken token)
         {
             var message = item.AsMessageActivity();
-            var  response = await GetHelpAsync(message);
+            var  response = GetHelp(message);
             await BotToUser.PostAsync(response);
         }
 
-        private async Task<IMessageActivity> GetHelpAsync(IMessageActivity message)
+        private IMessageActivity GetHelp(IMessageActivity message)
         {
             // Here you should get the help info for the user
             // You can inspace the message to search for specific help like 'help products'

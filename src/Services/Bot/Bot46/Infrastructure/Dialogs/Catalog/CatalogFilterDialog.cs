@@ -14,11 +14,16 @@ namespace Bot46.API.Infrastructure.Dialogs
     [Serializable]
     public class CatalogFilterDialog : IDialog<CatalogFilter>
     {
-        protected int count = 1;
-        private static readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
-        private static readonly IComputerVisionService serviceComputerVision = ServiceResolver.Get<IComputerVisionService>();
+        private readonly ICatalogService catalogService;
+        private readonly IComputerVisionService computerVisionService;
 
-        public CatalogFilterDialog() {
+        //protected int count = 1;
+        //private static readonly ICatalogService catalogService = ServiceResolver.Get<ICatalogService>();
+        //private static readonly IComputerVisionService computerVisionService = ServiceResolver.Get<IComputerVisionService>();
+
+        public CatalogFilterDialog(ICatalogService catalogService, IComputerVisionService computerVisionService) {
+            this.catalogService = catalogService;
+            this.computerVisionService = computerVisionService;
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -56,7 +61,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Weight = AdaptiveTextWeight.Bolder
             });
          
-            var brands = await serviceCatalog.GetBrands();
+            var brands = await catalogService.GetBrands();
             var brandChoices = new List<AdaptiveChoice>();
             foreach ( var brand in brands){
                 brandChoices.Add( new AdaptiveChoice() { Title = brand.Text, Value = brand.Id });
@@ -76,7 +81,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Text = "Type",
                 Weight = AdaptiveTextWeight.Bolder
             });         
-            var types = await serviceCatalog.GetTypes();
+            var types = await catalogService.GetTypes();
             var typeChoices = new List<AdaptiveChoice>();
             foreach (var type in types){
                 typeChoices.Add( new AdaptiveChoice() { Title = type.Text, Value = type.Id });
@@ -125,7 +130,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 var content = await HandleAttachments(context, message);
                 if(content != null)
                 {
-                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    var tags = await computerVisionService.ClassifyImageAsync(content);
                     CatalogFilter filter = new CatalogFilter() { Tags = tags };
                     context.Done(filter);
                     return;

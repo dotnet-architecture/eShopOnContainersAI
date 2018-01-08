@@ -38,12 +38,6 @@ namespace Bot46.API.Infrastructure.Modules
                   .AsImplementedInterfaces()
                   .SingleInstance();
 
-            builder.Register(c => new LuisModelAttribute(ConfigurationManager.AppSettings["luis:ModelId"],
-                                                        ConfigurationManager.AppSettings["luis:SubscriptionId"]))
-                    .AsSelf()
-                    .AsImplementedInterfaces()
-                    .SingleInstance();
-
             builder.RegisterType<LuisService>()
                 .Keyed<ILuisService>(FiberModule.Key_DoNotSerialize)
                 .AsImplementedInterfaces()
