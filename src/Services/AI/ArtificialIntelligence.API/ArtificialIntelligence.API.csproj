@@ -10,15 +10,9 @@
 
   <ItemGroup>
     <Content Include="Resources\models\imagenet_comp_graph_label_strings.txt">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\models\tensorflow_inception_graph.pb">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\models\labels.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\models\model.pb">
+    <Content Include="Resources\models\tensorflow_inception_graph.pb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
