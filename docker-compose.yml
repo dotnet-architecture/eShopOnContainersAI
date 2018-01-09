@@ -80,6 +80,7 @@ services:
       - identity.api
       - basket.api
       - marketing.api
+      - ai.api
 
   webstatus:
     image: eshop/webstatus:${TAG:-latest}
