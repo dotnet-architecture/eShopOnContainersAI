@@ -8,6 +8,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Extensions
         public static IServiceCollection AddAIServices(this IServiceCollection services)
         {
             services.AddTransient<ICatalogAIService, CatalogAIService>();
+            services.AddTransient<IProductRecommenderService, ProductRecommenderService>();
             return services;
         }
     }

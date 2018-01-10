@@ -1,5 +1,4 @@
-﻿using Catalog.API.ServicesAI;
-using Catalog.API.Extensions;
+﻿using Catalog.API.Extensions;
 using Catalog.API.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,32 +20,25 @@ namespace Catalog.API.Controllers
     {
         private readonly CatalogContext _catalogContext;
         private readonly ICatalogTagsRepository _catalogTagsRepository;
-        private readonly IRecommendation _recommendationService;
         private readonly CatalogSettings _settings;
 
-        public CatalogAIController(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings, ICatalogTagsRepository catalogTagsRepository, IRecommendation recommendation)
+        public CatalogAIController(CatalogContext context, IOptionsSnapshot<CatalogSettings> settings, ICatalogTagsRepository catalogTagsRepository)
         {
             _catalogContext = context ?? throw new ArgumentNullException(nameof(context));
             _catalogTagsRepository = catalogTagsRepository;
-            _recommendationService = recommendation;
             _settings = settings.Value;
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("productSetDetailsByIDs")]
         [ProducesResponseType(typeof(CatalogItem[]), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> RecommendProducts([FromQuery]string productId, [FromQuery]string customerId)
+        public async Task<IActionResult> RecommendProducts([FromQuery]string productId, [FromQuery]string productIDs)
         {
-            if (customerId == "null")
-                customerId = String.Empty;
-
-            var recommendations = await _recommendationService.RecommendAsync(productId, customerId);
-
-            if (recommendations == null)
+            if (productIDs == null)
                 return BadRequest();
 
-            var sortRecommendations = await SortRecommendations(productId, recommendations);
+            var sortRecommendations = await SortRecommendations(productId, productIDs.Split(','));
 
             var items = await _catalogContext.CatalogItems
                 .Where(c => sortRecommendations.Contains(c.Id))
