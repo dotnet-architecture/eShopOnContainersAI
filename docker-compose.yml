@@ -24,6 +24,12 @@ services:
       context: ./src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API
       dockerfile: Dockerfile    
 
+  ai.productsearchimagebased.tensorflow.api:
+    image: eshopai/ai.productsearchimagebased.tensorflow.api:${TAG:-latest}
+    build:
+      context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API
+      dockerfile: Dockerfile    
+
 
   catalog.api:
     image: eshop/catalog.api:${TAG:-latest}
@@ -88,6 +94,7 @@ services:
       - marketing.api
       - ai.api
       - ai.productrecommender.azureml.api
+      - ai.productsearchimagebased.tensorflow.api
 
   webstatus:
     image: eshop/webstatus:${TAG:-latest}
