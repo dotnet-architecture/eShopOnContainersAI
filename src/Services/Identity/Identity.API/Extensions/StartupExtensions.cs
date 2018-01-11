@@ -30,12 +30,14 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Extensions
             return services;
         }
 
-        public static IApplicationBuilder UseAIServices(this IApplicationBuilder app)
+        public static IApplicationBuilder UseAIServices(this IApplicationBuilder app, IConfiguration configuration)
         {
+            var pathBase = configuration["PATH_BASE"];
+
             app.UseSwagger()
                .UseSwaggerUI(c =>
                {
-                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Identity.API V1");
                });
 
             return app;

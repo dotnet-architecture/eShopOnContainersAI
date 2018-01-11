@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Catalog.API.Extensions
+namespace Identity.API.Extensions
 {
     public static class StringExtensions
     {
-        public static string JoinTags(this IEnumerable<string> items)
-        {
-            return String.Join('-', items ?? new[] { String.Empty });
-        }
-
         public static string FormatAsCSV<T>(this IEnumerable<T> value) where T : class
         {
             StringBuilder stringBuilder = new StringBuilder();

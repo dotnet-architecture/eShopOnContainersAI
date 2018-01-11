@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Catalog.API.Controllers
@@ -52,8 +53,8 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> All()
+        [Route("dumpToCSV")]
+        public async Task<IActionResult> DumpToCSV()
         {
             var catalog = await _catalogContext.CatalogItems
                 .Select(c => new {c.Id, c.CatalogBrandId, c.CatalogTypeId, c.Description, c.Price })
@@ -75,8 +76,9 @@ namespace Catalog.API.Controllers
                     b.ygram, b.zgram, b.yzgram
                 }).ToList();
 
-
-            return new JsonResult(join);
+            var csvFile = File(Encoding.UTF8.GetBytes(join.FormatAsCSV()), "text/csv");
+            csvFile.FileDownloadName = "products.csv";
+            return csvFile;
         }
 
         [HttpGet]
