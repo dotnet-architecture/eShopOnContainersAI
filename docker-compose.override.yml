@@ -74,6 +74,18 @@ services:
       - "5126:80"
       - "51262:22"
 
+  ai.productsearchimagebased.azurecognitiveservices.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - CognitiveService__VisionAPIKey=${ESHOPAI_CS_VIS_KEY}
+      - CognitiveService__VisionUri=${ESHOPAI_CS_VIS_URI}
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5127:80"
+      - "51272:22"
+
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
