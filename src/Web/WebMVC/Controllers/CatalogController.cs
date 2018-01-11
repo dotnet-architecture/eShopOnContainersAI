@@ -15,12 +15,12 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
     {
         private ICatalogService _catalogSvc;
         private readonly ICatalogAIService _catalogAISvc;
-        private readonly IComputerVisionService _computerVisionService;
+        private readonly IProductSearchImageBasedService _productImageSearchService;
 
-        public CatalogController(ICatalogService catalogSvc, ICatalogAIService catalogAIService, IComputerVisionService computerVisionService) {
+        public CatalogController(ICatalogService catalogSvc, ICatalogAIService catalogAIService, IProductSearchImageBasedService productSearchImageService) {
             _catalogSvc = catalogSvc;
             _catalogAISvc = catalogAIService;
-            _computerVisionService = computerVisionService;
+            _productImageSearchService = productSearchImageService;
         }
 
 		public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page, IFormFile ImageFilter, string Tags, [FromQuery]string errorMsg)
@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 using (var ms = new MemoryStream())
                 {
                     await ImageFilter.CopyToAsync(ms);
-                    tags = await _computerVisionService.ClassifyImageAsync(ms.ToArray());
+                    tags = await _productImageSearchService.ClassifyImageAsync(ms.ToArray());
                 }
             }
             else if (!String.IsNullOrEmpty(Tags))

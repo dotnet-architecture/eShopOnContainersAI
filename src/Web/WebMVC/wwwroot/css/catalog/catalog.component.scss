@@ -62,6 +62,7 @@
     &-filter.caption {
         display: block;
         border-width: 1px;
+        border-style: solid;
 
         &.active {
             background-color: #008075;
@@ -96,7 +97,7 @@
         }
 
         &.cs {
-            width: 150px; // force to display text correctly
+            width: 240px; // force to display text correctly
         }
     }
 

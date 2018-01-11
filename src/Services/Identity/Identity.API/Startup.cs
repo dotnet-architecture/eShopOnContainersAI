@@ -164,7 +164,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseAIServices();
+            app.UseAIServices(Configuration);
         }
 
         private void RegisterAppInsights(IServiceCollection services)

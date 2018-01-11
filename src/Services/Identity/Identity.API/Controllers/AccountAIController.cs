@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Identity.API.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopOnContainers.Services.Identity.API.Data;
 using Microsoft.eShopOnContainers.Services.Identity.API.Extensions;
@@ -19,8 +20,8 @@ namespace Identity.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> All()
+        [Route("dumpToCSV")]
+        public async Task<IActionResult> DumpToCSV()
         {
             var users = await _applicationContext.Users
                 .Select(c => new {
@@ -31,7 +32,9 @@ namespace Identity.API.Controllers
                     c.ZipCode })
                 .ToListAsync();
 
-            return new JsonResult(users);
+            var csvFile = File(Encoding.UTF8.GetBytes(users.FormatAsCSV()), "text/csv");
+            csvFile.FileDownloadName = "users.csv";
+            return csvFile;
         }
     }
 }

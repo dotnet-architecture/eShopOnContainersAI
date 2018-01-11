@@ -86,9 +86,9 @@ namespace WebMVC.Infrastructure
 
         public static class CatalogAI
         {
-            public static string GetRecommendations(string baseUri, string productId, string customerId)
+            public static string GetProducSetDetailsByIDs(string baseUri, string productId, IEnumerable<string> productIDs)
             {
-                return $"{baseUri}recommendProducts?productId={productId}&customerId={customerId}";
+                return $"{baseUri}productSetDetailsByIDs?productId={productId}&productIDs={String.Join(',',productIDs)}";
             }
 
             public static string GetAllCatalogItems(string baseUri, int page, int take, int? brand, int? type, IEnumerable<string> tags)
@@ -101,11 +101,19 @@ namespace WebMVC.Infrastructure
             }
         }
 
-        public static class ComputerVision
+        public static class ProductRecommender
+        {
+            public static string GetRecommendProducts(string baseUri,string productId, string customerId)
+            {
+                return $"{baseUri}recommendProducts?productId={productId}&customerId={customerId}";
+            }
+        }
+
+        public static class ProductImageSearch
         {
             public static string ClassifyImage(string baseUri)
             {                
-                return $"{baseUri}classifyImage/default";
+                return $"{baseUri}classifyImage";
             }
         }
 

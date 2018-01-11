@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.WebMVC.Services;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Polly.CircuitBreaker;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,13 @@ namespace WebMVC.ViewComponents
     public class RecommendationList : ViewComponent
     {
         private readonly ICatalogAIService _catalogAIService;
+        private readonly IProductRecommenderService _productRecommenderService;
 
-        public RecommendationList(ICatalogAIService catalogAIService) => _catalogAIService = catalogAIService;
+        public RecommendationList(ICatalogAIService catalogAIService, IProductRecommenderService productRecommenderService)
+        {
+            _catalogAIService = catalogAIService;
+            _productRecommenderService = productRecommenderService;
+        }
 
         public async Task<IViewComponentResult> InvokeAsync(string productId, string customerId)
         {
@@ -24,7 +28,8 @@ namespace WebMVC.ViewComponents
 
             try
             {
-                var recommendations = await _catalogAIService.GetRecommendationsAsync(productId, customerId);
+                var recommendedProductsIDs = await _productRecommenderService.GetRecommendProductsAsync(productId, customerId);
+                var recommendations = await _catalogAIService.GetRecommendationsAsync(productId, recommendedProductsIDs);
                 return View(recommendations.Take(maxProductRecommendations).ToList());
 
             } catch (BrokenCircuitException)

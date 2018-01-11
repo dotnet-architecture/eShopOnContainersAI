@@ -53,6 +53,7 @@
 .esh-catalog-filter.caption {
   display: block;
   border-width: 1px;
+  border-style: solid;
 }
 
 .esh-catalog-filter.caption.active {
@@ -88,7 +89,7 @@
 }
 
 .esh-catalog-label.cs {
-  width: 150px;
+  width: 240px;
 }
 
 .esh-catalog-send {

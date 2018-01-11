@@ -19,8 +19,8 @@ namespace Ordering.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
-        public async Task<IActionResult> All()
+        [Route("dumpToCSV")]
+        public async Task<IActionResult> DumpToCSV()
         {
             var orderItems = await _orderQueries.GetOrderItems();
 
@@ -28,7 +28,9 @@ namespace Ordering.API.Controllers
                 .Select(c => new { c.CustomerId, c.ProductId, c.Units })
                 .ToList();
 
-            return new JsonResult(typedOrderItems);
+            var csvFile = File(Encoding.UTF8.GetBytes(typedOrderItems.FormatAsCSV()), "text/csv");
+            csvFile.FileDownloadName = "orderItems.csv";
+            return csvFile;
         }
     }
 }

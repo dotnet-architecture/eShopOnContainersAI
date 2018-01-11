@@ -12,12 +12,23 @@ services:
       - identity.api
       - rabbitmq
 
-  ai.api:
-    image: eshop/ai.api:${TAG:-latest}
+  ai.productrecommender.azureml.api:
+    image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
     build:
-      context: ./src/Services/AI/ArtificialIntelligence.API
+      context: ./src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API
       dockerfile: Dockerfile    
 
+  ai.productsearchimagebased.tensorflow.api:
+    image: eshopai/ai.productsearchimagebased.tensorflow.api:${TAG:-latest}
+    build:
+      context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API
+      dockerfile: Dockerfile    
+
+  ai.productsearchimagebased.azurecognitiveservices.api:
+    image: eshopai/ai.productsearchimagebased.azurecognitiveservices.api:${TAG:-latest}
+    build:
+      context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API
+      dockerfile: Dockerfile    
 
   catalog.api:
     image: eshop/catalog.api:${TAG:-latest}
@@ -80,7 +91,9 @@ services:
       - identity.api
       - basket.api
       - marketing.api
-      - ai.api
+      - ai.productrecommender.azureml.api
+      - ai.productsearchimagebased.tensorflow.api
+      - ai.productsearchimagebased.azurecognitiveservices.api
 
   webstatus:
     image: eshop/webstatus:${TAG:-latest}
