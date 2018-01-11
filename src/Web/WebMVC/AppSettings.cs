@@ -14,6 +14,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public string MarketingUrl { get; set; }
         public string LocationsUrl { get; set; }
         public string ArtificialIntelligenceUrl { get; set; }
+        public string ProductRecommenderUrl { get; set; }
+        public string ProductSearchImageUrl { get; set; }
         public bool ActivateCampaignDetailFunction { get; set; }
         public Logging Logging { get; set; }
         public bool UseCustomizationData { get; set; }

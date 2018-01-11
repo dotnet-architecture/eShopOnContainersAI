@@ -5,7 +5,6 @@
     using global::Catalog.API.Extensions;
     using global::Catalog.API.Infrastructure.Filters;
     using global::Catalog.API.IntegrationEvents;
-    using global::Catalog.API.ServicesAI;
     using Microsoft.ApplicationInsights.Extensibility;
     using Microsoft.ApplicationInsights.ServiceFabric;
     using Microsoft.AspNetCore.Builder;
@@ -269,7 +268,6 @@
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
             services.AddTransient<OrderStatusChangedToAwaitingValidationIntegrationEventHandler>();
             services.AddTransient<OrderStatusChangedToPaidIntegrationEventHandler>();
-            services.AddTransient<IRecommendation, Recommendation>();
             services.AddTransient<IHttpClient, StandardHttpClient>();
         }
         protected virtual void ConfigureEventBus(IApplicationBuilder app)

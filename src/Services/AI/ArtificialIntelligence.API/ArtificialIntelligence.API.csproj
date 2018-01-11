@@ -43,7 +43,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
-    <ProjectReference Include="..\TensorFlowSharp\TensorFlowSharp.csproj" />
+    <ProjectReference Include="..\..\AI.ProductSearchImageBased\TensorFlowSharp\TensorFlowSharp.csproj" />
   </ItemGroup>
 
 </Project>

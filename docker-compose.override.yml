@@ -44,13 +44,35 @@ services:
       - CognitiveService__VisionUri=${ESHOPAI_CS_VIS_URI}
       - ModelManagement__ServiceUri=${ESHOPAI_MM_SVC_URI}
       - ModelManagement__ServiceKey=${ESHOPAI_MM_SVC_KEY}
-      - ComputerVisionDefaultModel=${ESHOPAI_CV_MODEL}
+      - ComputerVisionDefaultModel=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_MODEL}
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
       - "5106:80"
       - "51062:22"
 
+  ai.productrecommender.azureml.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - AzureMachineLearning__RecommendationAPIKey=${ESHOPAI_AML_RECOM_KEY}
+      - AzureMachineLearning__RecommendationUri=${ESHOPAI_AML_RECOM_URI}
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5120:80"
+      - "51202:22"
+
+  ai.productsearchimagebased.tensorflow.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - TensorFlowPredictionDefaultModel=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_MODEL}
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5126:80"
+      - "51262:22"
 
   catalog.api:
     environment:
@@ -185,6 +207,8 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - ArtificialIntelligenceUrlHC=http://ai.api/hc
+      - ProductRecommenderUrl=${ESHOPAI_PRODUCTRECOMMENDER_URI}
+      - ProductSearchImageUrl=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_URI}
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

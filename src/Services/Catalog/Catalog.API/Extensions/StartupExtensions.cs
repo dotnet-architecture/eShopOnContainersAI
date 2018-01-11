@@ -1,5 +1,4 @@
-﻿using Catalog.API.ServicesAI;
-using Catalog.API.Infrastructure;
+﻿using Catalog.API.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catalog.API.Extensions

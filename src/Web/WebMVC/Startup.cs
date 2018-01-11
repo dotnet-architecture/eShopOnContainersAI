@@ -78,7 +78,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
             services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<IIdentityParser<ApplicationUser>, IdentityParser>();
-            services.AddTransient<IComputerVisionService, ComputerVisionService>();
+            services.AddTransient<IProductSearchImageBasedService, ProductSearchImageBasedService>();
 
             if (Configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
