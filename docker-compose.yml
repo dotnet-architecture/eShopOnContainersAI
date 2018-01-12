@@ -3,7 +3,7 @@ version: '3'
 services:
 
   basket.api:
-    image: eshop/basket.api:${TAG:-latest}
+    image: eshopai/basket.api:${TAG:-latest}
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile    
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile    
 
   catalog.api:
-    image: eshop/catalog.api:${TAG:-latest}
+    image: eshopai/catalog.api:${TAG:-latest}
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile    
@@ -41,7 +41,7 @@ services:
       - rabbitmq
 
   identity.api:
-    image: eshop/identity.api:${TAG:-latest}
+    image: eshopai/identity.api:${TAG:-latest}
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile    
@@ -49,7 +49,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api:${TAG:-latest}
+    image: eshopai/ordering.api:${TAG:-latest}
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile    
@@ -58,7 +58,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api:${TAG:-latest}
+    image: eshopai/marketing.api:${TAG:-latest}
     build:
       context: ./src/Services/Marketing/Marketing.API
       dockerfile: Dockerfile    
@@ -69,7 +69,7 @@ services:
       - rabbitmq
 
   webmvc:
-    image: eshop/webmvc:${TAG:-latest}
+    image: eshopai/webmvc:${TAG:-latest}
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile    
@@ -90,7 +90,7 @@ services:
       dockerfile: Dockerfile
 
   payment.api:
-    image: eshop/payment.api:${TAG:-latest}
+    image: eshopai/payment.api:${TAG:-latest}
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
@@ -98,7 +98,7 @@ services:
       - rabbitmq    
     
   locations.api:
-    image: eshop/locations.api:${TAG:-latest}
+    image: eshopai/locations.api:${TAG:-latest}
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile
