@@ -9,7 +9,9 @@ namespace Bot46.API.Infrastructure
         public string CatalogUrl { get; set; }
         public string IdentityUrl { get; set; }
         public string OrderingUrl { get; set; }
+        public string MvcUrl { get; set; }
         public string ArtificialIntelligenceUrl { get; set; }
+        public string ProductSearchImageUrl { get; set; }
 
         public string ApiClient { get; set; }
         public string ApiClientSecret { get; set; }
@@ -33,6 +35,8 @@ namespace Bot46.API.Infrastructure
             IdentityUrl = ConfigurationManager.AppSettings["IdentityUrl"];
             OrderingUrl = ConfigurationManager.AppSettings["OrderingUrl"];
             ArtificialIntelligenceUrl = ConfigurationManager.AppSettings["ArtificialIntelligenceUrl"];
+            ProductSearchImageUrl = ConfigurationManager.AppSettings["ProductSearchImageUrl"];
+            MvcUrl = ConfigurationManager.AppSettings["MvcUrl"];
 
             TokenEndPoint = ConfigurationManager.AppSettings["TokenEndPoint"];
             UserInfoEndpoint = ConfigurationManager.AppSettings["UserInfoEndpoint"];

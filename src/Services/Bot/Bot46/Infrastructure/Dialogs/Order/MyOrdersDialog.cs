@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Bot46.API.Infrastructure.Dialogs
@@ -16,6 +17,9 @@ namespace Bot46.API.Infrastructure.Dialogs
     public class MyOrdersDialog : IDialog<object>
     {
         private readonly IOrderingService service = ServiceResolver.Get<IOrderingService>();
+        private readonly BotSettings settings = ServiceResolver.Get<BotSettings>();
+
+        public bool LatestOrder { get; internal set; }
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -28,11 +32,35 @@ namespace Bot46.API.Infrastructure.Dialogs
 
             if (authUser != null && !authUser.IsExpired)
             {
-                await ShowOrders(context, authUser);
+                await ShowDesired(context, authUser);
             }
             else
             {
                 context.Call(new LoginDialog(), ExecutedLoginAsync);
+            }
+        }
+
+        private async Task ShowDesired(IDialogContext context, AuthUser authUser)
+        {
+            if (!LatestOrder)
+            {
+                await ShowOrders(context, authUser);
+            }
+            else
+            {
+                var orders = await service.GetMyOrders(authUser.UserId, authUser.AccessToken);
+                var order = orders.OrderByDescending(o => o.OrderNumber).FirstOrDefault();
+                if(order != null)
+                {
+                    await ShowOrderDetail(context, order.OrderNumber);
+                    context.Wait(MessageReceivedAsync);
+                }
+                else
+                {
+                    await context.PostAsync("You do not have any orders.");
+                    await context.PostAsync("Type what do you want to do.");
+                    context.Done<object>(null);
+                }
             }
         }
 
@@ -51,8 +79,10 @@ namespace Bot46.API.Infrastructure.Dialogs
                 await context.PostAsync(reply);
                 context.Wait(MessageReceivedAsync);
             }
-            else {
-                reply.Text = "You dont have any order.";
+            else
+            {
+                await context.PostAsync("You do not have any orders.");
+                await context.PostAsync("Type what do you want to do.");
                 context.Done<object>(null);
             }
         }
@@ -111,12 +141,12 @@ namespace Bot46.API.Infrastructure.Dialogs
                     switch (action.ToString())
                     {
                         case BotActionTypes.OrderDetail:
-                            // Todo Show OrderDetail
                             var OrderNumber = json.GetValue("OrderNumber").ToString(); ;
                             await ShowOrderDetail(context, OrderNumber);
                             context.Wait(MessageReceivedAsync);
                             break;
                         case BotActionTypes.Back:
+                            await context.PostAsync("Type what do you want to do.");
                             context.Done<object>(null);
                             break;
 
@@ -158,14 +188,25 @@ namespace Bot46.API.Infrastructure.Dialogs
             reply.Attachments = new List<Attachment>();
             
 
-            List<Fact> facts = OrderFacts(order);
+            List<Fact> facts = OrderFactsDetail(order);
 
             List<ReceiptItem> receiptList = OrderItems(order);
+
+            List<CardAction> cardButtons = new List<CardAction>();
+
+            CardAction plButton = new CardAction()
+            {
+                Type = ActionTypes.OpenUrl,
+                Value = $@"{settings.MvcUrl}/Order/Detail?orderId={order.OrderNumber}",
+                Title = "Open"
+            };
+            cardButtons.Add(plButton);
 
             ReceiptCard plCard = new ReceiptCard()
             {
                 Title = $"Order #{order.OrderNumber}",
                 Facts = facts,
+                Buttons = cardButtons,
                 Items = receiptList,
                 Total = $"{order.Total} $"
             };
@@ -175,8 +216,11 @@ namespace Bot46.API.Infrastructure.Dialogs
             {
                 Actions = CardBackAction()
             };
-
-            context.PostAsync($"{order.Description}");
+          
+            if(!string.IsNullOrEmpty(order.Description))
+            {
+                context.PostAsync($"{order.Description}");
+            }
             context.PostAsync(reply);
         }
 
@@ -185,7 +229,16 @@ namespace Bot46.API.Infrastructure.Dialogs
             List<Fact> facts = new List<Fact>
             {
                 new Fact($"Order:", $"{order.OrderNumber}"),
-                new Fact($"Ship to:", $"{order.Buyer}"),
+                new Fact($"Date:", $"{order.Date.ToShortDateString()}"),
+                new Fact($"Status:", $"{order.Status}")
+            };
+            return facts;
+        }
+
+        private List<Fact> OrderFactsDetail(Order order)
+        {
+            List<Fact> facts = new List<Fact>
+            {
                 new Fact($"Date:", $"{order.Date.ToShortDateString()}"),
                 new Fact($"Status:", $"{order.Status}")
             };
@@ -228,7 +281,9 @@ namespace Bot46.API.Infrastructure.Dialogs
             var loginResult = await result;
             if (loginResult)
             {
-                await ShowOrders(context);
+
+                AuthUser authUser = await context.GetAuthUserAsync();
+                await ShowDesired(context, authUser);
             }
             else {
                 await context.PostAsync("You must be logged in to show your orders.");

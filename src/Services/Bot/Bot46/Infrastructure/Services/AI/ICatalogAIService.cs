@@ -6,7 +6,7 @@ namespace Bot46.API.Infrastructure.Services
 {
     public interface ICatalogAIService
     {
-        Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, string customerId);
+        Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs);
         Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type, IEnumerable<string> tags);
     }
 }

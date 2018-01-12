@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 
@@ -21,18 +23,18 @@ namespace Bot46.API.Infrastructure.Dialogs
         protected override async Task PostAsync(IActivity item, bool state, CancellationToken token)
         {
             var message = item.AsMessageActivity();
-            var  response = await GetHelpAsync(message);
-            await BotToUser.PostAsync(response);
+            if(message != null)
+            {
+                var helpDialog = new HelpDialog();
+
+                var interruption = helpDialog.Void<object, IMessageActivity>();
+
+                task.Call(interruption, null);
+
+                await task.PollAsync(token);
+                
+            }
         }
 
-        private async Task<IMessageActivity> GetHelpAsync(IMessageActivity message)
-        {
-            // Here you should get the help info for the user
-            // You can inspace the message to search for specific help like 'help products'
-            // and provide help related to the products you have 
-            var reply = BotToUser.MakeMessage();
-            reply.Text = "Help Command";
-            return reply;
-        }
     }
 }

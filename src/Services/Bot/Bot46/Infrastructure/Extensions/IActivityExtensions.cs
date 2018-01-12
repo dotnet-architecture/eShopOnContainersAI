@@ -43,7 +43,8 @@ namespace Bot46.API.Infrastructure.Extensions
         public static Attachment LoginCard(this IActivity activity, string userId){
             List<CardAction> cardButtons = new List<CardAction>();
 
-            AuthData authData = new AuthData() { 
+            AuthData authData = new AuthData() {
+                BotId = activity.From.Id,
                 ChannelId = activity.ChannelId,
                 UserId    = userId,
                 ConversationId = activity.Conversation.Id,

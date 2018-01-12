@@ -18,6 +18,7 @@ namespace Bot46.API.Infrastructure.Dialogs
     {
         private readonly IBasketService serviceBasket = ServiceResolver.Get<IBasketService>();
         private readonly IOrderingService serviceOrder = ServiceResolver.Get<IOrderingService>();
+        private readonly BotSettings settings = ServiceResolver.Get<BotSettings>();
 
         private Order order;
 
@@ -54,8 +55,7 @@ namespace Bot46.API.Infrastructure.Dialogs
         private Attachment ShowOrder()
         {
             List<CardImage> cardImages = new List<CardImage>();
-            // TODO EShop Logo
-            // cardImages.Add(new CardImage(url: "https://<imageUrl1>"));
+             cardImages.Add(new CardImage(url: $"{settings.MvcUrl}/images/brand.png"));
 
             List<CardAction> cardButtons = new List<CardAction>();
 

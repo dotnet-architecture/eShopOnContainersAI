@@ -22,7 +22,9 @@ namespace Bot46.API.Infrastructure.Dialogs
 
         private readonly int _itemsPage = 10;
         private int _currentPage = 0;
-        private CatalogFilter _filter = null;
+        internal CatalogFilter _filter = null;
+
+        public JObject ItemToBuy { get; private set; }
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -33,6 +35,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             else
             {
                 await ShowCatalog(context);
+                context.Wait(MessageReceivedAsync);
             }
         }
 
@@ -60,12 +63,18 @@ namespace Bot46.API.Infrastructure.Dialogs
             }
 
             int pageCount = (catalog.Count + _itemsPage - 1) / _itemsPage;
+            if (catalog.Count != 0)
+            {                 
+                reply.Text = $"Page {_currentPage + 1} of {pageCount} ( {catalog.Count} items )";
+                reply.Attachments = CatalogCarousel(catalog, logged);
+            }
+            else
+            {
+                reply.Text = $"There are no results that match your search.";
+            }
 
-            reply.Text = $"Page {_currentPage + 1} of {pageCount} ( {catalog.Count} items )";
 
             List<CardAction> cardActions = CardActions(pageCount, logged);
-
-            reply.Attachments = CatalogCarousel(catalog, logged);
             reply.SuggestedActions = new SuggestedActions()
             {
                 Actions = cardActions
@@ -184,31 +193,55 @@ namespace Bot46.API.Infrastructure.Dialogs
                                 context.Wait(MessageReceivedAsync);
                                 break;
                             case BotActionTypes.AddBasket:
-                                await AddToBasket(context, json);
+                                await AskQuantity(context, json);
                                 break;
                             case BotActionTypes.Login:
                                 context.Call(new LoginDialog(), LoginReceivedAsync);
                                 break;
                             case BotActionTypes.Back:
-                                        context.Done<object>(null);
-                                        break;
+                                await context.PostAsync("Type what do you want to do.");
+                                context.Done<object>(null);
+                                break;
                         }
                     }
                     catch (JsonReaderException)
                     {
                         // is not a Json
-                        await context.PostAsync("Please make a selection");
+                        await context.PostAsync("Please make a selection.");
                         await ShowCatalog(context);
                         context.Wait(MessageReceivedAsync);
 
                     }
                 }
                 else {
-                    await context.PostAsync("Please make a selection");
+                    await context.PostAsync("Please make a selection.");
                     await ShowCatalog(context);
                     context.Wait(MessageReceivedAsync);
                 }
            
+        }
+
+        private async Task AskQuantity(IDialogContext context, JObject json)
+        {
+            ItemToBuy = json;
+            var producName = json.GetValue("ProductName").ToString();
+            await context.PostAsync($"How many *{producName}* do you want to buy.");
+            context.Wait(QuantityReceivedAsync);
+        }
+
+        private async Task QuantityReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var message = await result;
+            int quantity = 1;
+            if (Int32.TryParse(message.Text, out quantity))
+            {
+                await AddToBasket(context, ItemToBuy, quantity);
+            }
+            else
+            {
+                await context.PostAsync("Please type a number");
+                context.Wait(QuantityReceivedAsync);
+            }
         }
 
         private async Task LoginReceivedAsync(IDialogContext context, IAwaitable<bool> result)
@@ -217,7 +250,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             context.Wait(MessageReceivedAsync);
         }
 
-        private async Task AddToBasket(IDialogContext context, JObject json)
+        private async Task AddToBasket(IDialogContext context, JObject json, int quantity)
         {
             BotData userData = await context.GetUserDataAsync();
             AuthUser authUser = userData.GetProperty<AuthUser>("authUser");
@@ -229,7 +262,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 var product = new BasketItem()
                 {
                     Id = Guid.NewGuid().ToString(),
-                    Quantity = 1,
+                    Quantity = quantity,
                     ProductName = producName,
                     PictureUrl = json.GetValue("PictureUrl").ToString(),
                     UnitPrice = json.GetValue("UnitPrice").ToObject<decimal>(),

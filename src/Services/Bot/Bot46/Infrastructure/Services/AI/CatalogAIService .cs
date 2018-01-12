@@ -20,9 +20,9 @@ namespace Bot46.API.Infrastructure.Services
             _remoteServiceBaseUrl = $"{settings.CatalogUrl}/api/v1/catalogAI/";
         }
 
-        public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, string customerId)
+        public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
         {
-            var recommendationsUri = API.CatalogAI.GetRecommendations(_remoteServiceBaseUrl, productId, customerId);
+            var recommendationsUri = API.CatalogAI.GetProducSetDetailsByIDs(_remoteServiceBaseUrl, productId, productIDs);
 
             var dataString = await _apiClient.GetStringAsync(recommendationsUri);
 

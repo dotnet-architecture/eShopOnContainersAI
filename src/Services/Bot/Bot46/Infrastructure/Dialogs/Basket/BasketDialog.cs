@@ -84,7 +84,6 @@ namespace Bot46.API.Infrastructure.Dialogs
                 {
                     Title = item.ProductName,
                     Subtitle = null,
-                    Text = null,
                     Image = new CardImage(url: $"{item.PictureUrl}"),
                     Price = $"{item.UnitPrice}$",
                     Quantity = $"{item.Quantity}",
@@ -129,14 +128,14 @@ namespace Bot46.API.Infrastructure.Dialogs
                 catch (JsonReaderException)
                 {
                     // is not a Json
-                    await context.PostAsync("Please make a selection");
+                    await context.PostAsync("Please make a selection.");
                     context.Wait(MessageReceivedAsync);
                 }
             }
             else
             {
                 // file sent
-                await context.PostAsync("Please make a selection");
+                await context.PostAsync("Please make a selection.");
                 context.Wait(MessageReceivedAsync);
             }
         }
