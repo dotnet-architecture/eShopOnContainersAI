@@ -10,6 +10,7 @@ Else
     Write-Host "Deleting eShop images in local Docker repo"
     Write-Host $eShopImagesToDelete
     docker rmi $(docker images --filter=reference="eshop/*" -q) -f
+    docker rmi $(docker images --filter=reference="eshopai/*" -q) -f
 }
 
 $VSImagesToDelete = docker images --filter=reference="catalog.api:dev" -q
