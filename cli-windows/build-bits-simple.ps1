@@ -11,7 +11,7 @@ if ([string]::IsNullOrEmpty($rootPath)) {
 }
 Write-Host "Root path used is $rootPath" -ForegroundColor Yellow
 
-$SolutionFilePath = [IO.Path]::Combine($rootPath, "eShopOnContainers-ServicesAndWebApps.sln")
+$SolutionFilePath = [IO.Path]::Combine($rootPath, "eShopOnContainers-AI.sln")
 
 dotnet publish $SolutionFilePath -c Release -o .\obj\Docker\publish
 

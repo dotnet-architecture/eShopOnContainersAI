@@ -13,7 +13,6 @@ workflow BuildAndPublish {
     )
 $projectPaths = 
     @{Path="$rootPath\src\Web\WebMVC";Prj="WebMVC.csproj"},
-    @{Path="$rootPath\src\Web\WebSPA";Prj="WebSPA.csproj"},
     @{Path="$rootPath\src\Services\Identity\Identity.API";Prj="Identity.API.csproj"},
     @{Path="$rootPath\src\Services\Catalog\Catalog.API";Prj="Catalog.API.csproj"},
     @{Path="$rootPath\src\Services\Ordering\Ordering.API";Prj="Ordering.API.csproj"},
@@ -21,9 +20,11 @@ $projectPaths =
     @{Path="$rootPath\src\Services\Location\Locations.API";Prj="Locations.API.csproj"},
     @{Path="$rootPath\src\Services\Marketing\Marketing.API";Prj="Marketing.API.csproj"},
     @{Path="$rootPath\src\Services\Payment\Payment.API";Prj="Payment.API.csproj"},
-    @{Path="$rootPath\src\Web\WebStatus";Prj="WebStatus.csproj"}
+    @{Path="$rootPath\src\Services\AI.ProductRecommender\AI.ProductRecommender.AzureML.API";Prj="AI.ProductRecommender.AzureML.API.csproj"},
+    @{Path="$rootPath\src\Services\AI.ProductSearchImageBased\AI.ProductSearchImageBased.TensorFlow.API";Prj="AI.ProductSearchImageBased.TensorFlow.API.csproj"},
+    @{Path="$rootPath\src\Services\AI.ProductSearchImageBased\AI.ProductSearchImageBased.AzureCognitiveServices.API";Prj="AI.ProductSearchImageBased.AzureCognitiveServices.API.csproj"}
 
-    foreach -parallel ($item in $projectPaths) {
+    foreach ($item in $projectPaths) {
         $projectPath = $item.Path
         $projectFile = $item.Prj
         $outPath = $item.Path + "\obj\Docker\publish"
@@ -41,7 +42,7 @@ BuildAndPublish $rootPath
 # Delete old eShop Docker images
 ########################################################################################
 
-$imagesToDelete = docker images --filter=reference="eshop/*" -q
+$imagesToDelete = docker images --filter=reference="eshopai/*" -q
 
 If (-Not $imagesToDelete) {Write-Host "Not deleting eShop images as there are no eShop images in the current local Docker repo."} 
 Else 
@@ -53,7 +54,7 @@ Else
     # Delete all eshop images
     Write-Host "Deleting eShop images in local Docker repo"
     Write-Host $imagesToDelete
-    docker rmi $(docker images --filter=reference="eshop/*" -q) -f
+    docker rmi $(docker images --filter=reference="eshopai/*" -q) -f
 }
 
 # WE DON'T NEED DOCKER BUILD AS WE CAN RUN "DOCKER-COMPOSE BUILD" OR "DOCKER-COMPOSE UP" AND IT WILL BUILD ALL THE IMAGES IN THE .YML FOR US
