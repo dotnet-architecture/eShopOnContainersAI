@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Bot.Builder.Internals.Fibers;
 
 namespace Bot46.API.Infrastructure.Modules
 {
@@ -10,6 +11,7 @@ namespace Bot46.API.Infrastructure.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<BotSettings>()
+                    .Keyed<BotSettings>(FiberModule.Key_DoNotSerialize)
                     .AsSelf()
                     .SingleInstance();
         }

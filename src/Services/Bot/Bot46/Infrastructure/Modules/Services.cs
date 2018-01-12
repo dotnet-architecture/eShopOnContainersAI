@@ -28,8 +28,8 @@ namespace Bot46.API.Infrastructure.Modules
                    .AsImplementedInterfaces()
                    .SingleInstance();
 
-            builder.RegisterType<ComputerVisionService>()
-                   .Keyed<IComputerVisionService>(FiberModule.Key_DoNotSerialize)
+            builder.RegisterType<ProductSearchImageService>()
+                   .Keyed<IProductSearchImageService>(FiberModule.Key_DoNotSerialize)
                    .AsImplementedInterfaces()
                    .SingleInstance();
 

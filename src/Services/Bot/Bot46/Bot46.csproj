@@ -234,6 +234,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="resources\LuiseShopOnContainersAI.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -258,6 +259,7 @@
     <Compile Include="Controllers\BotController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Infrastructure\Dialogs\Basket\BasketDialog.cs" />
+    <Compile Include="Infrastructure\Dialogs\HelpDialog.cs" />
     <Compile Include="Infrastructure\Dialogs\Order\MyOrdersDialog.cs" />
     <Compile Include="Infrastructure\Dialogs\Order\OrderDialog.cs" />
     <Compile Include="Infrastructure\Dialogs\Scorable\CommandScorable.cs" />
@@ -286,9 +288,9 @@
     <Compile Include="Infrastructure\Models\Order\OrderProcessAction.cs" />
     <Compile Include="Infrastructure\Models\UserData.cs" />
     <Compile Include="Infrastructure\Services\AI\CatalogAIService .cs" />
-    <Compile Include="Infrastructure\Services\AI\ComputerVisionService.cs" />
+    <Compile Include="Infrastructure\Services\AI\ProductSearchImageService.cs" />
     <Compile Include="Infrastructure\Services\AI\ICatalogAIService.cs" />
-    <Compile Include="Infrastructure\Services\AI\IComputerVisionService.cs" />
+    <Compile Include="Infrastructure\Services\AI\IProductSearchImageService.cs" />
     <Compile Include="Infrastructure\Services\Basket\BasketService.cs" />
     <Compile Include="Infrastructure\Services\Basket\IBasketService.cs" />
     <Compile Include="Infrastructure\Services\Catalog\CatalogService.cs" />

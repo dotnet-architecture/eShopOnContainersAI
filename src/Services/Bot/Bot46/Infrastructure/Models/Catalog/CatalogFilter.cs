@@ -10,6 +10,10 @@ namespace Bot46.API.Infrastructure.Models
         public int? Type { get; set; }
         public IEnumerable<string> Tags { get; set; }
 
+        public CatalogFilter()
+        {
+        }
+
         public static CatalogFilter Map( dynamic value)
         {
             CatalogFilter filter = new CatalogFilter();
@@ -23,6 +27,20 @@ namespace Bot46.API.Infrastructure.Models
                 filter.Type = Convert.ToInt32(value.Type);
             }
             return filter;
+        }
+
+        public  CatalogFilter(string brand , string type)
+        {
+            if (!string.IsNullOrEmpty(brand))
+            {
+                if(brand != "-1")
+                    Brand = Convert.ToInt32(brand);
+            }
+            if (!string.IsNullOrEmpty(type))
+            {
+                if(type != "-1")
+                    Type = Convert.ToInt32(type);
+            }
         }
     }
 }

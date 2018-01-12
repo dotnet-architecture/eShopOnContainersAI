@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AdaptiveCards;
 using Bot46.API.Infrastructure.Models;
@@ -14,30 +15,150 @@ namespace Bot46.API.Infrastructure.Dialogs
     [Serializable]
     public class CatalogFilterDialog : IDialog<CatalogFilter>
     {
-        protected int count = 1;
+        //protected int count = 1;
         private static readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
-        private static readonly IComputerVisionService serviceComputerVision = ServiceResolver.Get<IComputerVisionService>();
+        private static readonly IProductSearchImageService serviceComputerVision = ServiceResolver.Get<IProductSearchImageService>();
+        private Brand brandSelected;
 
         public CatalogFilterDialog() {
         }
 
         public async Task StartAsync(IDialogContext context)
         {
-            await ShowFilter(context);
-
-            context.Wait(AdaptiveMessageReceivedAsync);
+            await ShowSelectBrand(context);
+            context.Wait(BrandMessageReceivedAsync);
         }
 
-        private async Task ShowFilter(IDialogContext context)
+        private async Task ShowCardFilter(IDialogContext context)
         {
-            var reply = context.MakeMessage();
-            reply.Text = "Choose your selecttion or upload a image to search by image.";
-            await context.PostAsync(reply);
             var replyFilter = context.MakeMessage();
             var attachement = await AdaptiveCatalogFilter();
             replyFilter.Attachments = new List<Attachment>() { attachement };
             await context.PostAsync(replyFilter);
         }
+
+        private async Task ShowSelectBrand(IDialogContext context) {
+            var reply = context.MakeMessage();
+            reply.Text = "Please select a brand do you want to search or upload a image to search by image.";
+            var brands = await serviceCatalog.GetBrands();
+            var options = new List<CardAction>();
+ 
+            foreach (var brand in brands)
+            {
+                options.Add(new CardAction()
+                {
+                    Title = brand.Text,
+                    Value = brand.Text,
+                    Type = ActionTypes.ImBack
+                });
+            }
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = options
+
+            };
+            await context.PostAsync(reply);
+        }
+
+
+        private async Task ShowSelectType(IDialogContext context)
+        {
+            var reply = context.MakeMessage();
+            reply.Text = "Please select a item category to seach or upload a image.";
+            var types = await serviceCatalog.GetTypes();
+
+            var options = new List<CardAction>();
+            foreach (var type in types)
+            {
+                options.Add(new CardAction()
+                {
+                    Title = type.Text,
+                    Value = type.Text,
+                    Type = ActionTypes.ImBack
+                });
+            }
+            reply.SuggestedActions = new SuggestedActions()
+            {
+                Actions = options
+
+            };
+            await context.PostAsync(reply);
+
+        }
+
+        public virtual async Task BrandMessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var message = await result;
+            if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
+            {
+                var brands = await serviceCatalog.GetBrands();
+                var brandSelected = brands.Where(b => b.Text.Equals(message.Text)).FirstOrDefault();
+                if(brandSelected != null)
+                {
+                    this.brandSelected = brandSelected;
+                    await ShowSelectType(context);
+                    context.Wait(TypeMessageReceivedAsync);
+                    return;
+                }
+                else
+                {
+                    var reply = context.MakeMessage();
+                    reply.Text = "I did not understand you, please select one brand.";
+                    await context.PostAsync(reply);
+                    await ShowSelectBrand(context);
+                    context.Wait(BrandMessageReceivedAsync);
+                    return;
+                }
+            }
+            else
+            {
+                var content = await HandleAttachments(context, message);
+                if (content != null)
+                {
+                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    CatalogFilter filter = new CatalogFilter() { Tags = tags };
+                    context.Done(filter);
+                    return;
+                }
+            }
+        }
+
+        public virtual async Task TypeMessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
+        {
+            var message = await result;
+            if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
+            {
+                var types = await serviceCatalog.GetTypes();
+                var typeSelected = types.Where(b => b.Text.Equals(message.Text)).FirstOrDefault();
+                if (brandSelected != null)
+                {
+                    CatalogFilter filter = new CatalogFilter(brandSelected.Id, typeSelected.Id);
+                    context.Done(filter);
+                    return;
+                }
+                else
+                {
+                    var reply = context.MakeMessage();
+                    reply.Text = "I did not understand you, please select one type.";
+                    await context.PostAsync(reply);
+                    await ShowSelectType(context);
+                    context.Wait(BrandMessageReceivedAsync);
+                    return;
+                }
+            }
+            else
+            {
+                var content = await HandleAttachments(context, message);
+                if (content != null)
+                {
+                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    CatalogFilter filter = new CatalogFilter() { Tags = tags };
+                    context.Done(filter);
+                    return;
+                }
+            }
+        }
+
 
         public async Task<Attachment> AdaptiveCatalogFilter()
         {
@@ -132,7 +253,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 }
             }
             await context.PostAsync("Please choose your selection or upload a image.");
-            await ShowFilter(context);
+            await ShowCardFilter(context);
             context.Wait(AdaptiveMessageReceivedAsync);
         }
 

@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Autofac;
+using Bot46.API.Infrastructure;
 using Bot46.API.Infrastructure.Dialogs;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
@@ -17,9 +19,11 @@ namespace Bot46.API.Controllers
     public class MessagesController : ApiController
     {
         private readonly ILifetimeScope scope;
-        public MessagesController(ILifetimeScope scope)
+        private BotSettings settings;
+        public MessagesController(ILifetimeScope scope, BotSettings settings)
         {
             SetField.NotNull(out this.scope, nameof(scope), scope);
+            SetField.NotNull(out this.settings, nameof(settings), settings);
         }
 
         /// <summary>
@@ -85,17 +89,32 @@ namespace Bot46.API.Controllers
                     {
                         if (newMember.Id != activity.Recipient.Id)
                         {
-                            var reply = activity.CreateReply();
-                            // TODO change to HeroCard
-                            reply.Text = $"Welcome {newMember.Name}!. I am Eshop-Bot.";
-                            await client.Conversations.ReplyToActivityAsync(reply);
+                            var replyWelcome = activity.CreateReply();
+
+                            var heroCard = new HeroCard() {
+                                Title = $"Welcome {newMember.Name}!",                          
+                                Images = new List<CardImage>() { new CardImage() {Alt="eShop Logo", Url = $"{settings.MvcUrl}/images/brand.png" } }
+                            };
+
+                            var attachments = new List<Attachment>
+                            {
+                                heroCard.ToAttachment()
+                            };
+
+                            replyWelcome.Attachments = attachments;
+                            
+                            await client.Conversations.ReplyToActivityAsync(replyWelcome);
+
+                            var replyBotName = activity.CreateReply();
+                            replyBotName.Text = " I am Eshop-Bot.";
+                            await client.Conversations.ReplyToActivityAsync(replyBotName);
 
                             var replyActions = activity.CreateReply();
                             replyActions.Text = $"I can show you Eshop Catalog, add items to your cart, place a new order and explorer your orders.";
                             await client.Conversations.ReplyToActivityAsync(replyActions);
 
                             var replyInitialHelp = activity.CreateReply();
-                            replyInitialHelp.Text = $"Just type what ever you want to do, for example: Catalog";
+                            replyInitialHelp.Text = $"Just type what ever you want to do, for example: *show me the catalog*";
                             await client.Conversations.ReplyToActivityAsync(replyInitialHelp);
                         }                        
                     }
