@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEA0C318-FFED-4D39-8781-265718CA43DD}"
 EndProject
@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{932D8224-11F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3AF739CD-81D8-428D-A08A-0A58372DEBF6}"
 	ProjectSection(SolutionItems) = preProject
+		.env = .env
 		Local.testsettings = Local.testsettings
 		NuGet.config = NuGet.config
 	EndProjectSection
@@ -109,7 +110,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.ProductSearchImageBased.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TensorFlowSharp", "src\Services\AI.ProductSearchImageBased\TensorFlowSharp\TensorFlowSharp.csproj", "{EAB2F9C2-3DB2-44D6-A124-7B3A1F2881A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI.ProductSearchImageBased.AzureCognitiveServices.API", "src\Services\AI.ProductSearchImageBased\AI.ProductSearchImageBased.AzureCognitiveServices.API\AI.ProductSearchImageBased.AzureCognitiveServices.API.csproj", "{06C1249E-D71B-4F50-AB2A-8DCD5D2B6696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.ProductSearchImageBased.AzureCognitiveServices.API", "src\Services\AI.ProductSearchImageBased\AI.ProductSearchImageBased.AzureCognitiveServices.API\AI.ProductSearchImageBased.AzureCognitiveServices.API.csproj", "{06C1249E-D71B-4F50-AB2A-8DCD5D2B6696}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
