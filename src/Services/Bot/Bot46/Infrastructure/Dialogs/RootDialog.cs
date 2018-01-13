@@ -13,10 +13,21 @@ namespace Bot46.API.Infrastructure.Dialogs
     [Serializable]
     public class RootDialog : LuisDialog<object>
     {
-        private static readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
+        private readonly ICatalogService catalogService; // = ServiceResolver.Get<ICatalogService>();
+        private readonly IBasketService basketService;
+        private readonly ICatalogAIService catalogAIService;
+        private readonly IProductSearchImageService productSearchImageService;
 
-        public RootDialog(ILuisService luis) : base(luis) {
+        //private readonly CatalogDialog catalogDialog;
 
+        public RootDialog(ICatalogService catalogService, IBasketService basketService, 
+            ICatalogAIService catalogAIService, IProductSearchImageService productSearchImageService, 
+            ILuisService luis) : base(luis) {
+            this.catalogService = catalogService;
+            this.basketService = basketService;
+            this.catalogAIService = catalogAIService;
+            this.productSearchImageService = productSearchImageService;
+            //catalogDialog = new CatalogDialog(catalogService, basketService, catalogAIService, productSearchImageService);
         }
 
         [LuisIntent("")]
@@ -38,21 +49,22 @@ namespace Bot46.API.Infrastructure.Dialogs
         [LuisIntent("Catalog")]
         public async Task Catalog(IDialogContext context, LuisResult result)
         {
-            var catalogdialog = new CatalogDialog();
-            if(result.Entities.Count > 0)
+            //var catalogdialog = new CatalogDialog();
+            var catalogDialog = new CatalogDialog(catalogService, basketService, catalogAIService, productSearchImageService);
+            if (result.Entities.Count > 0)
             {
-                await SetCatalogFilter(result, catalogdialog);
+                await SetCatalogFilter(result, catalogDialog);
             }
-            context.Call(catalogdialog, ResumeAfterDialog);
+            context.Call(catalogDialog, ResumeAfterDialog);
         }
 
-        private static async Task SetCatalogFilter(LuisResult result, CatalogDialog catalogdialog)
+        private async Task SetCatalogFilter(LuisResult result, CatalogDialog catalogdialog)
         {
             CatalogFilter filter = new CatalogFilter();
             var brand = result.Entities.Where(e => e.Type.Equals("brand")).SingleOrDefault();
             if (brand != null)
             {
-                var brands = await serviceCatalog.GetBrands();
+                var brands = await catalogService.GetBrands();
                 var brandSelected = brands.Where(b => b.Text.Equals(brand.Entity, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                 if (brandSelected != null)
                 {
@@ -63,7 +75,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             var type = result.Entities.Where(e => e.Type.Equals("type")).SingleOrDefault();
             if (type != null)
             {
-                var types = await serviceCatalog.GetTypes();
+                var types = await catalogService.GetTypes();
                 var typeSelected = types.Where(b => b.Text.Equals(type.Entity, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
                 if (typeSelected != null)
                 {

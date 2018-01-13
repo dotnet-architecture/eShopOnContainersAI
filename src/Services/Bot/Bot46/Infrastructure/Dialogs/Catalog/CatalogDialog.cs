@@ -16,21 +16,29 @@ namespace Bot46.API.Infrastructure.Dialogs
     [Serializable]
     public class CatalogDialog : IDialog<object>
     {
-        private readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
-        private readonly IBasketService serviceBasket = ServiceResolver.Get<IBasketService>();
-        private static readonly ICatalogAIService serviceCatalogAI = ServiceResolver.Get<ICatalogAIService>();
-
+        private readonly ICatalogService catalogService; // = ServiceResolver.Get<ICatalogService>();
+        private readonly IBasketService basketService; // = ServiceResolver.Get<IBasketService>();
+        private readonly ICatalogAIService catalogAIService; // = ServiceResolver.Get<ICatalogAIService>();
+        private readonly IProductSearchImageService productSearchImageService;
         private readonly int _itemsPage = 10;
         private int _currentPage = 0;
         internal CatalogFilter _filter = null;
 
         public JObject ItemToBuy { get; private set; }
 
+        public CatalogDialog(ICatalogService catalogService, IBasketService basketService, ICatalogAIService catalogAIService, IProductSearchImageService productSearchImageService)
+        {
+            this.catalogService = catalogService;
+            this.basketService = basketService;
+            this.catalogAIService = catalogAIService;
+            this.productSearchImageService = productSearchImageService;
+        }
+
         public async Task StartAsync(IDialogContext context)
         {
             if (_filter == null)
             {
-                context.Call(new CatalogFilterDialog(), ExecutedCatalogFilterAsync);
+                context.Call(new CatalogFilterDialog(catalogService, productSearchImageService), ExecutedCatalogFilterAsync);
             }
             else
             {
@@ -55,11 +63,11 @@ namespace Bot46.API.Infrastructure.Dialogs
             Catalog catalog;
             if(_filter.Tags != null)
             {
-                catalog = await serviceCatalogAI.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type, _filter.Tags);
+                catalog = await catalogAIService.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type, _filter.Tags);
             }
             else
             {
-                 catalog = await serviceCatalog.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type);
+                 catalog = await catalogService.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type);
             }
 
             int pageCount = (catalog.Count + _itemsPage - 1) / _itemsPage;
@@ -268,7 +276,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                     UnitPrice = json.GetValue("UnitPrice").ToObject<decimal>(),
                     ProductId = json.GetValue("ProductId").ToString(),
                 };
-                await serviceBasket.AddItemToBasket(authUser.UserId, product, authUser.AccessToken);
+                await basketService.AddItemToBasket(authUser.UserId, product, authUser.AccessToken);
                 reply.Text = $"You have added {producName} to your basket.";
                 context.Call(new BasketDialog(), BasketAsync);
             }

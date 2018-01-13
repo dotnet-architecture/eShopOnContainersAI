@@ -16,11 +16,13 @@ namespace Bot46.API.Infrastructure.Dialogs
     public class CatalogFilterDialog : IDialog<CatalogFilter>
     {
         //protected int count = 1;
-        private static readonly ICatalogService serviceCatalog = ServiceResolver.Get<ICatalogService>();
-        private static readonly IProductSearchImageService serviceComputerVision = ServiceResolver.Get<IProductSearchImageService>();
+        private readonly ICatalogService catalogService = ServiceResolver.Get<ICatalogService>();
+        private readonly IProductSearchImageService productSearchImageService = ServiceResolver.Get<IProductSearchImageService>();
         private Brand brandSelected;
 
-        public CatalogFilterDialog() {
+        public CatalogFilterDialog(ICatalogService catalogService, IProductSearchImageService productSearchImageService) {
+            this.catalogService = catalogService;
+            this.productSearchImageService = productSearchImageService;
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -40,7 +42,7 @@ namespace Bot46.API.Infrastructure.Dialogs
         private async Task ShowSelectBrand(IDialogContext context) {
             var reply = context.MakeMessage();
             reply.Text = "Please select a brand do you want to search or upload a image to search by image.";
-            var brands = await serviceCatalog.GetBrands();
+            var brands = await catalogService.GetBrands();
             var options = new List<CardAction>();
  
             foreach (var brand in brands)
@@ -65,7 +67,7 @@ namespace Bot46.API.Infrastructure.Dialogs
         {
             var reply = context.MakeMessage();
             reply.Text = "Please select a item category to seach or upload a image.";
-            var types = await serviceCatalog.GetTypes();
+            var types = await catalogService.GetTypes();
 
             var options = new List<CardAction>();
             foreach (var type in types)
@@ -91,7 +93,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             var message = await result;
             if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
             {
-                var brands = await serviceCatalog.GetBrands();
+                var brands = await catalogService.GetBrands();
                 var brandSelected = brands.Where(b => b.Text.Equals(message.Text)).FirstOrDefault();
                 if(brandSelected != null)
                 {
@@ -115,7 +117,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 var content = await HandleAttachments(context, message);
                 if (content != null)
                 {
-                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    var tags = await productSearchImageService.ClassifyImageAsync(content);
                     CatalogFilter filter = new CatalogFilter() { Tags = tags };
                     context.Done(filter);
                     return;
@@ -128,7 +130,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             var message = await result;
             if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
             {
-                var types = await serviceCatalog.GetTypes();
+                var types = await catalogService.GetTypes();
                 var typeSelected = types.Where(b => b.Text.Equals(message.Text)).FirstOrDefault();
                 if (brandSelected != null)
                 {
@@ -151,7 +153,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 var content = await HandleAttachments(context, message);
                 if (content != null)
                 {
-                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    var tags = await productSearchImageService.ClassifyImageAsync(content);
                     CatalogFilter filter = new CatalogFilter() { Tags = tags };
                     context.Done(filter);
                     return;
@@ -177,7 +179,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Weight = AdaptiveTextWeight.Bolder
             });
          
-            var brands = await serviceCatalog.GetBrands();
+            var brands = await catalogService.GetBrands();
             var brandChoices = new List<AdaptiveChoice>();
             foreach ( var brand in brands){
                 brandChoices.Add( new AdaptiveChoice() { Title = brand.Text, Value = brand.Id });
@@ -197,7 +199,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 Text = "Type",
                 Weight = AdaptiveTextWeight.Bolder
             });         
-            var types = await serviceCatalog.GetTypes();
+            var types = await catalogService.GetTypes();
             var typeChoices = new List<AdaptiveChoice>();
             foreach (var type in types){
                 typeChoices.Add( new AdaptiveChoice() { Title = type.Text, Value = type.Id });
@@ -246,7 +248,7 @@ namespace Bot46.API.Infrastructure.Dialogs
                 var content = await HandleAttachments(context, message);
                 if(content != null)
                 {
-                    var tags = await serviceComputerVision.ClassifyImageAsync(content);
+                    var tags = await productSearchImageService.ClassifyImageAsync(content);
                     CatalogFilter filter = new CatalogFilter() { Tags = tags };
                     context.Done(filter);
                     return;

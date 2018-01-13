@@ -6,8 +6,34 @@ using System.Web;
 
 namespace Bot46.API.Infrastructure.Models
 {
+    public static class ClaimsExtensions
+    {
+        public static string FirstOrDefaultClaimType(this IEnumerable<Claim> self, string claimType)
+        {
+            return self.Where(claim => claim.Type.Equals(claimType))
+                    .Select(claimData => claimData.Value)
+                    .FirstOrDefault();
+        }
+    }
+
     public class UserData
     {
+        private const string userNameKey = "preferred_username";
+        private const string nameKey = "name";
+        private const string lastNameKey = "last_name";
+        private const string cardHolderKey = "card_holder";
+        private const string cardNumberKey = "card_number";
+        private const string cardSecurityNumberKey = "card_security_number";
+        private const string cardExpirationKey = "card_expiration";
+        private const string cityKey = "address_city";
+        private const string countryKey = "address_country";
+        private const string stateKey = "address_state";
+        private const string streetKey = "address_street";
+        private const string zipCodeKey = "address_zip_code";
+        private const string emailKey = "email";
+        private const string phoneNumberKey = "phone_number";
+        private const string userApplicationId = "sub";
+
         public UserData()
         {
 
@@ -15,62 +41,21 @@ namespace Bot46.API.Infrastructure.Models
 
         public UserData(IEnumerable<Claim> claims)
         {
-            UserName = claims
-                    .Where(claim => claim.Type.Equals("preferred_username"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            Name = claims
-                    .Where(claim => claim.Type.Equals("name"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            LastName = claims
-                    .Where(claim => claim.Type.Equals("last_name"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            CardHolderName = claims
-                    .Where(claim => claim.Type.Equals("card_holder"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            CardNumber = claims
-                    .Where(claim => claim.Type.Equals("card_number"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            SecurityNumber = claims
-                    .Where(claim => claim.Type.Equals("card_security_number"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            Expiration = claims
-                    .Where(claim => claim.Type.Equals("card_expiration"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            City = claims
-                    .Where(claim => claim.Type.Equals("address_city"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            Country = claims
-                    .Where(claim => claim.Type.Equals("address_country"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            State = claims
-                    .Where(claim => claim.Type.Equals("address_state"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            Street = claims
-                    .Where(claim => claim.Type.Equals("address_street"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            ZipCode = claims
-                    .Where(claim => claim.Type.Equals("address_zip_code"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            Email = claims
-                    .Where(claim => claim.Type.Equals("email"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
-            PhoneNumber = claims
-                    .Where(claim => claim.Type.Equals("phone_number"))
-                    .Select(claimData => claimData.Value)
-                    .FirstOrDefault();
+            UserName = claims.FirstOrDefaultClaimType(userNameKey);
+            Name = claims.FirstOrDefaultClaimType(nameKey);
+            LastName = claims.FirstOrDefaultClaimType(lastNameKey);
+            CardHolderName = claims.FirstOrDefaultClaimType(cardHolderKey);
+            CardNumber = claims.FirstOrDefaultClaimType(cardNumberKey);
+            SecurityNumber = claims.FirstOrDefaultClaimType(cardSecurityNumberKey);
+            Expiration = claims.FirstOrDefaultClaimType(cardExpirationKey);
+            City = claims.FirstOrDefaultClaimType(cityKey);
+            Country = claims.FirstOrDefaultClaimType(countryKey);
+            State = claims.FirstOrDefaultClaimType(stateKey);
+            Street = claims.FirstOrDefaultClaimType(streetKey);
+            ZipCode = claims.FirstOrDefaultClaimType(zipCodeKey);
+            Email = claims.FirstOrDefaultClaimType(emailKey);
+            PhoneNumber = claims.FirstOrDefaultClaimType(phoneNumberKey);
+            UserApplicationId = claims.FirstOrDefaultClaimType(userApplicationId);
         }
 
         public string UserName { get; set; }
@@ -87,5 +72,6 @@ namespace Bot46.API.Infrastructure.Models
         public string ZipCode { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string UserApplicationId { get; set; }
     }
 }

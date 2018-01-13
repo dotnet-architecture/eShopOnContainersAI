@@ -1,9 +1,14 @@
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 using Bot46.API.Infrastructure.Extensions;
+using Bot46.API.Infrastructure.Models;
+using IdentityModel;
+using IdentityModel.Client;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
+using static IdentityModel.OidcConstants;
 
 namespace Bot46.API.Infrastructure.Dialogs
 {
@@ -34,7 +39,7 @@ namespace Bot46.API.Infrastructure.Dialogs
             reply.Attachments = new List<Attachment>();
             if (!await message.IsAuthenticatedAsync(userIdFrom))
             {
-                Attachment login = reply.LoginCard(userIdFrom);
+                Attachment login = await LoginCard(reply, userIdFrom);
                 reply.Attachments.Add(login);
             }
             else {
@@ -44,5 +49,55 @@ namespace Bot46.API.Infrastructure.Dialogs
             }
             return reply;
         }
+
+        protected async Task<Attachment> LoginCard(IActivity activity, string userId)
+        {
+            List<CardAction> cardButtons = new List<CardAction>();
+
+            //AuthData authData = new AuthData() { 
+            //    ChannelId = activity.ChannelId,
+            //    UserId    = userId,
+            //    ConversationId = activity.Conversation.Id,
+            //    ServiceUrl = activity.ServiceUrl
+            //    };
+
+            //string authDataEncoded = authData.Encode();
+
+            var identityUrl = ConfigurationManager.AppSettings["IdentityUrl"];
+            var discoveryClient = new DiscoveryClient(identityUrl);
+            var doc = await discoveryClient.GetAsync();
+
+            var request = new RequestUrl(doc.AuthorizeEndpoint);
+            var extra = new Dictionary<string, string>
+            {
+                { TokenRequest.ClientSecret, "secret" }
+            };
+            var authorizeUrl = request.CreateAuthorizeUrl(
+                clientId: "Bot",                
+                responseType: OidcConstants.ResponseTypes.CodeIdToken,
+                responseMode: OidcConstants.ResponseModes.FormPost,
+                redirectUri: "http://localhost:5200/account/signin-oidc",
+                scope: "openid profile offline_access orders basket marketing locations",
+                state: AuthData.Encode(ConfigurationManager.AppSettings["BotId"], activity.ChannelId, userId, activity.Conversation.Id, activity.ServiceUrl),
+                nonce: CryptoRandom.CreateUniqueId(),
+                extra: extra);
+
+            // TODO SHOW IMAGE
+            CardAction plButton = new CardAction()
+            {
+                // TODO change to real local URL
+                // TODO change to not Harcoded String to BasePath
+                //Value = $"http://localhost:5200/Auth/Login?authData={authDataEncoded}",
+                Value = authorizeUrl,
+                Type = "signin",
+                Title = "Connect"
+            };
+
+            cardButtons.Add(plButton);
+            SigninCard plCard = new SigninCard("Auth me", cardButtons);
+            Attachment plAttachment = plCard.ToAttachment();
+            return plAttachment;
+        }
+
     }
 }

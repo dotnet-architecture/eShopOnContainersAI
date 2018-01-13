@@ -100,7 +100,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Mvc"]}/signin-oidc"
+                        $"{clientsUrl["Mvc"]}/signin-oidc",
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
@@ -126,18 +126,18 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Bot"]}",                             // public uri of the client
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials, // new [] { GrantType.ClientCredentials, GrantType.AuthorizationCode },
                     AllowAccessTokensViaBrowser = false,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Bot"]}/signin-oidc"
+                        $"{clientsUrl["Bot"]}/account/signin-oidc"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Bot"]}/signout-callback-oidc"
+                        $"{clientsUrl["Bot"]}/account/signout-callback-oidc"
                     },
                     AllowedScopes = new List<string>
                     {
