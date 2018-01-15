@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.TensorFlow.API.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.TensorFlow.API.Controllers
 {
@@ -37,7 +39,11 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
             using (var image = new MemoryStream())
             {
                 await imageFile.CopyToAsync(image);
-                tags = await predictionServices.ClassifyImageAsync(image.ToArray());
+                var imageData = image.ToArray();
+                if (!imageData.IsValidImage())
+                    return StatusCode(StatusCodes.Status415UnsupportedMediaType);
+
+                tags = await predictionServices.ClassifyImageAsync(imageData);
             }
 
             return Ok(tags);
