@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 
@@ -23,11 +24,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
             var analyzeImageUri = API.ProductImageSearch.ClassifyImage(remoteServiceBaseUrl);
 
             var response = await httpClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
-            var responseString = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var responseString = await response.Content.ReadAsStringAsync();
+                var tags = JsonConvert.DeserializeObject<string[]>(responseString);
+                return tags;
+            }
 
-            var tags = JsonConvert.DeserializeObject<string[]>(responseString);
-
-            return tags;
+            return Enumerable.Empty<string>();
         }
     }
 }
