@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -28,7 +29,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             var itemsPage = 12;
 
             IEnumerable<string> tags = null;
-            if (ImageFilter != null && ImageFilter.Length > 0)
+            var imageFilterActive = ImageFilter != null && ImageFilter.Length > 0;
+            if (imageFilterActive)
             {
                 using (var ms = new MemoryStream())
                 {
@@ -39,8 +41,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             else if (!String.IsNullOrEmpty(Tags))
                 tags = Tags.Split(',');
 
-            var catalog = await _catalogAISvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied, tags);
-            var tagsAvailable = (tags == null || !tags.Any());
+            var noTagsAvailable = (tags == null || !tags.Any());
+
+            var catalog = imageFilterActive && noTagsAvailable ? 
+                Catalog.Empty : 
+                await _catalogAISvc.GetCatalogItems(page ?? 0, itemsPage, BrandFilterApplied, TypesFilterApplied, tags);
 
             var vm = new IndexViewModel()
             {
@@ -49,8 +54,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                 Types = await _catalogSvc.GetTypes(),
                 BrandFilterApplied = BrandFilterApplied ?? 0,
                 TypesFilterApplied = TypesFilterApplied ?? 0,
-                Tags = tagsAvailable ? String.Empty : String.Join(',',tags),
-                TagsActive = tagsAvailable ? String.Empty : "active",
+                Tags = noTagsAvailable ? String.Empty : String.Join(',',tags),
+                TagsActive = noTagsAvailable ? String.Empty : "active",
                 PaginationInfo = new PaginationInfo()
                 {
                     ActualPage = page ?? 0,
@@ -59,6 +64,13 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     TotalPages = (int)Math.Ceiling(((decimal)catalog.Count / itemsPage))
                 }
             };
+
+            if (catalog?.Data == null || !catalog.Data.Any())
+            {
+                ViewBag.EmptyCatalogMsg = imageFilterActive ? 
+                    "Sorry, we could not find any product similar to your sample image" : 
+                    "Sorry, we could not find any product";
+            }
 
             vm.PaginationInfo.Next = (vm.PaginationInfo.ActualPage == vm.PaginationInfo.TotalPages - 1) ? "is-disabled" : "";
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
