@@ -43,7 +43,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - TensorFlowPredictionDefaultModel=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_MODEL}
+      - TensorFlowPredictionDefaultModel=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}
     ports:
@@ -168,7 +168,9 @@ services:
       - MarketingUrlHC=http://marketing.api/hc
       - PaymentUrlHC=http://payment.api/hc
       - ProductRecommenderUrl=${ESHOPAI_PRODUCTRECOMMENDER_URI}
-      - ProductSearchImageUrl=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_URI}
+      - ProductSearchImageBased__CognitiveUrl=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_COGNITIVE_MICROSERVICE_URI}
+      - ProductSearchImageBased__TensorFlowUrl=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_TENSORFLOW_MICROSERVICE_URI}
+      - ProductSearchImageBased__Approach=${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
       - UseCustomizationData=True
       - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
       - OrchestratorType=${ORCHESTRATOR_TYPE}

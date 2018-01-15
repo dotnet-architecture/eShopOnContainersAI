@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.WebMVC
 {
@@ -15,10 +12,57 @@ namespace Microsoft.eShopOnContainers.WebMVC
         public string LocationsUrl { get; set; }
         public string ArtificialIntelligenceUrl { get; set; }
         public string ProductRecommenderUrl { get; set; }
-        public string ProductSearchImageUrl { get; set; }
+
+        public string ProductSearchImageUrl
+        {
+            get
+            {
+                if (ProductSearchImageBased == null || string.IsNullOrEmpty(ProductSearchImageBased.Approach))
+                    return string.Empty;
+                switch (ProductSearchImageBased.ModelApproach)
+                {
+                    case ProductSearchImageBasedSchema.Approaches.CognitiveServices:
+                        return ProductSearchImageBased.CognitiveUrl;
+                    case ProductSearchImageBasedSchema.Approaches.TensorFlowCustom:
+                    case ProductSearchImageBasedSchema.Approaches.TensorFlowPreTrained:
+                        return ProductSearchImageBased.TensorFlowUrl;
+                    default:
+                        return ProductSearchImageBased.TensorFlowUrl;
+                }
+            }
+        }
+
         public bool ActivateCampaignDetailFunction { get; set; }
         public Logging Logging { get; set; }
         public bool UseCustomizationData { get; set; }
+
+        public ProductSearchImageBasedSchema ProductSearchImageBased { get; set; }
+    }
+
+    public class ProductSearchImageBasedSchema
+    {
+        public enum Approaches
+        {
+            Default,
+            CognitiveServices,
+            TensorFlowPreTrained,
+            TensorFlowCustom
+        }
+
+        public string CognitiveUrl { get; set; }
+        public string TensorFlowUrl { get; set; }
+        public string Approach { get; set; }
+
+        public Approaches ModelApproach
+        {
+            get
+            {
+                var preSelected = Approaches.Default;
+                if (string.IsNullOrEmpty(Approach)) return preSelected;
+                Enum.TryParse<Approaches>(Approach, true, out preSelected);
+                return preSelected;
+            }
+        }
     }
 
     public class Connectionstrings

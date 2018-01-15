@@ -14,24 +14,24 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
 
     public class TensorFlowPredictionStrategy : ITensorFlowPredictionStrategy
     {
-        private readonly Dictionary<AnalyzeImageModel, IClassifier> models;
-        private readonly AnalyzeImageModel defaultModel;
+        private readonly Dictionary<Approaches, IClassifier> models;
+        private readonly Approaches defaultModel;
 
         public TensorFlowPredictionStrategy(IOptionsSnapshot<AppSettings> settings, IHostingEnvironment environment)
         {
             object parseDefaultModel;
             defaultModel =
-                (Enum.TryParse(typeof(AnalyzeImageModel), settings.Value.TensorFlowPredictionDefaultModel, ignoreCase: true, result: out parseDefaultModel)) ?
-                (AnalyzeImageModel) parseDefaultModel :
-                 AnalyzeImageModel.Default;
+                (Enum.TryParse(typeof(Approaches), settings.Value.TensorFlowPredictionDefaultModel, ignoreCase: true, result: out parseDefaultModel)) ?
+                (Approaches) parseDefaultModel :
+                 Approaches.Default;
 
-            if (defaultModel == AnalyzeImageModel.Default)
-                defaultModel = AnalyzeImageModel.TensorFlowInception;
+            if (defaultModel == Approaches.Default)
+                defaultModel = Approaches.TensorFlowPreTrained;
 
-            models = new Dictionary<AnalyzeImageModel, IClassifier>
+            models = new Dictionary<Approaches, IClassifier>
             {
-                { AnalyzeImageModel.TensorFlowInception, new TensorFlowInceptionPrediction(settings, environment) },
-                { AnalyzeImageModel.TensorFlowModel, new TensorFlowModelPrediction(settings, environment) }
+                { Approaches.TensorFlowPreTrained, new TensorFlowInceptionPrediction(settings, environment) },
+                { Approaches.TensorFlowCustom, new TensorFlowModelPrediction(settings, environment) }
             };
         }
 
