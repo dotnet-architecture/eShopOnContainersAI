@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Classifier;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Controllers
 {
@@ -30,9 +30,12 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
             using (var image = new MemoryStream())
             {
                 await imageFile.CopyToAsync(image);
-                tags = await ClassifyImageAsync(image.ToArray());
-            }
+                var imageData = image.ToArray();
+                if (!imageData.IsValidImage())
+                    return StatusCode(StatusCodes.Status415UnsupportedMediaType);
 
+                tags = await ClassifyImageAsync(imageData);
+            }
             return Ok(tags);
         }
 
@@ -50,6 +53,5 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
                 .OrderByDescending(c => c.Probability)
                 .Select(c => c.Label);
         }
-
     }
 }
