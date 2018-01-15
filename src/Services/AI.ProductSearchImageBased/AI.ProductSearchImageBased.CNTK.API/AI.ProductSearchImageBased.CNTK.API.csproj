@@ -125,6 +125,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ImageValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Classifier\CNTKModelPrediction.cs" />
     <Compile Include="Classifier\CNTKModelPredictionResources.cs" />
