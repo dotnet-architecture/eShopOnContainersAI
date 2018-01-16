@@ -65,7 +65,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
                         logger.LogError($"The request failed with status code: {response.StatusCode}");
                         logger.LogDebug(response.Headers.ToString());
                         logger.LogDebug(contentString);
-                        return null;
+                        throw new Exception("Error in Cognitive Services response");
                     }
 
                     var visionApiResponse = JsonConvert.DeserializeObject<VisionApiResponse>(contentString);

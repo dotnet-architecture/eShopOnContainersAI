@@ -73,5 +73,26 @@ namespace Catalog.API.Extensions
 
             return items;
         }
+
+        public static IEnumerable<string> Permutation(this string self)
+        {
+            const string whiteSpace = " ";
+            if (!self.Contains(whiteSpace))
+            {
+                yield return self;
+            }
+            else
+            {
+                var parts = self.Split(whiteSpace);
+                string previous = null;
+                foreach (var part in parts)
+                {
+                    yield return part;
+                    if (!string.IsNullOrEmpty(previous))
+                        yield return $"{previous}-{part}";
+                    previous = part;
+                }
+            }
+        }
     }
 }

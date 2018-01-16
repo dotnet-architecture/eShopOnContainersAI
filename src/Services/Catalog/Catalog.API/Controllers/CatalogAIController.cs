@@ -91,8 +91,16 @@ namespace Catalog.API.Controllers
         {
             var root = _catalogContext.CatalogItems.AsQueryable();
 
-            var validatedPageSize = pageSize ?? 10;
-            var validatedPageIndex = pageIndex ?? 0;
+            if (!String.IsNullOrEmpty(tags))
+            {
+                var preTags = tags.Split(',').SelectMany(c => c.Permutation());
+                var catalogTags = await _catalogTagsRepository.FindMatchingTagsAsync(preTags);
+                var catalogTagsProductIds = catalogTags.Select(x => x.ProductId);
+                if (catalogTagsProductIds.Any())
+                    root = root.Where(ci => catalogTagsProductIds.Contains(ci.Id));
+                else
+                    return Ok(Enumerable.Empty<CatalogItem>());
+            }
 
             if (catalogTypeId.HasValue)
             {
@@ -104,16 +112,11 @@ namespace Catalog.API.Controllers
                 root = root.Where(ci => ci.CatalogBrandId == catalogBrandId);
             }
 
-            if (!String.IsNullOrEmpty(tags))
-            {
-                var catalogTags = await _catalogTagsRepository.FindMatchingTagsAsync(tags.Split(','));
-                var catalogTagsProductIds = catalogTags.Select(x => x.ProductId);
-                if (catalogTagsProductIds.Any())
-                    root = root.Where(ci => catalogTagsProductIds.Contains(ci.Id));
-            }
-
             var totalItems = await root
                 .LongCountAsync();
+
+            var validatedPageSize = pageSize ?? 10;
+            var validatedPageIndex = pageIndex ?? 0;
 
             var itemsOnPage = await root
                 .OrderBy(c => c.Name)

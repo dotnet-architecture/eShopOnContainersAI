@@ -34,4 +34,13 @@
     <ProjectReference Include="..\TensorFlowSharp\TensorFlowSharp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\models\labels.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\models\model_tf.pb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
