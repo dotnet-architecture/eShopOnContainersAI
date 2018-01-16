@@ -1,0 +1,4 @@
+bracelet
+earrings
+parasol
+thermometer
