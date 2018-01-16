@@ -86,7 +86,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             // Adds IdentityServer
-            services.AddIdentityServer()
+            services.AddIdentityServer(x => x.IssuerUri = "null")
                 .AddSigningCredential(Certificate.Get())
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddConfigurationStore(options =>
