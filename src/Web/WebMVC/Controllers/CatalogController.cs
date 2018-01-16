@@ -9,6 +9,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+using Microsoft.Extensions.Options;
 
 namespace Microsoft.eShopOnContainers.WebMVC.Controllers
 {
@@ -17,11 +18,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
         private ICatalogService _catalogSvc;
         private readonly ICatalogAIService _catalogAISvc;
         private readonly IProductSearchImageBasedService _productImageSearchService;
+        private readonly IOptionsSnapshot<AppSettings> settings;
 
-        public CatalogController(ICatalogService catalogSvc, ICatalogAIService catalogAIService, IProductSearchImageBasedService productSearchImageService) {
+        public CatalogController(ICatalogService catalogSvc, ICatalogAIService catalogAIService, 
+            IProductSearchImageBasedService productSearchImageService, IOptionsSnapshot<AppSettings> settings) {
             _catalogSvc = catalogSvc;
             _catalogAISvc = catalogAIService;
             _productImageSearchService = productSearchImageService;
+            this.settings = settings;
         }
 
 		public async Task<IActionResult> Index(int? BrandFilterApplied, int? TypesFilterApplied, int? page, IFormFile ImageFilter, string Tags, [FromQuery]string errorMsg)
@@ -76,6 +80,8 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
             vm.PaginationInfo.Previous = (vm.PaginationInfo.ActualPage == 0) ? "is-disabled" : "";
 
             ViewBag.BasketInoperativeMsg = errorMsg;
+
+            ViewBag.ProductSearchImageBasedLabel = $"product search image-based ({settings.Value.ProductSearchImageBased.Approach})";
 
             return View(vm);
         }

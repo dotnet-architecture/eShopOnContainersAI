@@ -11,11 +11,11 @@ using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.TensorFlow
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.TensorFlow.API.Controllers
 {
-    public enum AnalyzeImageModel
+    public enum Approaches
     {
         Default,
-        TensorFlowInception,
-        TensorFlowModel
+        TensorFlowPreTrained,
+        TensorFlowCustom
     }
 
     [Route("api/v1/productSearchImage")]

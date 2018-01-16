@@ -19,7 +19,7 @@
             </label>
 
             <input class="esh-catalog-file" type="file" src="~/images/arrow-right.svg" asp-for="@Model.ImageFilter" onchange='javascript: document.querySelector(".esh-catalog-filter.caption").className += "active"' />
-            <label asp-for="@Model.ImageFilter" class="esh-catalog-label cs" data-title="product search image based">
+            <label asp-for="@Model.ImageFilter" class="esh-catalog-label cs" data-title="@ViewBag.ProductSearchImageBasedLabel">
                 <span class="esh-catalog-filter caption @Model.TagsActive">Choose file</span>
             </label>
 
