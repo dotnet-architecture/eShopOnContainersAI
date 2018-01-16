@@ -1,7 +1,7 @@
 {
   "luis_schema_version": "2.1.0",
   "versionId": "0.1",
-  "name": "eShopOnContainersAI",
+  "name": "eshopAI",
   "desc": "eShopOnContainersAI",
   "culture": "en-us",
   "intents": [
@@ -105,6 +105,17 @@
       "entities": []
     },
     {
+      "text": "i'm looking for a mug",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "type",
+          "startPos": 18,
+          "endPos": 20
+        }
+      ]
+    },
+    {
       "text": "show my orders.",
       "intent": "Orders",
       "entities": []
@@ -124,14 +135,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 27,
-          "endPos": 29
-        },
-        {
           "entity": "brand",
           "startPos": 19,
           "endPos": 23
+        },
+        {
+          "entity": "type",
+          "startPos": 27,
+          "endPos": 29
         }
       ]
     },
@@ -140,14 +151,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 9,
-          "endPos": 11
-        },
-        {
           "entity": "brand",
           "startPos": 18,
           "endPos": 22
+        },
+        {
+          "entity": "type",
+          "startPos": 9,
+          "endPos": 11
         }
       ]
     },
@@ -156,14 +167,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 11
-        },
-        {
           "entity": "brand",
           "startPos": 24,
           "endPos": 28
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 11
         }
       ]
     },
@@ -172,14 +183,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 14
-        },
-        {
           "entity": "brand",
           "startPos": 27,
           "endPos": 30
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 14
         }
       ]
     },
@@ -188,14 +199,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 12
-        },
-        {
           "entity": "brand",
           "startPos": 25,
           "endPos": 37
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 12
         }
       ]
     },
@@ -204,14 +215,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 23
-        },
-        {
           "entity": "brand",
           "startPos": 36,
           "endPos": 45
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 23
         }
       ]
     },
@@ -220,14 +231,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 25
-        },
-        {
           "entity": "brand",
           "startPos": 38,
           "endPos": 42
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 25
         }
       ]
     },
@@ -236,14 +247,14 @@
       "intent": "Catalog",
       "entities": [
         {
-          "entity": "type",
-          "startPos": 8,
-          "endPos": 25
-        },
-        {
           "entity": "brand",
           "startPos": 38,
           "endPos": 42
+        },
+        {
+          "entity": "type",
+          "startPos": 8,
+          "endPos": 25
         }
       ]
     },
@@ -255,17 +266,6 @@
           "entity": "brand",
           "startPos": 26,
           "endPos": 44
-        }
-      ]
-    },
-    {
-      "text": "i want a something from catalogbrandtestone",
-      "intent": "Catalog",
-      "entities": [
-        {
-          "entity": "brand",
-          "startPos": 24,
-          "endPos": 42
         }
       ]
     },
@@ -289,6 +289,135 @@
       "text": "what's going with my order",
       "intent": "Order",
       "entities": []
+    },
+    {
+      "text": "show me any mug related to azure",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 27,
+          "endPos": 31
+        },
+        {
+          "entity": "type",
+          "startPos": 12,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "show me a sheet related with visual studio",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 29,
+          "endPos": 41
+        },
+        {
+          "entity": "type",
+          "startPos": 10,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "show me a sheet related to visual studio",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 27,
+          "endPos": 39
+        },
+        {
+          "entity": "type",
+          "startPos": 10,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "show me a sheet related to .net",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 27,
+          "endPos": 30
+        },
+        {
+          "entity": "type",
+          "startPos": 10,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "i want something from catalogbrandtestone",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 22,
+          "endPos": 40
+        }
+      ]
+    },
+    {
+      "text": "show me something from .net",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 23,
+          "endPos": 26
+        }
+      ]
+    },
+    {
+      "text": "show me anything from .net",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 22,
+          "endPos": 25
+        }
+      ]
+    },
+    {
+      "text": "show me any mug from azure",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 21,
+          "endPos": 25
+        },
+        {
+          "entity": "type",
+          "startPos": 12,
+          "endPos": 14
+        }
+      ]
+    },
+    {
+      "text": "show me some mug from .net",
+      "intent": "Catalog",
+      "entities": [
+        {
+          "entity": "brand",
+          "startPos": 22,
+          "endPos": 25
+        },
+        {
+          "entity": "type",
+          "startPos": 13,
+          "endPos": 15
+        }
+      ]
     }
   ]
 }
