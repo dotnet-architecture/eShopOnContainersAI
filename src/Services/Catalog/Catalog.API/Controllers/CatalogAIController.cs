@@ -99,7 +99,7 @@ namespace Catalog.API.Controllers
                 if (catalogTagsProductIds.Any())
                     root = root.Where(ci => catalogTagsProductIds.Contains(ci.Id));
                 else
-                    return Ok(Enumerable.Empty<CatalogItem>());
+                    return Ok(PaginatedItemsViewModel<CatalogItem>.Empty);
             }
 
             if (catalogTypeId.HasValue)
