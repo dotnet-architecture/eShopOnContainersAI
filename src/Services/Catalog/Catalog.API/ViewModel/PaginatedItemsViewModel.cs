@@ -1,10 +1,14 @@
-﻿namespace Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel
+﻿using System.Linq;
+
+namespace Microsoft.eShopOnContainers.Services.Catalog.API.ViewModel
 {
     using System.Collections.Generic;
 
 
     public class PaginatedItemsViewModel<TEntity> where TEntity : class
     {
+        public static PaginatedItemsViewModel<TEntity> Empty => new PaginatedItemsViewModel<TEntity>(0, 0, 0, Enumerable.Empty<TEntity>());
+
         public int PageIndex { get; private set; }
 
         public int PageSize { get; private set; }
