@@ -6,7 +6,7 @@ This repo has a forked version of eShopOnContainers which hsa been evolved by ad
 
 TBD - Short intro with features to be added
 
-See Wiki for set it up and see the multiple scenarios:
+See Wiki for how set it up and see the multiple scenarios:
 https://github.com/dotnet-architecture/eShopOnContainersAI/wiki
 
 ## Sending feedback and pull requests
