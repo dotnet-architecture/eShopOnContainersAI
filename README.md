@@ -1,6 +1,6 @@
 # eShopOnContainersAI 
 
-## Definition and goal
+## Definition and goals
 
 This repo has a forked version of eShopOnContainers which hsa been evolved by adding AI and ML features.
 
