@@ -4,8 +4,7 @@
 
 This repo has a forked version of eShopOnContainers which hsa been evolved by adding AI and ML features.
 
-TBD
-<Short intro with features to be added>
+TBD - Short intro with features to be added
 
 ## Sending feedback and pull requests
 We'd appreciate your feedback, improvements and ideas.
