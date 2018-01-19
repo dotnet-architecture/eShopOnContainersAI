@@ -24,6 +24,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         private readonly IBasketService basketService;
         private readonly ICatalogAIService catalogAIService;
         private readonly IIdentityService identityService;
+        private readonly IProductSearchImageService productSearchImageService;
         private readonly int _itemsPage = 10;
         private int _currentPage = 0;
         internal CatalogFilter _filter = null;
@@ -32,13 +33,14 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
         public CatalogDialog(IDialogFactory dialogFactory, IBasketService basketService, 
             ICatalogService catalogService, ICatalogAIService catalogAIService, 
-            IIdentityService identityService)
+            IIdentityService identityService, IProductSearchImageService productSearchImageService)
         {
             this.dialogFactory = dialogFactory;
             this.catalogService = catalogService;
             this.basketService = basketService;
             this.catalogAIService = catalogAIService;
             this.identityService = identityService;
+            this.productSearchImageService = productSearchImageService;
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -231,12 +233,21 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
                     }
                 }
-                else {
+            else
+            {
+                var content = await HandleAttachments(context, message);
+                if (content != null)
+                {
+                    _filter.Tags = await productSearchImageService.ClassifyImageAsync(content);
+                    await StartAsync(context);
+                }
+                else
+                {
                     await context.PostAsync(TextResources.Please_make_a_selection);
                     await ShowCatalog(context);
                     context.Wait(MessageReceivedAsync);
                 }
-           
+            }
         }
 
         private async Task AskQuantity(IDialogContext context, JObject json)
@@ -296,6 +307,18 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         {
             await ShowCatalog(context);
             context.Wait(MessageReceivedAsync);
+        }
+
+        public async Task<byte[]> HandleAttachments(IDialogContext context, IMessageActivity message)
+        {
+            byte[] content = null;
+            if (message.Attachments != null && message.Attachments.Count > 0)
+            {
+                var attachment = message.Attachments[0];
+                var client = new ConnectorClient(new Uri(context.Activity.ServiceUrl), new MicrosoftAppCredentials());
+                content = await client.HttpClient.GetByteArrayAsync(attachment.ContentUrl);
+            }
+            return content;
         }
     }
 }
