@@ -9,11 +9,11 @@ namespace Microsoft.Bots.Bot.API.Dialogs.Scorable.Commands
 {
     public class HelpCommand: CommandScorable
     {
-        private readonly IIdentityService identityService;
+        private readonly IDialogFactory dialogFactory;
 
-        public HelpCommand(IIdentityService identityService, IBotToUser botToUser, IDialogTask task) : base(botToUser, task)
+        public HelpCommand(IDialogFactory dialogFactory, IBotToUser botToUser, IDialogTask task) : base(botToUser, task)
         {
-            this.identityService = identityService;
+            this.dialogFactory = dialogFactory;
         }
 
         public override string Command
@@ -28,14 +28,13 @@ namespace Microsoft.Bots.Bot.API.Dialogs.Scorable.Commands
             var message = item.AsMessageActivity();
             if(message != null)
             {
-                var helpDialog = new HelpDialog(identityService);
+                var helpDialog = dialogFactory.CreateHelpDialog();
 
                 var interruption = helpDialog.Void<object, IMessageActivity>();
 
                 task.Call(interruption, null);
 
-                await task.PollAsync(token);
-                
+                await task.PollAsync(token);                
             }
         }
 

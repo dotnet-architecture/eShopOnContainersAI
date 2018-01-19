@@ -234,7 +234,8 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="resources\LuiseShopOnContainersAI.json" />
+    <Content Include="Resources\eshopai.ngrok.yml" />
+    <None Include="Resources\LuiseShopOnContainersAI.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -254,6 +255,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Dialogs\UIHelper.cs" />
     <Compile Include="Infrastructure\BotDataRepository.cs" />
     <Compile Include="Dialogs\DialogFactory.cs" />
     <Compile Include="Infrastructure\Extensions\BotDataExtensions.cs" />
