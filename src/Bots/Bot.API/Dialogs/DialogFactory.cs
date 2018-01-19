@@ -47,7 +47,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
         public CatalogDialog CreateCatalogDialog()
         {
-            return new CatalogDialog(this, basketService, catalogService, catalogAIService, identityService);
+            return new CatalogDialog(this, basketService, catalogService, catalogAIService, identityService, productSearchImageService);
         }
 
         public CatalogFilterDialog CreateCatalogFilterDialog()
