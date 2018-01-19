@@ -3,7 +3,6 @@
 azureml-logs
 *.dprep.user
 .vscode/settings.json
-data/
 outputs/
 .azureml/project.json
 .vscode/settings.json
