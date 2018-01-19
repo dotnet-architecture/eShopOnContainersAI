@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
@@ -69,7 +70,10 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             Catalog catalog;
             if(_filter.Tags != null)
             {
-                catalog = await catalogAIService.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type, _filter.Tags);
+                if (_filter.Tags.Any())
+                    catalog = await catalogAIService.GetCatalogItems(_currentPage, _itemsPage, _filter.Brand, _filter.Type, _filter.Tags);
+                else
+                    catalog = Catalog.Empty;
             }
             else
             {
