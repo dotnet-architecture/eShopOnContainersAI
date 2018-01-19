@@ -86,89 +86,56 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             if (catalog.Count != 0)
             {                 
                 reply.Text = $"Page {_currentPage + 1} of {pageCount} ( {catalog.Count} items )";
-                reply.Attachments = CatalogCarousel(catalog, logged);
+                reply.Attachments = CatalogCarousel(catalog, logged, !context.Activity.IsSkypeChannel());
             }
             else
             {
                 reply.Text = TextResources.There_are_no_results_matching_your_search;
             }
 
-
-            List<CardAction> cardActions = CardActions(pageCount, logged);
             reply.SuggestedActions = new SuggestedActions()
             {
-                Actions = cardActions
+                Actions = CreateHomeAndLoginButtons(pageCount, logged)
             };
 
             await context.PostAsync(reply);
         }
 
-        private List<CardAction> CardActions(int pageCount, bool logged)
+        private List<CardAction> CreateHomeAndLoginButtons(int pageCount, bool logged)
         {
             var cardActions = new List<CardAction>();
 
-            cardActions.Add(new CardAction()
-            {
-                Title = "🏠",
-                Type = ActionTypes.PostBack,
-                Value = $@"{{ 'ActionType': '{BotActionTypes.Back}'}}"
-            });
+            cardActions.Add(UIHelper.CreateHomeButton());
 
             if (!logged)
             {
-                cardActions.Add(new CardAction()
-                {
-                    Title = "👤",
-                    Type = ActionTypes.PostBack,
-                    Value = $@"{{ 'ActionType': '{BotActionTypes.Login}'}}"
-                });
+                cardActions.Add(UIHelper.CreateLoginButton());
             }
 
             if (_currentPage + 1 < pageCount)
             {
-                cardActions.Add(new CardAction()
-                {
-                    Title = "Show more",
-                    Type = ActionTypes.PostBack,
-                    Value = $@"{{ 'ActionType': '{BotActionTypes.NextPage}'}}"
-                });
+                cardActions.Add(UIHelper.CreateShowMoreButton());
             }
 
             return cardActions;
         }
 
-        private List<Attachment> CatalogCarousel(Catalog catalog, bool logged){
+        private List<Attachment> CatalogCarousel(Catalog catalog, bool isAuthenticated, bool isMarkdownSupported)
+        {
             var attachments = new List<Attachment>();
-            foreach(var item in catalog.Data)
+            foreach (var item in catalog.Data)
             {
-                List<CardImage> cardImages = new List<CardImage>();
-                cardImages.Add(new CardImage(url:item.PictureUri ));
-                List<CardAction> cardButtons = new List<CardAction>();
-                if (logged)
-                {
-                    CardAction plButton = new CardAction()
-                    {
-                        Value = $@"{{ 'ActionType': '{BotActionTypes.AddBasket}', 'ProductId': '{item.Id}' , 'ProductName': '{item.Name}', 'PictureUrl': '{item.PictureUri}', 'UnitPrice': '{item.Price}'}}",
-                        Type = "postBack",
-                        Title = "Add to cart"
-                    };
-                    cardButtons.Add(plButton);
-                }
-                ThumbnailCard  plCard = new ThumbnailCard ()
-                {
-                    Title = item.Name,
-                    Subtitle = $"**{item.Price} $**",
-                    Text = $"{item.Description}",
-                    Images = cardImages,
-                    Buttons = cardButtons
-                };
+                var productThumbnail = BuildCatalogItemCard(item, isAuthenticated, isMarkdownSupported);
 
-                attachments.Add(plCard.ToAttachment());
+                attachments.Add(productThumbnail.ToAttachment());
             }
 
+            return attachments;
+        }
+
+        private static void BuildLastProductCard()
+        {
             List<CardImage> moreImages = new List<CardImage>();
-            // Todo add more image
-            //moreImage.Add(new CardImage(url: item.PictureUri));
 
             List<CardAction> moreButtons = new List<CardAction>();
             CardAction moreButton = new CardAction()
@@ -185,54 +152,68 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                 Images = moreImages,
                 Buttons = moreButtons
             };
+        }
 
+        private ThumbnailCard BuildCatalogItemCard(CatalogItem catalogItem, bool isAuthenticated, bool isMarkdownSupported)
+        {
+            var addToBasketAction = new List<CardAction>();
+            if (isAuthenticated)
+            {
+                CardAction addToBasketButton = new CardAction()
+                {
+                    Value = $@"{{ 'ActionType': '{BotActionTypes.AddBasket}', 'ProductId': '{catalogItem.Id}' , 'ProductName': '{catalogItem.Name}', 'PictureUrl': '{catalogItem.PictureUri}', 'UnitPrice': '{catalogItem.Price}'}}",
+                    Type = "postBack",
+                    Title = "Add to cart"
+                };
+                addToBasketAction.Add(addToBasketButton);
+            }
 
-            return attachments;
+            return UIHelper.CreateCatalogItemCard(catalogItem, addToBasketAction, isMarkdownSupported);
         }
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
             var message = await argument;
-            
-                if (message.IsValidTextMessage())
-                {
-                    try
-                    {
-                        var json = JObject.Parse(message.Text);
-                        var action = json.GetValue("ActionType");
-                        switch (action.ToString())
-                        {
-                            case BotActionTypes.NextPage:
-                                _currentPage++;
-                                await ShowCatalog(context);
-                                context.Wait(MessageReceivedAsync);
-                                break;
-                            case BotActionTypes.PreviousPage:
-                                _currentPage--;
-                                await ShowCatalog(context);
-                                context.Wait(MessageReceivedAsync);
-                                break;
-                            case BotActionTypes.AddBasket:
-                                await AskQuantity(context, json);
-                                break;
-                            case BotActionTypes.Login:
-                                context.Call(dialogFactory.CreateLoginDialog(), LoginReceivedAsync);
-                                break;
-                            case BotActionTypes.Back:
-                                await context.PostAsync(TextResources.Type_what_do_you_want_to_do);
-                                context.Done<object>(null);
-                                break;
-                        }
-                    }
-                    catch (JsonReaderException)
-                    {
-                        // not valid JSON object
-                        await context.PostAsync(TextResources.Please_make_a_selection);
-                        await ShowCatalog(context);
-                        context.Wait(MessageReceivedAsync);
 
+            if (message.IsValidTextMessage())
+            {
+                try
+                {
+                    var json = JObject.Parse(message.Text);
+                    var action = json.GetValue("ActionType");
+                    switch (action.ToString())
+                    {
+                        case BotActionTypes.NextPage:
+                            _currentPage++;
+                            await ShowCatalog(context);
+                            context.Wait(MessageReceivedAsync);
+                            break;
+                        case BotActionTypes.PreviousPage:
+                            _currentPage--;
+                            await ShowCatalog(context);
+                            context.Wait(MessageReceivedAsync);
+                            break;
+                        case BotActionTypes.AddBasket:
+                            await AskQuantity(context, json);
+                            break;
+                        case BotActionTypes.Login:
+                            context.Call(dialogFactory.CreateLoginDialog(), LoginReceivedAsync);
+                            break;
+                        case BotActionTypes.Back:
+                            await context.PostAsync(TextResources.Type_what_do_you_want_to_do);
+                            context.Done<object>(null);
+                            break;
                     }
                 }
+                catch (JsonReaderException)
+                {
+                    // not valid JSON object
+                    await context.PostAsync(TextResources.Please_make_a_selection);
+                    await ShowCatalog(context);
+                    context.Wait(MessageReceivedAsync);
+
+                }
+            }
             else
             {
                 var content = await HandleAttachments(context, message);
@@ -293,7 +274,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                     Id = Guid.NewGuid().ToString(),
                     Quantity = quantity,
                     ProductName = producName,
-                    PictureUrl = json.GetValue("PictureUrl").ToString(),
+                    PictureUrl = UIHelper.ReplacePictureUri(json.GetValue("PictureUrl").ToString()),
                     UnitPrice = json.GetValue("UnitPrice").ToObject<decimal>(),
                     ProductId = json.GetValue("ProductId").ToString(),
                 };

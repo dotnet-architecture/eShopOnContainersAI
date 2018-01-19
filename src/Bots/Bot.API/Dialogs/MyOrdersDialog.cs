@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Bots.Bot.API.Infrastructure;
+using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
 using Microsoft.Bots.Bot.API.Models;
 using Microsoft.Bots.Bot.API.Properties;
 using Microsoft.Bots.Bot.API.Services;
@@ -24,9 +25,9 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
         public bool LatestOrder { get; internal set; }
 
-        public MyOrdersDialog(IDialogFactory dialogFactory, IOrderingService orderingService, 
-            IIdentityService identityService, 
-            BotSettings botSettings, bool latestOrder=false)
+        public MyOrdersDialog(IDialogFactory dialogFactory, IOrderingService orderingService,
+            IIdentityService identityService,
+            BotSettings botSettings, bool latestOrder = false)
         {
             this.dialogFactory = dialogFactory;
             this.orderingService = orderingService;
@@ -64,10 +65,12 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             {
                 var orders = await orderingService.GetMyOrders(authUser.UserId, authUser.AccessToken);
                 var order = orders.OrderByDescending(o => o.OrderNumber).FirstOrDefault();
-                if(order != null)
+                if (order != null)
                 {
-                    await ShowOrderDetail(context, order.OrderNumber);
-                    context.Wait(MessageReceivedAsync);
+                    await PostOrderDetailAsync(context, order.OrderNumber);
+                    await context.PostAsync(TextResources.Type_what_do_you_want_to_do);
+                    context.Done<object>(null);
+
                 }
                 else
                 {
@@ -81,7 +84,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         private async Task ShowOrders(IDialogContext context, AuthUser authUser)
         {
             var reply = context.MakeMessage();
-            reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            reply.AttachmentLayout = context.Activity.IsSkypeChannel() ? AttachmentLayoutTypes.List : AttachmentLayoutTypes.Carousel;
             var orders = await orderingService.GetMyOrders(authUser.UserId, authUser.AccessToken);
             if (orders.Count > 0)
             {
@@ -103,13 +106,10 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
         private static List<CardAction> CardBackAction()
         {
-            var cardActions = new List<CardAction>();
-            cardActions.Add(new CardAction()
+            var cardActions = new List<CardAction>
             {
-                Title = "🏠",
-                Type = ActionTypes.PostBack,
-                Value = $@"{{ 'ActionType': '{BotActionTypes.Back}'}}"
-            });
+                UIHelper.CreateHomeButton()
+            };
             return cardActions;
         }
 
@@ -118,27 +118,25 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             var attachements = new List<Attachment>();
             foreach (var order in orders)
             {
-                List<CardAction> cardButtons = new List<CardAction>();
-
-                CardAction plButton = new CardAction()
+                var orderDetailsButtons = new List<CardAction>
                 {
-                    Type = ActionTypes.PostBack,
-                    Value = $@"{{ 'ActionType': '{BotActionTypes.OrderDetail}', 'OrderNumber': '{order.OrderNumber}' }}",
-                    Title = "Detail"
+                    new CardAction()
+                    {
+                        Type = ActionTypes.PostBack,
+                        Value = $@"{{ 'ActionType': '{BotActionTypes.OrderDetail}', 'OrderNumber': '{order.OrderNumber}' }}",
+                        Title = "Detail"
+                    }
                 };
-                cardButtons.Add(plButton);
 
-                List<Fact> facts = OrderFacts(order);
-
-                ReceiptCard plCard = new ReceiptCard()
+                var orderDetailsCard = new ReceiptCard()
                 {
                     Title = $"Order Details",
-                    Facts = facts,
-                    Buttons = cardButtons,
+                    Facts = BuildOrderFacts(order),
+                    Buttons = orderDetailsButtons,
                     Total = $"{order.Total} $"
                 };
 
-                attachements.Add(plCard.ToAttachment());
+                attachements.Add(orderDetailsCard.ToAttachment());
             }
             return attachements;
         }
@@ -146,7 +144,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
             var message = await argument;
-            if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
+            if (message.IsValidTextMessage())
             {
                 try
                 {
@@ -156,7 +154,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                     {
                         case BotActionTypes.OrderDetail:
                             var OrderNumber = json.GetValue("OrderNumber").ToString(); ;
-                            await ShowOrderDetail(context, OrderNumber);
+                            await PostOrderDetailAsync(context, OrderNumber);
                             context.Wait(MessageReceivedAsync);
                             break;
                         case BotActionTypes.Back:
@@ -165,7 +163,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                             break;
 
                         default:
-                            IMessageActivity reply = ReplyNoSelecction(context);
+                            IMessageActivity reply = ReplyNoSelection(context);
                             await context.PostAsync(reply);
                             context.Wait(MessageReceivedAsync);
                             break;
@@ -175,110 +173,78 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                 }
                 catch (JsonReaderException)
                 {
-                    // is not a Json
-                    IMessageActivity reply = ReplyNoSelecction(context);
+                    // invalid json
+                    IMessageActivity reply = ReplyNoSelection(context);
                     await context.PostAsync(reply);
                     context.Wait(MessageReceivedAsync);
                 }
             }
             else
             {
-                IMessageActivity reply = ReplyNoSelecction(context);
+                IMessageActivity reply = ReplyNoSelection(context);
                 await context.PostAsync(reply);
                 context.Wait(MessageReceivedAsync);
             }
         }
 
-        private async Task ShowOrderDetail(IDialogContext context, string orderNumber)
+        private async Task PostOrderDetailAsync(IDialogContext context, string orderNumber)
         {
-            AuthUser authUser = await identityService.GetAuthUserAsync(context);
+            var authUser = await identityService.GetAuthUserAsync(context);
             var order = await orderingService.GetOrder(orderNumber, authUser.AccessToken);
-            OrderReceipt(context, order);
+            await OrderReceipt(context, order);
         }
 
-        private void OrderReceipt(IDialogContext context, Order order)
+        private async Task OrderReceipt(IDialogContext context, Order order)
         {
+            if (!string.IsNullOrEmpty(order.Description))
+            {
+                await context.PostAsync($"{order.Description}");
+            }
+
             var reply = context.MakeMessage();
-            reply.Attachments = new List<Attachment>();
-            
-
-            List<Fact> facts = OrderFactsDetail(order);
-
-            List<ReceiptItem> receiptList = OrderItems(order);
-
-            List<CardAction> cardButtons = new List<CardAction>();
-
-            CardAction plButton = new CardAction()
+            reply.Attachments = new List<Attachment>
             {
-                Type = ActionTypes.OpenUrl,
-                Value = $@"{botSettings.MvcUrl}/Order/Detail?orderId={order.OrderNumber}",
-                Title = "Open"
+                BuildOrderCard(order).ToAttachment()
             };
-            cardButtons.Add(plButton);
-
-            ReceiptCard plCard = new ReceiptCard()
-            {
-                Title = $"Order #{order.OrderNumber}",
-                Facts = facts,
-                Buttons = cardButtons,
-                Items = receiptList,
-                Total = $"{order.Total} $"
-            };
-
-            reply.Attachments.Add(plCard.ToAttachment());
             reply.SuggestedActions = new SuggestedActions()
             {
                 Actions = CardBackAction()
             };
-          
-            if(!string.IsNullOrEmpty(order.Description))
-            {
-                context.PostAsync($"{order.Description}");
-            }
-            context.PostAsync(reply);
+
+            await context.PostAsync(reply);
         }
 
-        private List<Fact> OrderFacts(Order order)
+        private ReceiptCard BuildOrderCard(Order order)
+        {
+            return new ReceiptCard()
+            {
+                Title = $"Order #{order.OrderNumber}",
+                Facts = BuildOrderFactsDetail(order),
+                Items = UIHelper.CreateOrderItemListReceipt(order.OrderItems),
+                Total = $"{order.Total} $"
+            };
+        }
+
+        private List<Fact> BuildOrderFactsDetail(Order order)
+        {
+            return BuildOrderFacts(order, showOrder: false);
+        }
+
+        private List<Fact> BuildOrderFacts(Order order, bool showOrder = true)
         {
             List<Fact> facts = new List<Fact>
             {
-                new Fact($"Order:", $"{order.OrderNumber}"),
                 new Fact($"Date:", $"{order.Date.ToShortDateString()}"),
                 new Fact($"Status:", $"{order.Status}")
             };
+
+            if (showOrder)
+                facts.Insert(0, new Fact($"Order:", $"{order.OrderNumber}"));
+
             return facts;
         }
 
-        private List<Fact> OrderFactsDetail(Order order)
-        {
-            List<Fact> facts = new List<Fact>
-            {
-                new Fact($"Date:", $"{order.Date.ToShortDateString()}"),
-                new Fact($"Status:", $"{order.Status}")
-            };
-            return facts;
-        }
-
-        private List<ReceiptItem> OrderItems(Order order)
-        {
-            List<ReceiptItem> receiptList = new List<ReceiptItem>();
-            foreach (var item in order.OrderItems)
-            {
-                ReceiptItem lineItem = new ReceiptItem()
-                {
-                    Title = item.ProductName,
-                    Image = new CardImage(url: $"{item.PictureUrl}"),
-                    Price = $"{item.UnitPrice}$",
-                    Quantity = $"{item.Units}",
-                    Tap = null
-                };
-                receiptList.Add(lineItem);
-            }
-
-            return receiptList;
-        }
-
-        private static IMessageActivity ReplyNoSelecction(IDialogContext context)
+        private static IMessageActivity ReplyNoSelection(IDialogContext context)
         {
             var reply = context.MakeMessage();
             reply.Text = TextResources.Please_select_an_order;
@@ -299,12 +265,11 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                 AuthUser authUser = await identityService.GetAuthUserAsync(context);
                 await ShowDesired(context, authUser);
             }
-            else {
+            else
+            {
                 await context.PostAsync(TextResources.You_must_be_logged_to_ckeck_your_orders);
                 context.Done<object>(null);
             }
         }
-
-
     }
 }

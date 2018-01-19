@@ -6,7 +6,6 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Bots.Bot.API.Infrastructure;
 using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
-using Microsoft.Bots.Bot.API.Models;
 using Microsoft.Bots.Bot.API.Properties;
 using Microsoft.Bots.Bot.API.Services;
 using Newtonsoft.Json;
@@ -25,7 +24,8 @@ namespace Microsoft.Bots.Bot.API.Dialogs
 
         private Order order;
 
-        public OrderDialog(IBasketService basketService, IOrderingService orderingService, IIdentityService identityService, BotSettings botSettings)
+        public OrderDialog(IBasketService basketService, IOrderingService orderingService, 
+            IIdentityService identityService, BotSettings botSettings)
         {
             this.basketService = basketService;
             this.orderingService = orderingService;
@@ -47,7 +47,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             var reply = context.MakeMessage();
             reply.Attachments = new List<Attachment>
             {
-                ShowOrder()
+                BuildOrderCard()
             };
             await context.PostAsync(reply);
         }
@@ -56,8 +56,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         {
             var botUserData = await  identityService.GetBotDataAsync(context);
             var authUser = botUserData.GetUserAuthData();
-            //TODO recheck
-            UserData userData = botUserData.GetUserData();
+            var userData = botUserData.GetUserData();
 
             var basket = await basketService.GetBasket(authUser.UserId, authUser.AccessToken);
             var orderFromBasket = basketService.MapBasketToOrder(basket);
@@ -66,54 +65,35 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             order.RequestId = Guid.NewGuid();
         }
 
-        private Attachment ShowOrder()
+        private Attachment BuildOrderCard()
         {
-            List<CardImage> cardImages = new List<CardImage>();
-             cardImages.Add(new CardImage(url: $"{botSettings.MvcUrl}/images/brand.png"));
-
-            List<CardAction> cardButtons = new List<CardAction>();
-
-            CardAction plButton = new CardAction()
+            var orderNowButton = new List<CardAction>
             {
-                Type = ActionTypes.PostBack,
-                Value = $@"{{ 'ActionType': '{BotActionTypes.OrderNow}'}}",
-                Title = "Order Now"
-            };
-            cardButtons.Add(plButton);
-
-            List<ReceiptItem> receiptList = new List<ReceiptItem>();
-            foreach (var item in order.OrderItems)
-            {
-                ReceiptItem lineItem = new ReceiptItem()
+                new CardAction()
                 {
-                    Title = item.ProductName,
-                    Subtitle = null,
-                    Text = null,
-                    Image = new CardImage(url: $"{item.PictureUrl}"),
-                    Price = $"{item.UnitPrice}$",
-                    Quantity = $"{item.Units}",
-                    Tap = null
-                };
-                receiptList.Add(lineItem);
-            }
+                    Type = ActionTypes.PostBack,
+                    Value = $@"{{ 'ActionType': '{BotActionTypes.OrderNow}'}}",
+                    Title = "Order Now"
+                }
+            };
 
             decimal total = order.OrderItems.Sum(i => i.UnitPrice * i.Units);
 
-            ReceiptCard plCard = new ReceiptCard()
+            var orderCard = new ReceiptCard()
             {
                 Title = "eShopAI Order",
-                Buttons = cardButtons,
-                Items = receiptList,
+                Buttons = orderNowButton,
+                Items = UIHelper.CreateOrderItemListReceipt(order.OrderItems),
                 Total = $"{total} $"
             };
 
-            return plCard.ToAttachment();
+            return orderCard.ToAttachment();
         }
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
             var message = await argument;
-            if (message != null && message.Type == ActivityTypes.Message && !string.IsNullOrEmpty(message.Text))
+            if (message.IsValidTextMessage())
             {
                 try
                 {
@@ -122,7 +102,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                     switch (action.ToString())
                     {
                         case BotActionTypes.OrderNow:
-                            await OrderNow(context);
+                            await OrderNowAsync(context);
                             await context.PostAsync(TextResources.Your_order_has_been_processed);
                             context.Done<object>(false);
                             break;
@@ -143,7 +123,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             }
         }
 
-        private async Task OrderNow(IDialogContext context)
+        private async Task OrderNowAsync(IDialogContext context)
         {
             var authUser = await identityService.GetAuthUserAsync(context);
             var basket = orderingService.MapOrderToBasket(order);

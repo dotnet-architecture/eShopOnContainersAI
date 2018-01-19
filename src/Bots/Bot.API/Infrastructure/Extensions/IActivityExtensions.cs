@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Bot.Connector;
@@ -7,11 +8,15 @@ namespace Microsoft.Bots.Bot.API.Infrastructure.Extensions
 {
     public static class IActivityExtensions
     {
+        public static bool IsSkypeChannel (this IActivity self)
+        {
+            return self.ChannelId == "skype";
+        }
+
         public static async Task<Attachment> CreateLoginCardAsync(this IActivity self, IOIDCClient oidcClient)
         {
             string authorizeUrl = await oidcClient.CreateAuthorizeUrlAsync(self);
 
-            // TODO SHOW IMAGE
             var cardButtons = new List<CardAction> {
                 new CardAction
                 {
