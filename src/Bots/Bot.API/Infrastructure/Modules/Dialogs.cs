@@ -40,7 +40,7 @@ namespace Microsoft.Bots.Bot.API.Infrastructure.Modules
                     .AsImplementedInterfaces()
                     .InstancePerMatchingLifetimeScope(DialogModule.LifetimeScopeTag);
 
-            builder.Register(c => new HelpCommand(c.Resolve<IIdentityService>(), c.Resolve<IBotToUser>(), c.Resolve<IDialogTask>()))
+            builder.Register(c => new HelpCommand(c.Resolve<IDialogFactory>(), c.Resolve<IBotToUser>(), c.Resolve<IDialogTask>()))
                     .Keyed<HelpCommand>(typeof(HelpCommand).Name)
                     .AsImplementedInterfaces()
                     .InstancePerMatchingLifetimeScope(DialogModule.LifetimeScopeTag);

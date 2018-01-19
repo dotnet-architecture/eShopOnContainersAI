@@ -14,7 +14,6 @@ using Microsoft.Bots.Bot.API.Infrastructure;
 
 namespace Microsoft.Bots.Bot.API.Controllers
 {
-    [BotAuthentication]
     public class MessagesController : ApiController
     {
         private readonly ILifetimeScope scope;
@@ -25,10 +24,16 @@ namespace Microsoft.Bots.Bot.API.Controllers
             SetField.NotNull(out this.settings, nameof(settings), settings);
         }
 
+        public HttpResponseMessage Options([FromBody]Activity activity, CancellationToken token)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
+        [BotAuthentication]
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity, CancellationToken token)
         {
             if (activity.Type == ActivityTypes.Message)
@@ -88,28 +93,23 @@ namespace Microsoft.Bots.Bot.API.Controllers
                     {
                         if (newMember.Id != activity.Recipient.Id)
                         {
-                            var replyWelcome = activity.CreateReply();
+                            var welcomeReply = activity.CreateReply();
 
-                            var heroCard = new HeroCard() {
+                            var welcomeCard = new HeroCard() {
                                 Title = $"Welcome {newMember.Name}!",                          
                                 Images = new List<CardImage>() { new CardImage() {Alt="eShop Logo", Url = $"{settings.MvcUrl}/images/brand.png" } }
                             };
 
-                            var attachments = new List<Attachment>
-                            {
-                                heroCard.ToAttachment()
-                            };
-
-                            replyWelcome.Attachments = attachments;
+                            welcomeReply.Attachments = new List<Attachment> { welcomeCard.ToAttachment() };
                             
-                            await client.Conversations.ReplyToActivityAsync(replyWelcome);
+                            await client.Conversations.ReplyToActivityAsync(welcomeReply);
 
                             var replyBotName = activity.CreateReply();
-                            replyBotName.Text = " I am Eshop-Bot.";
+                            replyBotName.Text = " I am eShopAI-Bot.";
                             await client.Conversations.ReplyToActivityAsync(replyBotName);
 
                             var replyActions = activity.CreateReply();
-                            replyActions.Text = $"I can show you Eshop Catalog, add items to your cart, place a new order and explorer your orders.";
+                            replyActions.Text = $"I can show you eShopAI Catalog, add items to your cart, place a new order and explorer your orders.";
                             await client.Conversations.ReplyToActivityAsync(replyActions);
 
                             var replyInitialHelp = activity.CreateReply();
