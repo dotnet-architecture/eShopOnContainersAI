@@ -263,3 +263,4 @@ pub/
 src/Services/Catalog/Catalog.API/Pics/
 cli/
 src/Services/AI/ArtificialIntelligence.API/Resources/models/
+/workbench/__pycache__

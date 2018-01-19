@@ -36,9 +36,12 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
         {
             var (model, labels) = LoadModelAndLabels(settings.ModelFilename, settings.LabelsFilename);
             var imageTensor = LoadImage(image);
-            return Eval(model, imageTensor, settings.InputTensorName, settings.OutputTensorName, labels)
-                    .Where(c => c.Probability >= settings.Threshold)
-                    .OrderByDescending(c => c.Probability);
+
+            IEnumerable <LabelConfidence> labelsToReturn =  
+                            Eval(model, imageTensor, settings.InputTensorName, settings.OutputTensorName, labels)
+                                    .Where(c => c.Probability >= settings.Threshold)
+                                    .OrderByDescending(c => c.Probability);
+            return labelsToReturn;
         }
 
         protected abstract (TFGraph, string[]) LoadModelAndLabels(string modelFilename, string labelsFilename);

@@ -64761,7 +64761,8 @@
       "pink",
       "shirt",
       "toy",
-      "toy-shirt"
+      "toy-shirt",
+      "jersey"
     ]
   },
   {
@@ -82377,7 +82378,8 @@
       "bot-hoodie",
       "hoodie",
       "net",
-      "net-bot"
+      "net-bot",
+      "jersey"
     ]
   },
   {
@@ -82419,7 +82421,8 @@
       "prism",
       "prism-shirt",
       "shirt",
-      "white"
+      "white",
+      "jersey"
     ]
   },
   {
@@ -82440,7 +82443,8 @@
       "foundation-shirt",
       "net",
       "net-foundation",
-      "shirt"
+      "shirt",
+      "jersey"
     ]
   },
   {
@@ -82480,7 +82484,8 @@
       "blue",
       "hoodie",
       "net",
-      "net-hoodie"
+      "net-hoodie",
+      "jersey"
     ]
   },
   {
@@ -82500,7 +82505,8 @@
       "red",
       "roslyn",
       "roslyn-shirt",
-      "shirt"
+      "shirt",
+      "jersey"
     ]
   },
   {
@@ -82520,7 +82526,8 @@
       "hoodie",
       "kudu",
       "kudu-hoodie",
-      "purple"
+      "purple",
+      "jersey"
     ]
   },
   {

@@ -84,7 +84,7 @@ services:
       - ai.productsearchimagebased.azurecognitiveservices.api
 
   webstatus:
-    image: eshop/webstatus:${TAG:-latest}
+    image: eshopai/webstatus:${TAG:-latest}
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile
