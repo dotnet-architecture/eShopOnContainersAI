@@ -234,7 +234,8 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="resources\LuiseShopOnContainersAI.json" />
+    <Content Include="Resources\eshopai.ngrok.yml" />
+    <None Include="Resources\LuiseShopOnContainersAI.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
