@@ -82464,7 +82464,8 @@
       "red",
       "roslyn",
       "roslyn-sheet",
-      "sheet"
+      "sheet",
+	  "frisbee"
     ]
   },
   {
@@ -82568,7 +82569,8 @@
       "foundation-sheet",
       "net",
       "net-foundation",
-      "sheet"
+      "sheet",
+	  "frisbee"
     ]
   },
   {
@@ -82585,7 +82587,8 @@
     "tagrams": [
       "cup",
       "cup-sheet",
-      "sheet"
+      "sheet",
+	  "frisbee"
     ]
   },
   {
