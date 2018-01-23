@@ -4,22 +4,16 @@ tunnels:
     proto: http
     bind_tls: true
     host_header: localhost:5200
-    subdomain: eshopaibot
-  webmvc:
-    addr: 5100
-    proto: http
-    bind_tls: false
-    host_header: localhost:5100
-    subdomain: eshopaiwebmvc
+    subdomain: <your_eshopaibot_subdomain>
   identity.api: 
     addr: 5105
     proto: http
     bind_tls: both
     host_header: localhost:5105
-    subdomain: eshopaiidentity
+    subdomain: <your_eshopaiidentity_subdomain>
   catalog.api: 
     addr: 5101
     proto: http
     bind_tls: true
     host_header: localhost:5101
-    subdomain: eshopaicatalog
+    subdomain: <your_eshopaicatalog_subdomain>
