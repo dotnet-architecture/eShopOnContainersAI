@@ -4,6 +4,7 @@ services:
 
   basket.api:
     image: eshopai/basket.api:${TAG:-latest}
+    container_name: basket.api-container
     build:
       context: ./src/Services/Basket/Basket.API
       dockerfile: Dockerfile    
@@ -14,24 +15,28 @@ services:
 
   ai.productrecommender.azureml.api:
     image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
+    container_name: ai.productrecommender.azureml.api-container
     build:
       context: ./src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API
       dockerfile: Dockerfile    
 
   ai.productsearchimagebased.tensorflow.api:
     image: eshopai/ai.productsearchimagebased.tensorflow.api:${TAG:-latest}
+    container_name: ai.productsearchimagebased.tensorflow.api-container
     build:
       context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API
       dockerfile: Dockerfile    
 
   ai.productsearchimagebased.azurecognitiveservices.api:
     image: eshopai/ai.productsearchimagebased.azurecognitiveservices.api:${TAG:-latest}
+    container_name: ai.productsearchimagebased.azurecognitiveservices.api-container
     build:
       context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API
       dockerfile: Dockerfile    
 
   catalog.api:
     image: eshopai/catalog.api:${TAG:-latest}
+    container_name: catalog.api-container
     build:
       context: ./src/Services/Catalog/Catalog.API
       dockerfile: Dockerfile    
@@ -42,6 +47,7 @@ services:
 
   identity.api:
     image: eshopai/identity.api:${TAG:-latest}
+    container_name: identity.api-container
     build:
       context: ./src/Services/Identity/Identity.API
       dockerfile: Dockerfile    
@@ -50,6 +56,7 @@ services:
 
   ordering.api:
     image: eshopai/ordering.api:${TAG:-latest}
+    container_name: ordering.api-container
     build:
       context: ./src/Services/Ordering/Ordering.API
       dockerfile: Dockerfile    
@@ -59,6 +66,7 @@ services:
 
   marketing.api:
     image: eshopai/marketing.api:${TAG:-latest}
+    container_name: marketing.api-container
     build:
       context: ./src/Services/Marketing/Marketing.API
       dockerfile: Dockerfile    
@@ -70,6 +78,7 @@ services:
 
   webmvc:
     image: eshopai/webmvc:${TAG:-latest}
+    container_name: webmvc-container
     build:
       context: ./src/Web/WebMVC
       dockerfile: Dockerfile    
@@ -85,12 +94,14 @@ services:
 
   webstatus:
     image: eshopai/webstatus:${TAG:-latest}
+    container_name: webstatus-container
     build:
       context: ./src/Web/WebStatus
       dockerfile: Dockerfile
 
   payment.api:
     image: eshopai/payment.api:${TAG:-latest}
+    container_name: payment.api-container
     build:
       context: ./src/Services/Payment/Payment.API
       dockerfile: Dockerfile
@@ -99,6 +110,7 @@ services:
     
   locations.api:
     image: eshopai/locations.api:${TAG:-latest}
+    container_name: locations.api-container
     build:
       context: ./src/Services/Location/Locations.API
       dockerfile: Dockerfile
@@ -108,14 +120,18 @@ services:
 
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
+    container_name: sql.data-container
     volumes:
       - ./mssql:/var/opt/bulk
 
   nosql.data:
     image: mongo
+    container_name: nosql.data-container
 
   basket.data:
     image: redis
+    container_name: basket.data-container
       
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: rabbitmq-container
