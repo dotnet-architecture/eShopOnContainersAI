@@ -128,6 +128,12 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             return Task.CompletedTask;
         }
 
+        private Task ResumeAfterDialog(IDialogContext context, IAwaitable<bool> result)
+        {
+            context.Wait(MessageReceived);
+            return Task.CompletedTask;
+        }
+
         private Task ResumeAfterLoginDialog(IDialogContext context, IAwaitable<bool> result)
         {
             context.Wait(MessageReceived);

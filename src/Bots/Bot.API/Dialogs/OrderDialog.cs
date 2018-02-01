@@ -104,7 +104,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
                         case BotActionTypes.OrderNow:
                             await OrderNowAsync(context);
                             await context.PostAsync(TextResources.Your_order_has_been_processed);
-                            context.Done<object>(false);
+                            context.Done(false);
                             break;
                     }
                 }
