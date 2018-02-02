@@ -1,12 +1,12 @@
-version: '3'
+version: '3.3'
 
 services:
 
   basket.api:
     image: eshopai/basket.api:${TAG:-latest}
     build:
-      context: ./src/Services/Basket/Basket.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/Basket/Basket.API/Dockerfile    
     depends_on:
       - basket.data
       - identity.api
@@ -15,26 +15,26 @@ services:
   ai.productrecommender.azureml.api:
     image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
     build:
-      context: ./src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API/Dockerfile    
 
   ai.productsearchimagebased.tensorflow.api:
     image: eshopai/ai.productsearchimagebased.tensorflow.api:${TAG:-latest}
     build:
-      context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API/Dockerfile    
 
   ai.productsearchimagebased.azurecognitiveservices.api:
     image: eshopai/ai.productsearchimagebased.azurecognitiveservices.api:${TAG:-latest}
     build:
-      context: ./src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API/Dockerfile    
 
   catalog.api:
     image: eshopai/catalog.api:${TAG:-latest}
     build:
-      context: ./src/Services/Catalog/Catalog.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
     depends_on:
       - sql.data
       - nosql.data
@@ -43,16 +43,16 @@ services:
   identity.api:
     image: eshopai/identity.api:${TAG:-latest}
     build:
-      context: ./src/Services/Identity/Identity.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile    
     depends_on:
       - sql.data
 
   ordering.api:
     image: eshopai/ordering.api:${TAG:-latest}
     build:
-      context: ./src/Services/Ordering/Ordering.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile    
     depends_on:
       - sql.data
       - rabbitmq
@@ -60,8 +60,8 @@ services:
   marketing.api:
     image: eshopai/marketing.api:${TAG:-latest}
     build:
-      context: ./src/Services/Marketing/Marketing.API
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Services/Marketing/Marketing.API/Dockerfile    
     depends_on:
       - sql.data
       - nosql.data
@@ -71,8 +71,8 @@ services:
   webmvc:
     image: eshopai/webmvc:${TAG:-latest}
     build:
-      context: ./src/Web/WebMVC
-      dockerfile: Dockerfile    
+      context: .
+      dockerfile: src/Web/WebMVC/Dockerfile    
     depends_on:
       - catalog.api
       - ordering.api
@@ -86,22 +86,22 @@ services:
   webstatus:
     image: eshopai/webstatus:${TAG:-latest}
     build:
-      context: ./src/Web/WebStatus
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Web/WebStatus/Dockerfile
 
   payment.api:
     image: eshopai/payment.api:${TAG:-latest}
     build:
-      context: ./src/Services/Payment/Payment.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq    
     
   locations.api:
     image: eshopai/locations.api:${TAG:-latest}
     build:
-      context: ./src/Services/Location/Locations.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/Services/Location/Locations.API/Dockerfile
     depends_on:
       - nosql.data
       - rabbitmq
@@ -115,7 +115,7 @@ services:
     image: mongo
 
   basket.data:
-    image: redis
+    image: redis:alpine
       
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3-management-alpine
