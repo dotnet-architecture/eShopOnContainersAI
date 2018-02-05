@@ -152,8 +152,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 await next();
             });
 
-            app.UseAuthentication();
-
             // Adds IdentityServer
             app.UseIdentityServer();
 

@@ -83,8 +83,6 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
             // RGB values are normalized between -1 and 1
             // image shape can be customized in keras, 
             // so width and height are converted to method arguments
-            const float maxValue = 255f;
-            const float mean = 2 / maxValue;
             const TFDataType destinationDataType = TFDataType.Float;
 
             TFGraph graph = new TFGraph();
@@ -94,10 +92,10 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
             var castToFloat = graph.Cast(decodeJpeg, DstT: TFDataType.Float);
             var expandDims = graph.ExpandDims(castToFloat, dim: graph.Const(0, "make_batch")); // shape: [1, height, width, channels]
             var resize = graph.ResizeBilinear(expandDims, size: graph.Const(new int[] { width, height }, "size"));
-            var substract = graph.Sub(resize, y: graph.Const(maxValue, "sub"));
-            var multiply = graph.Mul(substract, y: graph.Const(mean, TFDataType.Float, "multiply"));
-            var add = graph.Add(multiply, y: graph.Const(1f, "add"));
-            var castToDestinationDataType = graph.Cast(add, destinationDataType);
+            var divide = graph.Div(resize, y: graph.Const(255f, destinationDataType, "divide"));
+            var substract = graph.Sub(divide, y: graph.Const(.5f, destinationDataType, "sub"));
+            var multiply = graph.Mul(substract, y: graph.Const(2f, destinationDataType, "multiply"));
+            var castToDestinationDataType = graph.Cast(multiply, destinationDataType);
 
             return (graph, input, castToDestinationDataType);
         }

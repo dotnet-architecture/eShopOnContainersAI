@@ -106,9 +106,10 @@
         color: $color-foreground-brighter;
         cursor: pointer;
         font-size: $font-size-m;
-        margin-top: -$filter-padding * 3;
         padding: $filter-padding;
         transition: all $animation-speed-default;
+        position: absolute;
+        margin-top: 8px;
 
         &:hover {
             background-color: $color-secondary-darker;

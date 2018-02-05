@@ -15,7 +15,7 @@ using Basket = Microsoft.Bots.Bot.API.Models.Basket.Basket;
 namespace Microsoft.Bots.Bot.API.Dialogs
 {
     [Serializable]
-    public class BasketDialog : IDialog<object>
+    public class BasketDialog : IDialog<bool>
     {
         private readonly IBasketService basketService;
         private readonly IDialogFactory dialogFactory;
@@ -129,7 +129,7 @@ namespace Microsoft.Bots.Bot.API.Dialogs
         private Task AfterOrderAsync(IDialogContext context, IAwaitable<object> result)
         {
             context.Done<object>(false);
-            return Task.CompletedTask;
+            return Task.FromResult(false);
         }
     }
 }

@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\models\imagenet_comp_graph_label_strings.txt" />
-    <None Remove="Resources\models\tensorflow_inception_graph.pb" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\models\imagenet_comp_graph_label_strings.txt">
+    <Content Include="ModelsAI\imagenet_comp_graph_label_strings.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\models\tensorflow_inception_graph.pb">
+    <Content Include="ModelsAI\tensorflow_inception_graph.pb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -23,7 +18,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Resources\models\labels.txt">
+    <None Update="ModelsAI\labels.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Resources\models\model_tf.pb">
+    <None Update="ModelsAI\model_tf.pb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
