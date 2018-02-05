@@ -284,10 +284,20 @@ namespace Microsoft.Bots.Bot.API.Dialogs
             }
         }
 
-        private async Task BasketAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task BasketAsync(IDialogContext context, IAwaitable<bool> result)
         {
-            await ShowCatalog(context);
-            context.Wait(MessageReceivedAsync);
+            bool resultObject = await result;
+
+            if (resultObject)
+            {
+                await ShowCatalog(context);
+                context.Wait(MessageReceivedAsync);
+            }
+            else
+            {
+                await context.PostAsync(TextResources.Type_what_do_you_want_to_do);
+                context.Done(result);
+            }
         }
 
         public async Task<byte[]> HandleAttachments(IDialogContext context, IMessageActivity message)
