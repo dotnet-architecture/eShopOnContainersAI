@@ -1,6 +1,6 @@
-$imagesToDelete = docker images --filter=reference="eshop/*" -q
+$imagesToDelete = docker images --filter=reference="eshopai/*" -q
 
-If (-Not $imagesToDelete) {Write-Host "Not deleting eShop images as there are no eShop images in the current local Docker repo."} 
+If (-Not $imagesToDelete) {Write-Host "Not deleting eShopAI images as there are no eShopAI images in the current local Docker repo."} 
 Else 
 {
     # Delete all containers
@@ -8,9 +8,9 @@ Else
     docker rm $(docker ps -a -q) -f
     
     # Delete all eshop images
-    Write-Host "Deleting eShop images in local Docker repo"
+    Write-Host "Deleting eShopAI images in local Docker repo"
     Write-Host $imagesToDelete
-    docker rmi $(docker images --filter=reference="eshop/*" -q) -f
+    docker rmi $(docker images --filter=reference="eshopai/*" -q) -f
 }
 
 

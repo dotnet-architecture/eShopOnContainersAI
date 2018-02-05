@@ -105,15 +105,15 @@ namespace Microsoft.Bots.Bot.API.Controllers
                             await client.Conversations.ReplyToActivityAsync(welcomeReply);
 
                             var replyBotName = activity.CreateReply();
-                            replyBotName.Text = " I am eShopAI-Bot.";
+                            replyBotName.Text = " Howdy! - I am eShopAI-Bot.";
                             await client.Conversations.ReplyToActivityAsync(replyBotName);
 
                             var replyActions = activity.CreateReply();
-                            replyActions.Text = $"I can show you products, add them to your cart, place a new order or explore your past orders.";
+                            replyActions.Text = $"I can show you the eShopAI Catalog, add items to your shopping cart, place a new order and explore your order's status.";
                             await client.Conversations.ReplyToActivityAsync(replyActions);
 
                             var replyInitialHelp = activity.CreateReply();
-                            replyInitialHelp.Text = $"Just type what you need from me, for example: *show me the catalog*";
+                            replyInitialHelp.Text = $"Just type whatever you want to do, for example: *show me the product catalog*";
                             await client.Conversations.ReplyToActivityAsync(replyInitialHelp);
                         }                        
                     }

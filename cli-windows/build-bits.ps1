@@ -13,6 +13,7 @@ workflow BuildAndPublish {
     )
 $projectPaths = 
     @{Path="$rootPath\src\Web\WebMVC";Prj="WebMVC.csproj"},
+    @{Path="$rootPath\src\Web\WebStatus";Prj="WebStatus.csproj"},
     @{Path="$rootPath\src\Services\Identity\Identity.API";Prj="Identity.API.csproj"},
     @{Path="$rootPath\src\Services\Catalog\Catalog.API";Prj="Catalog.API.csproj"},
     @{Path="$rootPath\src\Services\Ordering\Ordering.API";Prj="Ordering.API.csproj"},
@@ -52,7 +53,7 @@ Else
     docker rm $(docker ps -a -q) -f
     
     # Delete all eshop images
-    Write-Host "Deleting eShop images in local Docker repo"
+    Write-Host "Deleting eShopAI images in local Docker repo"
     Write-Host $imagesToDelete
     docker rmi $(docker images --filter=reference="eshopai/*" -q) -f
 }
