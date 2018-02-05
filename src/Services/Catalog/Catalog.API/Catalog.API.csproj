@@ -35,13 +35,13 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.DependencyCollector" Version="2.4.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.0-beta1" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="mongocsharpdriver" Version="2.4.4" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.Kubernetes" Version="1.0.0-beta2" />
+    <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric" Version="2.0.1-beta1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="mongocsharpdriver" Version="2.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="1.1.0" />
     <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
-    <PackageReference Include="Dapper" Version="1.50.2" />
+    <PackageReference Include="Dapper" Version="1.50.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,14 +57,10 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks.SqlServer\Microsoft.Extensions.HealthChecks.SqlServer.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\HealthChecks\src\Microsoft.Extensions.HealthChecks\Microsoft.Extensions.HealthChecks.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
-    <ProjectReference Include="..\..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\WebHostCustomization\WebHost.Customization\WebHost.Customization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="Pics\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
