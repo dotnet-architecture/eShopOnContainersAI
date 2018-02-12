@@ -7,7 +7,7 @@ WORKDIR /src
 COPY . .
 RUN dotnet restore -nowarn:msb3202,nu1503
 WORKDIR /src/src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API
-RUN dotnet build --no-restore -c Release -o /app
+RUN dotnet build -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish --no-restore -c Release -o /app
