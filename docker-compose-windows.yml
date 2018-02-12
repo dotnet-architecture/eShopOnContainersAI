@@ -64,6 +64,15 @@ services:
       - sql.data
       - rabbitmq
 
+  ordering.backgroundtasks:
+    image: eshop/ordering.backgroundtasks-win:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
+    depends_on:
+      - sql.data
+      - rabbitmq
+
   marketing.api:
     image: eshopai/marketing.api-win:${TAG:-latest}
     build:
@@ -73,11 +82,13 @@ services:
       - sql.data
       - nosql.data
       - identity.api
-      - rabbitmq      
+      - rabbitmq
 
   webmvc:
     image: eshopai/webmvc-win:${TAG:-latest}
     build:
+      context: .
+      dockerfile: src/Web/WebSPA/Dockerfile
       context: .
       dockerfile: src/Web/WebMVC/Dockerfile
     depends_on:
@@ -103,7 +114,7 @@ services:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
     depends_on:
-      - rabbitmq         
+      - rabbitmq
 
   locations.api:
     image: eshopai/locations.api-win:${TAG:-latest}
