@@ -37,7 +37,8 @@ $projectPaths =
     }
 }
 
-BuildAndPublish $rootPath
+#BuildAndPublish $rootPath
+msbuild.exe $rootPath\src\Bots\Bot.API\Bot.API.csproj /p:SolutionDir=$rootPath\src\Bots\Bot.API /p:DeployOnBuild=True /p:PublishProfile=FolderProfile /p:VisualStudioVersion=15.0
 
 ########################################################################################
 # Delete old eShop Docker images
