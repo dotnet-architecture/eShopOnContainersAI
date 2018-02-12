@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   basket.api:
-    image: eshop/basket.api-win:${TAG:-latest}
+    image: eshopai/basket.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile
@@ -11,17 +11,44 @@ services:
       - identity.api
       - rabbitmq
 
+  ai.productrecommender.azureml.api:
+    image: eshopai/ai.productrecommender.azureml.api-win:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API/Dockerfile    
+
+  ai.productsearchimagebased.tensorflow.api:
+    image: eshopai/ai.productsearchimagebased.tensorflow.api-win:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API/Dockerfile    
+
+  ai.productsearchimagebased.azurecognitiveservices.api:
+    image: eshopai/ai.productsearchimagebased.azurecognitiveservices.api-win:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API/Dockerfile    
+
   catalog.api:
-    image: eshop/catalog.api-win:${TAG:-latest}
+    image: eshopai/catalog.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
     depends_on:
       - sql.data
+      - nosql.data
       - rabbitmq
 
+  bot.api:
+    image: eshopai/bot.api-win:${TAG:-latest}
+    build:
+      context: .\src\Bots\Bot.API
+      dockerfile: Dockerfile
+    ports:
+      - "5200:80"
+
   identity.api:
-    image: eshop/identity.api-win:${TAG:-latest}
+    image: eshopai/identity.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile
@@ -29,7 +56,7 @@ services:
       - sql.data
 
   ordering.api:
-    image: eshop/ordering.api-win:${TAG:-latest}
+    image: eshopai/ordering.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
@@ -38,7 +65,7 @@ services:
       - rabbitmq
 
   marketing.api:
-    image: eshop/marketing.api-win:${TAG:-latest}
+    image: eshopai/marketing.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Marketing/Marketing.API/Dockerfile    
@@ -46,22 +73,10 @@ services:
       - sql.data
       - nosql.data
       - identity.api
-      - rabbitmq
-
-  webspa:
-    image: eshop/webspa-win:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebSPA/Dockerfile
-    depends_on:
-      - catalog.api
-      - ordering.api
-      - identity.api
-      - basket.api
-      - marketing.api
+      - rabbitmq      
 
   webmvc:
-    image: eshop/webmvc-win:${TAG:-latest}
+    image: eshopai/webmvc-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebMVC/Dockerfile
@@ -71,23 +86,27 @@ services:
       - identity.api
       - basket.api
       - marketing.api
+      - ai.productrecommender.azureml.api
+      - ai.productsearchimagebased.tensorflow.api
+      - ai.productsearchimagebased.azurecognitiveservices.api
+
   
   webstatus:
-    image: eshop/webstatus-win:${TAG:-latest}
+    image: eshopai/webstatus-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebStatus/Dockerfile
 
   payment.api:
-    image: eshop/payment.api-win:${TAG:-latest}
+    image: eshopai/payment.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
     depends_on:
-      - rabbitmq
+      - rabbitmq         
 
   locations.api:
-    image: eshop/locations.api-win:${TAG:-latest}
+    image: eshopai/locations.api-win:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Location/Locations.API/Dockerfile
@@ -97,7 +116,9 @@ services:
 
   sql.data:
     image: microsoft/mssql-server-windows-developer
-  
+    volumes:
+      - ./mssql:c:\var\opt\bulk:RO
+
   nosql.data:
     image: mongo:windowsservercore
 

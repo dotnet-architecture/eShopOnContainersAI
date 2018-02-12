@@ -1,0 +1,6 @@
+.vs\*
+obj\*
+bin\*
+App_Data\
+packages\*
+!obj\Docker\*

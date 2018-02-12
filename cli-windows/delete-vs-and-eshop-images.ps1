@@ -2,7 +2,7 @@
  Write-Host "Deleting all running containers in the local Docker Host"
  docker rm $(docker ps -a -q) -f
 
-$eShopImagesToDelete = docker images --filter=reference="eshop/*" -q
+$eShopImagesToDelete = docker images --filter=reference="eshopai/*" -q
 If (-Not $eShopImagesToDelete) {Write-Host "Not deleting eShop images as there are no eShop images in the current local Docker repo."} 
 Else 
 {    
@@ -21,6 +21,7 @@ Else
     Write-Host "Deleting images created by VS in local Docker repo"
     Write-Host $VSImagesToDelete
     docker rmi $(docker images --filter=reference="*:dev" -q) -f
+    docker rmi $(docker images --filter=reference="*:latest" -q) -f
     
     #docker rmi $(docker images --filter=reference="eshop/payment.api:dev" -q) -f
     #docker rmi $(docker images --filter=reference="eshop/webspa:dev" -q) -f
