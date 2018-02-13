@@ -23,10 +23,12 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.CNTK.A
         private static void AddBinFolderToPATH()
         {
             string pathValue = Environment.GetEnvironmentVariable("PATH");
-            string domainBaseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string cntkPath = domainBaseDir + @"bin\";
-            pathValue += ";" + cntkPath;
-            Environment.SetEnvironmentVariable("PATH", pathValue);
+            string cntkPath = AppDomain.CurrentDomain.BaseDirectory + @"bin\";
+            if (!pathValue.Contains(cntkPath))
+            {
+                pathValue += ";" + cntkPath;
+                Environment.SetEnvironmentVariable("PATH", pathValue);
+            }
         }
     }
 }
