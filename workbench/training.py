@@ -31,7 +31,7 @@ if __name__ == '__main__':
     if not os.path.exists(validation_folder):
         print('Error. Path ', validation_folder, ' do not exists.')
 
-    (history_tl, model) = train(train_folder, validation_folder, output_folder, epochs=16)
+    (history_tl, model) = train(train_folder, validation_folder, output_folder, epochs=32)
 
     logger.log("Accuracy", history_tl.history['acc'])
     logger.log("Loss", history_tl.history['loss'])

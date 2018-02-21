@@ -197,22 +197,21 @@ def save_cntk(model, folder, filename):
     C.combine(model.outputs).save(model_target)
     print('saved the model definition in CNTK format at: ', model_target)
 
-def generate_labels(folder, filename):
+def generate_labels(gen, filename):
     """Save labels file
     
     In order to build labels file, folder names inside folder are retrieved, and saved as a json array
     
     Arguments:
-        folder {string} -- Images folder
-        filename {string} -- Labels filename
+        gen {} -- Keras data generator
+        filename {string} -- model filename
     """
     
-    #import json
+    import numpy as np
     
-    labels = [ item for item in os.listdir(folder) if os.path.isdir(os.path.join(folder, item)) ]
-    #np.savetxt(filename, [json.dumps(labels)], fmt='%s')
-    with open(filename, 'w') as fp:
-        fp.writelines(map(lambda x: x+"\n", labels))
+    #labels = [ item for item in os.listdir(folder) if os.path.isdir(os.path.join(folder, item)) ]
+    labels = list(map(lambda x: x[0], sorted(gen.class_indices.items(),  key=lambda y: y[1])))
+    np.savetxt(filename, labels, fmt='%s')
 
 
 def train (train_folder, validation_folder, output_folder, batch_size=16, epochs=32):
@@ -233,20 +232,22 @@ def train (train_folder, validation_folder, output_folder, batch_size=16, epochs
     # transfer learning
     setup_transfer_learninig(model, base_model)
 
+    t_gen = train_generator(train_folder,batch_size)
+
     history_tl = model.fit_generator(
-        train_generator(train_folder,batch_size),
+        t_gen,
         steps_per_epoch=500//batch_size,
         epochs=epochs,
         validation_data=validation_generator(validation_folder, batch_size),
         validation_steps=100//batch_size,
         verbose=1,
         class_weight='auto')
-    
+   
     if keras_backend == 'tensorflow':
         save_tf(model, output_folder, 'model_tf.pb')
     else:
         save_cntk(model, output_folder, 'model_cntk.pb')
     
-    generate_labels(train_folder, os.path.join(output_folder,'labels.txt'))
+    generate_labels(t_gen, os.path.join(output_folder,'labels.txt'))
     
     return (history_tl, model)
