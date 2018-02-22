@@ -89,11 +89,31 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.CNTK.A
 
             image = ResizeImage(image, new Size(width, height));
 
-            Tensor<float> imageData = new DenseTensor<float>(new[] { width, height, channels }, false); // false: row-major; true: column-major; CNTK uses ColumnMajor layout
+            return NormalizeTensorImage(CopyImageToTensor(image, width, height, channels));
+        }
 
+        private static Tensor<float> NormalizeTensorImage(Tensor<float> imageData)
+        {
             imageData /= 255f;
             imageData -= .5f;
             imageData *= 2f;
+            return imageData;
+        }
+
+        private static Tensor<float> CopyImageToTensor(Bitmap image, int width, int height, int channels)
+        {
+            Tensor<float> imageData = new DenseTensor<float>(new[] { width, height, channels }, false); // false: row-major; true: column-major; CNTK uses ColumnMajor layout
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Color color = image.GetPixel(x, y);
+                    imageData[x, y, 0] = color.R;
+                    imageData[x, y, 1] = color.G;
+                    imageData[x, y, 2] = color.B;
+                }
+            }
 
             return imageData;
         }
