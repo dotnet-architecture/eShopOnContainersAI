@@ -32,7 +32,7 @@
 
                 if (!context.CatalogBrands.Any())
                 {
-                    context.CatalogBrands.AddRange(useCustomizationData
+                    await context.CatalogBrands.AddRangeAsync(useCustomizationData
                         ? GetCatalogBrandsFromFile(contentRootPath, logger)
                         : GetPreconfiguredCatalogBrands());
 
@@ -41,7 +41,7 @@
 
                 if (!context.CatalogTypes.Any())
                 {
-                    context.CatalogTypes.AddRange(useCustomizationData
+                    await context.CatalogTypes.AddRangeAsync(useCustomizationData
                         ? GetCatalogTypesFromFile(contentRootPath, logger)
                         : GetPreconfiguredCatalogTypes());
 
@@ -50,7 +50,7 @@
 
                 if (!context.CatalogItems.Any())
                 {
-                    context.CatalogItems.AddRange(useCustomizationData
+                    await context.CatalogItems.AddRangeAsync(useCustomizationData
                         ? GetCatalogItemsFromFile(contentRootPath, context, logger)
                         : GetPreconfiguredItems());
 
