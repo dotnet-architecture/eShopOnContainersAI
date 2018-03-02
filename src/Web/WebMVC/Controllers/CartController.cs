@@ -58,14 +58,14 @@ namespace Microsoft.eShopOnContainers.WebMVC.Controllers
                     var order = _basketSvc.MapBasketToOrder(basket);
                     return RedirectToAction("Create", "Order");
                 }
+                return View(vm);
             }
             catch (BrokenCircuitException)
             {
                 // Catch error when Basket.api is in circuit-opened mode                 
                 HandleBrokenCircuitException();
+                return View();
             }
-
-            return View();
         }
 
         public async Task<IActionResult> AddToCart(CatalogItem productDetails)
