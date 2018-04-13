@@ -1,7 +1,6 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.eShopOnContainers.Services.Identity.API.Configuration;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +10,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 {
     public class ConfigurationDbContextSeed
     {
-        public async Task SeedAsync(ConfigurationDbContext context, IConfiguration configuration)
+        public async Task SeedAsync(ConfigurationDbContext context,IConfiguration configuration)
         {
+           
             //callbacks urls from config:
             var clientUrls = new Dictionary<string, string>
             {
@@ -23,25 +23,38 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
                 {"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
                 {"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
                 {"BasketApi", configuration.GetValue<string>("BasketApiClient")},
-                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")}
+                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")},
+                {"MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient")},
+                {"WebShoppingAgg", configuration.GetValue<string>("WebShoppingAggClient")}
             };
 
-            if (!await context.Clients.AnyAsync())
+            if (!context.Clients.Any())
             {
-                context.Clients.AddRange(Config.GetClients(clientUrls).Select(client => client.ToEntity()));
+                foreach (var client in Config.GetClients(clientUrls))
+                {
+                    await context.Clients.AddAsync(client.ToEntity());
+                }
+                await context.SaveChangesAsync();
             }
 
-            if (!await context.IdentityResources.AnyAsync())
+            if (!context.IdentityResources.Any())
             {
-                context.IdentityResources.AddRange(Config.GetResources().Select(resource => resource.ToEntity()));
+                foreach (var resource in Config.GetResources())
+                {
+                    await context.IdentityResources.AddAsync(resource.ToEntity());
+                }
+                await context.SaveChangesAsync();
             }
 
-            if (!await context.ApiResources.AnyAsync())
+            if (!context.ApiResources.Any())
             {
-                context.ApiResources.AddRange(Config.GetApis().Select(api => api.ToEntity()));
-            }
+                foreach (var api in Config.GetApis())
+                {
+                    await context.ApiResources.AddAsync(api.ToEntity());
+                }
 
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

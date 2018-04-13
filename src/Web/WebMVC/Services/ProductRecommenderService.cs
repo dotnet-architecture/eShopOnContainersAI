@@ -19,7 +19,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{settings.Value.ProductRecommenderUrl}/api/v1/productRecommender/";
+            _remoteServiceBaseUrl = $"{settings.Value.ArtificialIntelligenceUrl}/recommender-azure-api/v1/productRecommender/";
         }
 
         public async Task<IEnumerable<string>> GetRecommendProductsAsync(string productId, string customerId)

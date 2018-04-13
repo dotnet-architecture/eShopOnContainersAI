@@ -1,0 +1,47 @@
+﻿{
+  "ReRoutes": [
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ai.productrecommender.azureml.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/recommender-azure-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ai.productsearchimagebased.azurecognitiveservices.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/image-cognitive-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ai.productsearchimagebased.tensorflow.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/image-tensorflow-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+
+    }
+  ],
+    "GlobalConfiguration": {
+      "RequestIdKey": "OcRequestId",
+      "AdministrationPath": "/administration"
+    }
+  }
+  

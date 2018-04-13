@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.4'
 
 services:
 
@@ -57,15 +57,6 @@ services:
       - sql.data
       - rabbitmq
 
-  ordering.backgroundtasks:
-    image: eshopai/ordering.backgroundtasks:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
-    depends_on:
-      - sql.data
-      - rabbitmq
-
   marketing.api:
     image: eshopai/marketing.api:${TAG:-latest}
     build:
@@ -91,6 +82,9 @@ services:
       - ai.productrecommender.azureml.api
       - ai.productsearchimagebased.tensorflow.api
       - ai.productsearchimagebased.azurecognitiveservices.api
+      - webshoppingagg
+      - webshoppingapigw
+      - webaiapigw
 
   webstatus:
     image: eshopai/webstatus:${TAG:-latest}
@@ -128,3 +122,45 @@ services:
       
   rabbitmq:
     image: rabbitmq:3-management-alpine
+
+  mobileshoppingapigw:
+    image: eshopai/ocelotapigw:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+ 
+  mobilemarketingapigw:
+    image: eshopai/ocelotapigw:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+ 
+  webshoppingapigw:
+    image: eshopai/ocelotapigw:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+
+  webmarketingapigw:
+    image: eshopai/ocelotapigw:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+
+  mobileshoppingagg:
+    image: eshopai/mobileshoppingagg:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
+
+  webshoppingagg:
+    image: eshopai/webshoppingagg:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
+
+  webaiapigw:
+    image: eshopai/ocelotapigw:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile

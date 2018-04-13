@@ -15,7 +15,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public ProductSearchImageBasedService(IOptionsSnapshot<AppSettings> settings, IHttpClient httpClient)
         {
-            remoteServiceBaseUrl = $"{settings.Value.ProductSearchImageUrl}/api/v1/productSearchImage/";
+            remoteServiceBaseUrl = $"{settings.Value.ProductSearchImageUrl}/v1/productSearchImage/";
             this.httpClient = httpClient;
         }
 

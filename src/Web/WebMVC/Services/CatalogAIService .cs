@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
         {
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{settings.Value.CatalogUrl}/api/v1/catalogAI/";
+            _remoteServiceBaseUrl = $"{settings.Value.PurchaseUrl}/catalog-ai-api/v1/";
         }
 
         public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
