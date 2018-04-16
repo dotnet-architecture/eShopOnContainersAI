@@ -18,7 +18,7 @@ namespace Microsoft.Bots.Bot.API.Services
         {
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{settings.CatalogUrl}/api/v1/catalogAI/";
+            _remoteServiceBaseUrl = $"{settings.PurchasingUrl}/catalog-ai-api/v1/";
         }
 
         public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)

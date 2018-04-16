@@ -20,7 +20,7 @@ namespace Microsoft.Bots.Bot.API.Services
             _settings = settings;
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{_settings.CatalogUrl}/api/v1/catalog/";
+            _remoteServiceBaseUrl = $"{_settings.PurchasingUrl}/api/v1/c/catalog/";
         }
 
         public async Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type)

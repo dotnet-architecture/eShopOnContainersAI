@@ -4,10 +4,9 @@ namespace Microsoft.Bots.Bot.API.Infrastructure
 {
     public class BotSettings
     {
-        public string BasketUrl {get;set;}
-        public string CatalogUrl { get; set; }
+        public string PurchasingUrl { get; set; }
         public string IdentityUrl { get; set; }
-        public string OrderingUrl { get; set; }
+        public string ArtificialIntelligenceUrl { get; set; }
         public string MvcUrl { get; set; }
         public string ProductSearchImageUrl { get; set; }
 
@@ -28,10 +27,9 @@ namespace Microsoft.Bots.Bot.API.Infrastructure
             WebChatSecret = ConfigurationManager.AppSettings["WebChatSecret"];
 
 
-            BasketUrl = ConfigurationManager.AppSettings["BasketUrl"];
-            CatalogUrl = ConfigurationManager.AppSettings["CatalogUrl"];
+            PurchasingUrl = ConfigurationManager.AppSettings["PurchasingUrl"];
             IdentityUrl = ConfigurationManager.AppSettings["IdentityUrl"];
-            OrderingUrl = ConfigurationManager.AppSettings["OrderingUrl"];
+            ArtificialIntelligenceUrl = ConfigurationManager.AppSettings["ArtificialIntelligenceUrl"];
             ProductSearchImageUrl = ConfigurationManager.AppSettings["ProductSearchImageUrl"];
             MvcUrl = ConfigurationManager.AppSettings["MvcUrl"];
 

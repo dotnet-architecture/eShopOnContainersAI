@@ -12,7 +12,7 @@ namespace Microsoft.Bots.Bot.API.Services
 
         public ProductSearchImageService(BotSettings settings, IHttpClient httpClient)
         {
-            remoteServiceBaseUrl = $"{settings.ProductSearchImageUrl}/api/v1/productSearchImage/";
+            remoteServiceBaseUrl = $"{settings.ArtificialIntelligenceUrl}/image-tensorflow-api/v1/productSearchImage/";
             this.httpClient = httpClient;
         }
 
