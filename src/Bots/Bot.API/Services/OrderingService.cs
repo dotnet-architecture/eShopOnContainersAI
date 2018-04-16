@@ -18,7 +18,7 @@ namespace Microsoft.Bots.Bot.API.Services
 
         public OrderingService(BotSettings settings, IHttpClient httpClient)
         {
-            _remoteServiceBaseUrl = $"{settings.OrderingUrl}/api/v1/orders";
+            _remoteServiceBaseUrl = $"{settings.PurchasingUrl}/api/v1/o/orders";
             _settings = settings;
             _apiClient = httpClient;
         }

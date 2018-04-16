@@ -132,8 +132,12 @@
       "UpstreamPathTemplate": "/location-api/{everything}",
       "UpstreamHttpMethod": []
     },
+
+    //
+    // AI Gateway API routing
+    //
     {
-      "DownstreamPathTemplate": "/api/{version}/CatalogAI/{everything}",
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -146,7 +150,7 @@
 
     },
     {
-      "DownstreamPathTemplate": "/api/{version}/OrderingAI/{everything}",
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -155,6 +159,19 @@
         }
       ],
       "UpstreamPathTemplate": "/ordering-ai-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identity-ai-api/{version}/{everything}",
       "UpstreamHttpMethod": []
 
     }

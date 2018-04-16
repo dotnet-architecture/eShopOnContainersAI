@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Bots.Bot.API.Infrastructure;
 using Microsoft.Bots.Bot.API.Models.Basket;
@@ -12,35 +13,33 @@ namespace Microsoft.Bots.Bot.API.Services
     public class BasketService : IBasketService
     {
         private readonly BotSettings _settings;
+        private readonly string _basketByPassUrl;
+        private readonly string _purchaseUrl;
         private IHttpClient _apiClient;
-        private readonly string _remoteServiceBaseUrl;
 
         public BasketService(BotSettings settings, IHttpClient httpClient)
         {
             _settings = settings;
-            _remoteServiceBaseUrl = $"{_settings.BasketUrl}/api/v1/basket";
+            _basketByPassUrl = $"{_settings.PurchasingUrl}/api/v1/b/basket";
+            _purchaseUrl = $"{_settings.PurchasingUrl}/api/v1";
             _apiClient = httpClient;
         }
 
         public async Task<Basket> GetBasket(string userId, string userToken)
         {
-            var getBasketUri = Infrastructure.Basket.GetBasket(_remoteServiceBaseUrl, userId);
+            var getBasketUri = Infrastructure.Basket.GetBasket(_basketByPassUrl, userId);
 
             var dataString = await _apiClient.GetStringAsync(getBasketUri, userToken);
 
-            // Use the ?? Null conditional operator to simplify the initialization of response
             var response = JsonConvert.DeserializeObject<Basket>(dataString) ??
-                new Basket()
-                {
-                    BuyerId = userId
-                };
+                new Basket() { BuyerId = userId };
 
             return response;
         }
 
         public async Task<Basket> UpdateBasket(Basket basket, string userToken)
         {
-            var updateBasketUri = Infrastructure.Basket.UpdateBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = Infrastructure.Basket.UpdateBasket(_basketByPassUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, userToken);
 
@@ -51,7 +50,7 @@ namespace Microsoft.Bots.Bot.API.Services
 
         public async Task Checkout(BasketDTO basket, string userToken)
         {
-            var updateBasketUri = Infrastructure.Basket.CheckoutBasket(_remoteServiceBaseUrl);
+            var updateBasketUri = Infrastructure.Basket.CheckoutBasket(_basketByPassUrl);
 
             var response = await _apiClient.PostAsync(updateBasketUri, basket, userToken);
 
@@ -60,19 +59,21 @@ namespace Microsoft.Bots.Bot.API.Services
 
         public async Task<Basket> SetQuantities(string userId, Dictionary<string, int> quantities, string userToken)
         {
-            var basket = await GetBasket(userId, userToken);
+            var updateBasketUri = Infrastructure.Basket.UpdateBasket(_purchaseUrl);
 
-            basket.Items.ForEach(x =>
+            var response = await _apiClient.PutAsync(updateBasketUri, new
             {
-                // Simplify this logic by using the
-                // new out variable initializer.
-                if (quantities.TryGetValue(x.Id, out var quantity))
+                BasketId = userId,
+                Updates = quantities.Select(kvp => new
                 {
-                    x.Quantity = quantity;
-                }
+                    BasketItemId = kvp.Key,
+                    NewQty = kvp.Value
+                }).ToArray()
             });
 
-            return basket;
+            response.EnsureSuccessStatusCode();
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Basket>(jsonResponse);
         }
 
         public Order MapBasketToOrder(Basket basket)
@@ -114,6 +115,5 @@ namespace Microsoft.Bots.Bot.API.Services
 
             await UpdateBasket(basket, userToken);
         }
-
     }
 }
