@@ -12,6 +12,12 @@ services:
       - identity.api
       - rabbitmq
 
+  ai.salesforecasting.tlc.api:
+    image: eshopai/ai.salesforecasting.tlc.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/AI.SalesForecasting/AI.SalesForecasting.TLC.API/Dockerfile    
+
   ai.productrecommender.azureml.api:
     image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
     build:
@@ -83,6 +89,19 @@ services:
       - ai.productsearchimagebased.tensorflow.api
       - ai.productsearchimagebased.azurecognitiveservices.api
       - webshoppingagg
+      - webshoppingapigw
+      - webaiapigw
+
+  webraz:
+    image: eshopai/webraz:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebDashboardRazor/Dockerfile    
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - ai.salesforecasting.tlc.api
       - webshoppingapigw
       - webaiapigw
 

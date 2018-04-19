@@ -28,6 +28,17 @@ services:
       - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80). 
 
+  ai.salesforecasting.tlc.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5134:80"
+      - "51342:22"
+
+
   ai.productrecommender.azureml.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -158,6 +169,18 @@ services:
       - "5110:80"   # Important: In a production environment your should remove the external port (5110) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80).
 
+  webraz:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ArtificialIntelligenceUrl=http://webaiapigw
+      - WebShoppingUrl=http://webshoppingapigw
+      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
+      - OrchestratorType=${ORCHESTRATOR_TYPE}
+    ports:
+      - "5300:80"
+      - "53002:22"
+
   webmvc:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -183,24 +206,6 @@ services:
     ports:
       - "5100:80"
       - "51002:22"
-
-  webstatus:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - CatalogUrl=http://catalog.api/hc
-      - OrderingUrl=http://ordering.api/hc
-      - BasketUrl=http://basket.api/hc
-      - IdentityUrl=http://identity.api/hc
-      - LocationsUrl=http://locations.api/hc
-      - MarketingUrl=http://marketing.api/hc
-      - PaymentUrl=http://payment.api/hc
-      - mvc=http://webmvc/hc
-      - spa=http://webspa/hc
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-    ports:
-      - "5107:80"
 
   payment.api:
     environment:
