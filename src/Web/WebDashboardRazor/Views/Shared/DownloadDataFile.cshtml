@@ -1,0 +1,19 @@
+﻿@model Microsoft.eShopOnContainers.WebDashboardRazor.Pages.DataModelInformation
+
+<div class="alert alert-success" role="alert">
+    <h4 class="alert-heading">@Model.FileName</h4>
+    <p>
+        @Model.Description
+    </p>
+    <p>
+        This data from this file is neede for setting up the Recommendation Engine using Azure Machine Learning.
+        You can find additional information in the <a class="text-success" target="_blank" href="https://github.com/dotnet-architecture/eShopOnContainersAI/wiki/05.-Setting-up-Product-Recommendations-based-on-Azure-ML-Studio">eShopOnContainersAI wiki</a>.
+    </p>
+    <p>
+        Clicking in the following link will download the requested file.
+    </p>
+    <hr />
+    <p align="center">
+        <a class="btn btn-success" href="@Model.DownloadFileUrl"><i class="fas fa-download"></i> download file</a>
+    </p>
+</div>

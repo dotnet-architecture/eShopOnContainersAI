@@ -1,0 +1,44 @@
+﻿@page
+@model Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Reports.ProductsModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col"><h2 style="text-align:center">Sales By Product Forecasting</h2></div>
+    </div>
+    <div class="row">
+        <div class="col w-100 col-12 col-md-8 offset-md-2 pt-4" id="remote">
+            <input class="typeahead w-100" type="text" placeholder="search product ...">
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-4 pt-5" style="z-index: 10; background-color: white;">
+            <div class="">
+                <img id="productImage" class="esh-catalog-thumbnail img-responsive" style="max-height: 240px" />
+
+                <div class="esh-catalog-name">
+                    <span id="productName"></span>
+                </div>
+                <div class="esh-catalog-price">
+                    <span id="productPrice"></span>
+                </div>
+            </div>
+        </div>
+
+        <div id="lineChart" class="col-12 col-md-8 pt-5 responsive-plot"></div>
+
+        @section Scripts {
+            <script src="~/lib/js/typeahead.bundle.js"></script>
+            <script src="~/lib/js/plotly-basic.min.js"></script>
+            <script type="text/javascript">
+                $(function () {
+                    onLoadProductForecasting();
+                });
+            </script>
+        }
+    </div>
+</div>
+

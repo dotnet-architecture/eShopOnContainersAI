@@ -1,0 +1,38 @@
+﻿@page
+@model Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Reports.CountriesModel
+@{
+    ViewData["Title"] = "Countries";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col"><h2 style="text-align:center">Sales By Country Forecasting</h2></div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-4 pt-5" style="z-index: 10; background-color: white;">
+            <ul>
+                <li><a href="javascript:getCountryData('Belgium')">Belgium</a></li>
+                <li><a href="javascript:getCountryData('France')">France</a></li>
+                <li><a href="javascript:getCountryData('Germany')">Germany</a></li>
+                <li><a href="javascript:getCountryData('EIRE')">Ireland</a></li>
+                <li><a href="javascript:getCountryData('Italy')">Italy</a></li>
+                <li><a href="javascript:getCountryData('Netherlands')">Netherlands</a></li>
+                <li><a href="javascript:getCountryData('Portugal')">Portugal</a></li>
+                <li><a href="javascript:getCountryData('Spain')">Spain</a></li>
+                <li><a href="javascript:getCountryData('Sweden')">Sweden</a></li>
+                <li><a href="javascript:getCountryData('United Kingdom')">United Kingdom</a></li>
+            </ul>
+        </div>
+        <div id="lineChart" class="col-12 col-md-8 responsive-plot"></div>
+    </div>
+
+    @section Scripts {
+        <script src="~/lib/js/plotly-basic.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                onLoadCountryForecasting();
+            });
+        </script>
+    }
+</div>

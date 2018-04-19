@@ -1,0 +1,106 @@
+﻿@using Microsoft.Extensions.Options
+@using Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
+@inject IOptionsSnapshot<Microsoft.eShopOnContainers.WebDashboardRazor.AppSettings> AppSettings
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/css/fontawesome.css" type="text/css" />
+        <link rel="stylesheet" href="~/lib/css/fa-regular.css" type="text/css" />
+        <link rel="stylesheet" href="~/lib/css/fa-solid.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/dashboard.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site.css" type="text/css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.0.0/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/css/fontawesome.min.css" type="text/css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <!-- Navigation -->
+    <!-- /.navbar-header -->
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">eShopOnContainersAI</a>
+        <div class="w-100"></div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="far fa-chart-bar"></i> Reports <span class="sr-only">(current)</span>
+                            </a>
+                            <ul class="nav flex-column pl-4 nav">
+                                <li class="nav-item">
+                                    <a asp-page="/Reports/Products" class="nav-link">Products</a>
+                                    <a asp-page="/Reports/Countries" class="nav-link">Countries</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="far fa-file-alt"></i> Data</a>
+                            <ul class="nav flex-column pl-4 nav">
+                                <li class="nav-item">
+                                    <a asp-page="/Data" asp-route-category="OrderItems" class="nav-link">Sales</a>
+                                    <a asp-page="/Data" asp-route-category="Products" class="nav-link">Products</a>
+                                    <a asp-page="/Data" asp-route-category="Users" class="nav-link">Customers</a>
+                                    <a asp-page="/Data" asp-route-category="OrderItemStats" class="nav-link">Sales by Product</a>
+                                    <a asp-page="/Data" asp-route-category="CountryStats" class="nav-link">Sales By Country</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-10 offset-md-2 pt-3 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+                    @RenderBody()
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+
+    <environment names="Development">
+        <script src="~/lib/js/jquery.js"></script>
+        <script src="~/lib/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/js/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/4.0.0/bootstrap.min.js"
+                asp-fallback-src="~/lib/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script type="text/javascript">
+        var apiUri = {
+            catalog: "@API.Catalog.ControllerUrl(AppSettings.Value.WebShoppingUrl)",
+            ordering: "@API.Ordering.ControllerUrl(AppSettings.Value.WebShoppingUrl)",
+            forecasting: "@API.Forecasting.ControllerUrl(AppSettings.Value.ArtificialIntelligenceUrl)"
+        };
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

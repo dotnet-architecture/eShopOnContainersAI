@@ -29,6 +29,7 @@ cli-linux
 **/node_modules/
 **/bower_components/
 **/wwwroot/lib/
+!src/Web/WebDashboardRazor/wwwroot/lib/
 global.json
 **/appsettings.localhost.json
 src/Web/WebSPA/wwwroot/
