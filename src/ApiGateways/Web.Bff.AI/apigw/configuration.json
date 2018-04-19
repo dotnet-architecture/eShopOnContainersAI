@@ -37,6 +37,19 @@
       "UpstreamPathTemplate": "/image-tensorflow-api/{version}/{everything}",
       "UpstreamHttpMethod": []
 
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ai.salesforecasting.tlc.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/forecasting-tlc-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+
     }
   ],
     "GlobalConfiguration": {
