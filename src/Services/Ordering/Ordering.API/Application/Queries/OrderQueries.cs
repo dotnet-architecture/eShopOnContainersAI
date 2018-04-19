@@ -102,6 +102,151 @@
             }
         }
 
+        public async Task<IEnumerable<dynamic>> GetProductHistory(string productId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sqlCommandText = @"
+                        select p.productId, p.[year], p.[month], p.units, p.[avg], p.[count], p.[max], p.[min],
+		                    LAG (units, 1) OVER (PARTITION BY p.productId ORDER BY p.productId, p.date) as prev,
+		                    LEAD (units, 1) OVER (PARTITION BY p.productId ORDER BY p.productId, p.date) as [next]
+	                    from (
+		                    select oi.ProductId as productId, 
+			                    YEAR(CAST(oi.OrderDate as datetime)) as [year], 
+			                    MONTH(CAST(oi.OrderDate as datetime)) as [month], 
+			                    MIN(CAST(oi.OrderDate as datetime)) as date,
+			                    sum(oi.Units) as units,
+			                    avg(oi.Units) as [avg],
+			                    count(oi.Units) as [count],
+			                    max(oi.Units) as [max],
+			                    min(oi.Units) as [min]
+		                    from (
+			                    select CONVERT(date, oo.OrderDate) as OrderDate, oi.ProductId, sum(oi.Units) as units
+				                    from [ordering].[orderItems] oi
+				                    inner join [ordering].[orders] oo on oi.OrderId = oo.Id
+                    " +
+                       (string.IsNullOrEmpty(productId) ? string.Empty : "where oi.ProductId = @productId ") +
+                  @"				group by CONVERT(date, oo.OrderDate), oi.ProductId) as oi 
+	                    group by oi.ProductId, YEAR(CAST(oi.OrderDate as datetime)), MONTH(CAST(oi.OrderDate as datetime))
+                    ) as p
+                    ";
+
+                connection.Open();
+
+                return await connection.QueryAsync<dynamic>(sqlCommandText, new { productId });
+            }
+        }
+
+        public async Task<IEnumerable<dynamic>> GetProductStats(string productId)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sqlCommandText = @"
+                    select e.*
+                    from 
+	                    (select p.productId, p.[year], p.[month], p.units, p.[avg], p.[count], p.[max], p.[min],
+		                    LAG (units, 1) OVER (PARTITION BY p.productId ORDER BY p.productId, p.date) as prev,
+		                    LEAD (units, 1) OVER (PARTITION BY p.productId ORDER BY p.productId, p.date) as [next]
+	                    from (
+		                    select oi.ProductId as productId, 
+			                    YEAR(CAST(oi.OrderDate as datetime)) as [year], 
+			                    MONTH(CAST(oi.OrderDate as datetime)) as [month], 
+			                    MIN(CAST(oi.OrderDate as datetime)) as date,
+			                    sum(oi.Units) as units,
+			                    avg(oi.Units) as [avg],
+			                    count(oi.Units) as [count],
+			                    max(oi.Units) as [max],
+			                    min(oi.Units) as [min]
+		                    from (
+			                    select CONVERT(date, oo.OrderDate) as OrderDate, oi.ProductId, sum(oi.Units) as units
+				                    from [ordering].[orderItems] oi
+				                    inner join [ordering].[orders] oo on oi.OrderId = oo.Id
+                    " +
+                       (string.IsNullOrEmpty(productId) ? string.Empty : "where oi.ProductId = @productId ") +
+                  @"				group by CONVERT(date, oo.OrderDate), oi.ProductId) as oi 
+	                    group by oi.ProductId, YEAR(CAST(oi.OrderDate as datetime)), MONTH(CAST(oi.OrderDate as datetime))) as p) 
+                    as e
+                    where e.prev IS NOT NULL and e.next IS NOT NULL
+                    ";
+
+                connection.Open();
+
+                return await connection.QueryAsync<dynamic>(sqlCommandText, new { productId });
+
+            }
+        }
+
+        public async Task<IEnumerable<dynamic>> GetCountryHistory(string country)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sqlCommandText = @"
+                    select p.country, p.[year], p.[month], p.units, p.[avg], p.[count], p.[max], p.[min],
+	                    LAG (units, 1) OVER (PARTITION BY p.country ORDER BY p.[year], p.[month]) as prev,
+	                    LEAD (units, 1) OVER (PARTITION BY p.country ORDER BY p.[year], p.[month]) as [next]
+                    from (
+	                    select 
+		                    country,
+		                    YEAR(CAST(oi.OrderDate as datetime)) as [year], 
+		                    MONTH(CAST(oi.OrderDate as datetime)) as [month], 
+		                    sum(oi.Units) as units,
+		                    avg(oi.Units) as [avg],
+		                    count(oi.Units) as [count],
+		                    max(oi.Units) as [max],
+		                    min(oi.Units) as [min]
+	                    from (select oo.Address_Country as country, CONVERT(date, oo.OrderDate) as OrderDate, sum(oi.Units) as units
+			                    from [ordering].[orderItems] oi
+			                    inner join [ordering].[orders] oo on oi.OrderId = oo.Id " +
+       (string.IsNullOrEmpty(country) ? string.Empty : " where oo.Address_Country = (@country) ") +
+                  @"            group by oo.Address_Country, CONVERT(date, oo.OrderDate)) as oi	
+	                    group by oi.country, YEAR(CAST(oi.OrderDate as datetime)), MONTH(CAST(oi.OrderDate as datetime))
+	                    ) as p
+                   ";
+
+                connection.Open();
+
+                return await connection.QueryAsync<dynamic>(sqlCommandText, new { country });
+            }
+        }
+
+        public async Task<IEnumerable<dynamic>> GetCountryStats(string country)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var sqlCommandText = @"
+                    select e.*
+                    from (
+                    select p.country, p.[year], p.[month], p.units, p.[avg], p.[count], p.[max], p.[min],
+	                    LAG (units, 1) OVER (PARTITION BY p.country ORDER BY p.[year], p.[month]) as prev,
+	                    LEAD (units, 1) OVER (PARTITION BY p.country ORDER BY p.[year], p.[month]) as [next]
+                    from (
+	                    select 
+		                    country,
+		                    YEAR(CAST(oi.OrderDate as datetime)) as [year], 
+		                    MONTH(CAST(oi.OrderDate as datetime)) as [month], 
+		                    sum(oi.Units) as units,
+		                    avg(oi.Units) as [avg],
+		                    count(oi.Units) as [count],
+		                    max(oi.Units) as [max],
+		                    min(oi.Units) as [min]
+	                    from (select oo.Address_Country as country, CONVERT(date, oo.OrderDate) as OrderDate, sum(oi.Units) as units
+			                    from [ordering].[orderItems] oi
+			                    inner join [ordering].[orders] oo on oi.OrderId = oo.Id " +
+                       (string.IsNullOrEmpty(country) ? string.Empty : " where oo.Address_Country = (@country) ") +
+                  @"group by oo.Address_Country, CONVERT(date, oo.OrderDate)) as oi	
+	                    group by oi.country, YEAR(CAST(oi.OrderDate as datetime)), MONTH(CAST(oi.OrderDate as datetime))
+	                    ) as p
+                    ) as e
+                    where e.prev IS NOT NULL and e.[next] IS NOT NULL
+                   ";
+
+                connection.Open();
+
+                return await connection.QueryAsync<dynamic>(sqlCommandText, new { country });
+
+            }
+        }
+
         private Order MapOrderItems(dynamic result)
         {
             var order = new Order
