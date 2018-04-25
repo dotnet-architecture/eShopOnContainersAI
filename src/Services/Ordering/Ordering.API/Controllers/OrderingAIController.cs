@@ -100,7 +100,7 @@ namespace Ordering.API.Controllers
             var stats = await _orderQueries.GetCountryStats(String.Empty);
 
             var typedStats = stats
-                .Select(c => new { c.next, c.country, c.year, c.month, c.units, c.avg, c.count, c.max, c.min, c.prev })
+                .Select(c => new { c.next, c.country, c.year, c.month, c.sales, c.avg, c.count, c.max, c.min, c.p_max, c.p_med, c.p_min, c.std, c.prev })
                 .ToList();
 
             var csvFile = File(Encoding.UTF8.GetBytes(typedStats.FormatAsCSV()), "text/csv");
