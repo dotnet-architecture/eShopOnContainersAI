@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forecasting
+﻿namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting
 {
     public interface IProductSales
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Infrastructure.Exceptions
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Infrastructure.Exceptions
 {
     /// <summary>
     /// Exception type for app exceptions

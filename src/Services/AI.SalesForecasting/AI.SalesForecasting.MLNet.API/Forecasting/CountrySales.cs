@@ -5,7 +5,7 @@ using Microsoft.MachineLearning;
 using Microsoft.MachineLearning.Api;
 using Microsoft.MachineLearning.Data;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forecasting
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting
 {
     /// <summary>
     /// This is the input to the trained model.
@@ -19,18 +19,19 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forec
     /// </summary>
     public class CountrySample
     {
-        public CountrySample(string country, int year, int month, float avg, int max, int min, int prev, int count, int units)
+        // next,country,year,month,sales,avg,count,max,min,p_max,p_med,p_min,std,prev
+        public CountrySample(string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
         {
             this.country = country;
-            Features = new Single[] { year, month, units, avg, count, max, min, prev };
+            Features = new Single[] { year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev };
         }
 
         public Single next;
 
         public string country;
 
-        [VectorType(8)]
-        public Single[] Features = new Single[8];
+        [VectorType(12)]
+        public Single[] Features = new Single[12];
     }
 
     /// <summary>
@@ -47,13 +48,13 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forec
         /// <summary>
         /// This method demonstrates how to run prediction on one example at a time.
         /// </summary>
-        public ScoredCountrySample Predict(string modelPath, string country, int year, int month, float avg, int max, int min, int prev, int count, int units)
+        public ScoredCountrySample Predict(string modelPath, string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
         {
             var env = new TlcEnvironment(conc: 1);
 
             var predictionEngine = CreatePredictionEngine(env, modelPath);
 
-            var inputExample = new CountrySample(country, year, month, avg, max, min, prev, count, units);
+            var inputExample = new CountrySample(country, year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev);
 
             return predictionEngine.Predict(inputExample);
         }

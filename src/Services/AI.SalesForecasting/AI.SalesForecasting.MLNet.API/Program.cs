@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API
 {
     public class Program
     {

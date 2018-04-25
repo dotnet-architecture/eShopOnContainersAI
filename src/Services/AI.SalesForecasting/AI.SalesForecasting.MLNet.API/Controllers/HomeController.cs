@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Controllers
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Controllers
 {
     public class HomeController : Controller
     {

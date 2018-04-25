@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Infrastructure.ActionResults;
-using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Infrastructure.Exceptions;
+using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Infrastructure.ActionResults;
+using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Infrastructure.Exceptions;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Infrastructure.Filters
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Infrastructure.Filters
 {
     public class HttpGlobalExceptionFilter : IExceptionFilter
     {

@@ -43,11 +43,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "ai.salesforecasting.tlc.api",
+          "Host": "ai.salesforecasting.mlnet.api",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/forecasting-tlc-api/{version}/{everything}",
+      "UpstreamPathTemplate": "/forecasting-mlnet-api/{version}/{everything}",
       "UpstreamHttpMethod": []
 
     }

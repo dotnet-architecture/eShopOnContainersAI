@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>SalesForecasting.TLC.API</AssemblyName>
-    <RootNamespace>Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API</RootNamespace>
+    <AssemblyName>SalesForecasting.MLNet.API</AssemblyName>
+    <RootNamespace>Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -28,7 +28,7 @@ services:
       - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
                     # The API Gateway redirects and access through the internal port (80). 
 
-  ai.salesforecasting.tlc.api:
+  ai.salesforecasting.mlnet.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80

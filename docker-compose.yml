@@ -12,11 +12,11 @@ services:
       - identity.api
       - rabbitmq
 
-  ai.salesforecasting.tlc.api:
-    image: eshopai/ai.salesforecasting.tlc.api:${TAG:-latest}
+  ai.salesforecasting.mlnet.api:
+    image: eshopai/ai.salesforecasting.mlnet.api:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/AI.SalesForecasting/AI.SalesForecasting.TLC.API/Dockerfile    
+      dockerfile: src/Services/AI.SalesForecasting/AI.SalesForecasting.MLNet.API/Dockerfile    
 
   ai.productrecommender.azureml.api:
     image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
@@ -101,7 +101,7 @@ services:
       - catalog.api
       - ordering.api
       - identity.api
-      - ai.salesforecasting.tlc.api
+      - ai.salesforecasting.mlnet.api
       - webshoppingapigw
       - webaiapigw
 

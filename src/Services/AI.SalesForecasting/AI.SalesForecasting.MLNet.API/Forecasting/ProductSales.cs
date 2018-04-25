@@ -9,7 +9,7 @@ using Microsoft.MachineLearning.Api;
 using Microsoft.MachineLearning.Data;
 
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forecasting
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting
 {
     public class ProductSample
     {

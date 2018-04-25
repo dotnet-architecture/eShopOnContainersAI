@@ -1,8 +1,8 @@
-﻿using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forecasting;
+﻿using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Controllers
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Controllers
 {
     [Route("api/v1/ForecastingAI")]
     public class SalesForecastingController : Controller
@@ -19,8 +19,8 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Contr
         }
 
         [HttpGet]
-        [Route("product/{productId}/forecast")]
-        public IActionResult ForecastProduct(string productId, 
+        [Route("product/{productId}/unitdemandestimation")]
+        public IActionResult GetProductUnitDemandEstimation(string productId, 
             [FromQuery]int year, [FromQuery]int month,
             [FromQuery]float units, [FromQuery]float avg,
             [FromQuery]int count, [FromQuery]float max,
@@ -30,23 +30,25 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Contr
             [FromQuery]string agram, [FromQuery]string bgram,
             [FromQuery]string ygram, [FromQuery]string zgram)
         {
-            var results = productSales.Predict($"{appSettings.AIModelsPath}/product_ts_month.zip", productId, year, month, units, avg, count, max, min, prev, price, color, size, shape, agram, bgram, ygram, zgram);
+            var nextMonthUnitDemandEstimation = productSales.Predict($"{appSettings.AIModelsPath}/product_month_fastTreeTweedle.zip", productId, year, month, units, avg, count, max, min, prev, price, color, size, shape, agram, bgram, ygram, zgram);
 
-            return Ok(results.Score);
+            return Ok(nextMonthUnitDemandEstimation.Score);
         }
 
         [HttpGet]
-        [Route("country/{country}/forecast")]
-        public IActionResult ForecastProduct(string country,
+        [Route("country/{country}/salesforecast")]
+        public IActionResult GetCountrySalesForecast(string country,
             [FromQuery]int year,
             [FromQuery]int month, [FromQuery]float avg, 
-            [FromQuery]int max, [FromQuery]int min,
-            [FromQuery]int prev, [FromQuery]int count,
-            [FromQuery]int units)
+            [FromQuery]float max, [FromQuery]float min,
+            [FromQuery]float p_max, [FromQuery]float p_min,
+            [FromQuery]float p_med, 
+            [FromQuery]float prev, [FromQuery]int count,
+            [FromQuery]float sales, [FromQuery]float std)
         {
-            var results = countrySales.Predict($"{appSettings.AIModelsPath}/country_ts_month.zip", country, year, month, avg, max, min, prev, count, units);
+            var nextMonthSalesForecast = countrySales.Predict($"{appSettings.AIModelsPath}/country_month_fastTreeTweedle.zip", country, year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev);
 
-            return Ok(results.Score);
+            return Ok(nextMonthSalesForecast.Score);
         }
     }
 }

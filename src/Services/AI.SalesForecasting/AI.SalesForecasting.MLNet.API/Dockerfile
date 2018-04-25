@@ -6,7 +6,7 @@ FROM microsoft/aspnetcore-build:2.0.5-2.1.4 AS build
 WORKDIR /src
 COPY . .
 RUN dotnet restore -nowarn:msb3202,nu1503
-WORKDIR /src/src/Services/AI.SalesForecasting/AI.SalesForecasting.TLC.API
+WORKDIR /src/src/Services/AI.SalesForecasting/AI.SalesForecasting.MLNet.API
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
@@ -15,4 +15,4 @@ RUN dotnet publish --no-restore -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "SalesForecasting.TLC.API.dll"]
+ENTRYPOINT ["dotnet", "SalesForecasting.MLNet.API.dll"]

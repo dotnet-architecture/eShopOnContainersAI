@@ -116,7 +116,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.BackgroundTasks", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AI.SalesForecasting", "AI.SalesForecasting", "{AE105DB6-CAF5-4F0A-9EF5-7C1E588D548A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.SalesForecasting.TLC.API", "src\Services\AI.SalesForecasting\AI.SalesForecasting.TLC.API\AI.SalesForecasting.TLC.API.csproj", "{A5B8AC65-C691-4D6B-981E-33EB4AAFE0EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI.SalesForecasting.MLNet.API", "src\Services\AI.SalesForecasting\AI.SalesForecasting.MLNet.API\AI.SalesForecasting.MLNet.API.csproj", "{A5B8AC65-C691-4D6B-981E-33EB4AAFE0EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebDashboardRazor", "src\Web\WebDashboardRazor\WebDashboardRazor.csproj", "{C092C0B9-A294-4052-B5E2-B22E8DD4018B}"
 EndProject

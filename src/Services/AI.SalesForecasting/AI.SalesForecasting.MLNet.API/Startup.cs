@@ -3,13 +3,13 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Forecasting;
-using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting;
+using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Infrastructure.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API
 {
     public class Startup
     {
@@ -39,7 +39,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "eShopOnContainersAI - AI.SalesForecasting.TLC.API HTTP API",
+                    Title = "eShopOnContainersAI - AI.SalesForecasting.MLNet.API HTTP API",
                     Version = "v1",
                     Description = "The Sales Forecasting Microservice HTTP API.",
                     TermsOfService = "Terms Of Service"
@@ -84,7 +84,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.TLC.API
             app.UseSwagger()
               .UseSwaggerUI(c =>
               {
-                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "AI.SalesForecasting.TLC.API V1");
+                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "AI.SalesForecasting.MLNet.API V1");
               });
         }
     }
