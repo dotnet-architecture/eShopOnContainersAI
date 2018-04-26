@@ -48,7 +48,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
 
         public static class Forecasting
         {
-            private static string urlSuffix = "/forecasting-tlc-api/v1/ForecastingAI";
+            private static string urlSuffix = "/forecasting-mlnet-api/v1/ForecastingAI";
             public static string ControllerUrl(string baseUrl)
             {
                 return $"{baseUrl.TrimEndSlash()}{urlSuffix}";

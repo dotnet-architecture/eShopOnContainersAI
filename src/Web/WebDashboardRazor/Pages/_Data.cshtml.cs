@@ -6,9 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure;
+using Microsoft.eShopOnContainers.WebDashboardRazor.Models;
 
 namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages
 {
+    public enum DataModelInformationCategories
+    {
+        OrderItems,
+        Products,
+        Users,
+        OrderItemStats,
+        CountryStats
+    }
+
     public class DataModel : PageModel
     {
         private readonly AppSettings appSettings;
@@ -21,34 +31,48 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages
         public DataModelInformation Information { get; private set; }
 
         public void OnGet(string category)
-        {            
-            Information = DataModelInformation.Create(category, Url, appSettings);
-        }
-
-    }
-
-    public class DataModelInformation
-    {
-        internal enum DataModelInformationCategories
-        {
-            OrderItems,
-            Products,
-            Users,
-            OrderItemStats,
-            CountryStats
-        }
-
-        public static DataModelInformation Create (string category, IUrlHelper urlHelper, AppSettings appSettings)
         {
             if (!Enum.TryParse(category, true, out DataModelInformationCategories informationCategory))
                 informationCategory = DataModelInformationCategories.OrderItems;
 
+            UpdateSelectedMenu(informationCategory);
+
+            Information = DataModelInformation.Create(informationCategory, Url, appSettings);
+        }
+
+        private void UpdateSelectedMenu(DataModelInformationCategories informationCategory)
+        {
+            switch (informationCategory)
+            {
+                case DataModelInformationCategories.OrderItems:
+                    ViewData.SetSelectedMenu(SelectedMenu.Data_Sales);
+                    break;
+                case DataModelInformationCategories.Products:
+                    ViewData.SetSelectedMenu(SelectedMenu.Data_Product);
+                    break;
+                case DataModelInformationCategories.Users:
+                    ViewData.SetSelectedMenu(SelectedMenu.Data_Customer);
+                    break;
+                case DataModelInformationCategories.OrderItemStats:
+                    ViewData.SetSelectedMenu(SelectedMenu.Data_SalesByProduct);
+                    break;
+                case DataModelInformationCategories.CountryStats:
+                    ViewData.SetSelectedMenu(SelectedMenu.Data_SalesByCountry);
+                    break;
+            }
+
+        }
+
+        public class DataModelInformation
+    {
+        public static DataModelInformation Create (DataModelInformationCategories informationCategory, IUrlHelper urlHelper, AppSettings appSettings)
+        {
             switch (informationCategory)
             {
                 case DataModelInformationCategories.Products:
                     return new DataModelInformation
                     {
-                        DownloadFileUrl = API.Catalog.ProductInfo(appSettings.WebShoppingUrl),
+                        DownloadFileUrl = API.Catalog.ProductInfo(appSettings.WebShoppingUrl, "csv"),
                         FileName = "products.csv",
                         Description = $"The file products.csv contains the products stored in eShopOnContainersAI SqlServer database."
                     };
@@ -87,5 +111,6 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages
         public string DownloadFileUrl { get; private set; }
         public string FileName { get; private set; }
         public string Description { get; private set; }
+    }
     }
 }
