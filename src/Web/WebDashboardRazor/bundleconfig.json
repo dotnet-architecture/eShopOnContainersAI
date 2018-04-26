@@ -15,7 +15,7 @@
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [
       "wwwroot/css/site.css",
-      "wwwroot/css/dashboard.css"
+      "wwwroot/css/icons.css"
     ]
   },
   {
