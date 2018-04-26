@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1E1D7E0F-2C93-42C7-8602-4F302BAB13C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopDashboard", "src\eShopDashboard\eShopDashboard.csproj", "{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1119BDF-0BF5-4E57-ACD8-EC003B233351}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0} = {1E1D7E0F-2C93-42C7-8602-4F302BAB13C1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3AA06177-A5FA-4668-BE31-9446EDAE6C5F}
+	EndGlobalSection
+EndGlobal
