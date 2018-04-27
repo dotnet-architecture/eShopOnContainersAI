@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.MachineLearning;
 using Microsoft.MachineLearning.Runtime;
 using Microsoft.MachineLearning.Runtime.Api;
 using Microsoft.MachineLearning.Runtime.Data;
+using System.Threading.Tasks;
 
 namespace eShopDashboard.Forecasting
 {
@@ -63,7 +65,6 @@ namespace eShopDashboard.Forecasting
     public class CountrySalesPrediction
     {
         // Below columns are produced by the model's predictor.
-        [ColumnName("Score")]
         public float Score;
     }
 
@@ -72,11 +73,11 @@ namespace eShopDashboard.Forecasting
         /// <summary>
         /// This method demonstrates how to run prediction on one example at a time.
         /// </summary>
-        public CountrySalesPrediction Predict(string modelPath, string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
+        public async Task<CountrySalesPrediction> Predict(string modelPath, string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
         {
             var env = new TlcEnvironment(conc: 1);
 
-            var predictionEngine = CreatePredictionEngine(env, modelPath);
+            var predictionEngine = await CreatePredictionEngineAsync(env, modelPath);
 
             var inputExample = new CountryData(country, year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev);
 
@@ -86,10 +87,10 @@ namespace eShopDashboard.Forecasting
         /// <summary>
         /// This function creates a prediction engine from the model located in the <paramref name="modelPath"/>.
         /// </summary>
-        private PredictionEngine<CountryData, CountrySalesPrediction> CreatePredictionEngine(IHostEnvironment env, string modelPath)
+        private async Task<PredictionModel<CountryData, CountrySalesPrediction>> CreatePredictionEngineAsync(IHostEnvironment env, string modelPath)
         {
-            using (var fs = File.OpenRead(modelPath))
-                return env.CreatePredictionEngine<CountryData, CountrySalesPrediction>(fs);
+            PredictionModel<CountryData, CountrySalesPrediction> model = await PredictionModel.ReadAsync<CountryData, CountrySalesPrediction>(modelPath);
+            return model;
         }
     }
 }
