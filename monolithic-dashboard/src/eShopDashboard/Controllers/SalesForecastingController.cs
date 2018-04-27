@@ -1,44 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eShopDashboard.Forecasting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace eShopDashboard.Controllers
+namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/forecasting")]
-    public class ForecastingController : Controller
+    [Route("api/v1/ForecastingAI")]
+    public class SalesForecastingController : Controller
     {
         private readonly AppSettings appSettings;
         private readonly IProductSales productSales;
         private readonly ICountrySales countrySales;
 
-        public ForecastingController(IOptionsSnapshot<AppSettings> appSettings, IProductSales productSales, ICountrySales countrySales)
+        public SalesForecastingController(IOptionsSnapshot<AppSettings> appSettings, IProductSales productSales, ICountrySales countrySales)
         {
             this.appSettings = appSettings.Value;
             this.productSales = productSales;
             this.countrySales = countrySales;
         }
 
-        // GET: api/Forecasting
-        //[HttpGet("product/{productId}/unitdemandestimation")]
-        //public IActionResult ProductUnitDemandEstimation(int productId, [FromQuery]int month)
-        //{
-        //    if (month == 10)
-        //    {
-        //        return Ok(153.410721);
-        //    }
-
-        //    return Ok(175.667068);
-        //}
-
         [HttpGet]
         [Route("product/{productId}/unitdemandestimation")]
-        public IActionResult GetProductUnitDemandEstimation(string productId,
+        public IActionResult GetProductUnitDemandEstimation(string productId, 
             [FromQuery]int year, [FromQuery]int month,
             [FromQuery]float units, [FromQuery]float avg,
             [FromQuery]int count, [FromQuery]float max,
@@ -57,10 +39,10 @@ namespace eShopDashboard.Controllers
         [Route("country/{country}/salesforecast")]
         public IActionResult GetCountrySalesForecast(string country,
             [FromQuery]int year,
-            [FromQuery]int month, [FromQuery]float avg,
+            [FromQuery]int month, [FromQuery]float avg, 
             [FromQuery]float max, [FromQuery]float min,
             [FromQuery]float p_max, [FromQuery]float p_min,
-            [FromQuery]float p_med,
+            [FromQuery]float p_med, 
             [FromQuery]float prev, [FromQuery]int count,
             [FromQuery]float sales, [FromQuery]float std)
         {

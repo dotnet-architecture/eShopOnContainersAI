@@ -22,6 +22,21 @@ namespace eShopDashboard
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.Configure<AppSettings>(Configuration);
+
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "eShopDashboard - API",
+                    Version = "v1",
+                    Description = "The Dashboard Microservice HTTP API.",
+                    TermsOfService = "Terms Of Service"
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +55,14 @@ namespace eShopDashboard
             app.UseStaticFiles();
 
             app.UseMvc();
+
+            var pathBase = Configuration["PATH_BASE"];
+
+            app.UseSwagger()
+              .UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "AI.SalesForecasting.MLNet.API V1");
+              });
         }
     }
 }
