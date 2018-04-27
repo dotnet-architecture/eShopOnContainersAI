@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace eShopDashboard.Core.Entities
+namespace eShopDashboard.EntityModels.Catalog
 {
     public class CatalogTag
     {

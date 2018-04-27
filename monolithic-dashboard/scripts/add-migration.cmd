@@ -11,13 +11,13 @@ echo // DbContext name : The DbContext for the migration
 echo // Migration name : This script will add the "Migration_<dbContext>" suffix to the name
 echo //--------------------------------------------------------------------------------------
 echo/
-set /p   project="Project name   : [eDashboard.Infrastructure]: " || set project=eDashboard.Infrastructure
-set /p dbContext="DbContext name : "
-set /p      name="Migration name : "
+set /p   project="Project name (eShopDashboard) : " || set project=eShopDashboard
+set /p dbContext="DbContext name                : "
+set /p      name="Migration name                : "
 
 set scriptsDir=%cd%
 set cliProjectDir=.\Scripts.Cli
-set migrationsPath=Data\Migrations
+set migrationsPath=Infraestructure\Migrations
 
 @echo cd %cliProjectDir%
 cd %cliProjectDir%

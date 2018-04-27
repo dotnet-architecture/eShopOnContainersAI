@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace eDashboard.Infrastructure.Data.Migrations
+namespace eShopDashboard.Infraestructure.Migrations
 {
     public partial class InitialMigration_CatalogContext : Migration
     {
@@ -28,7 +28,7 @@ namespace eDashboard.Infrastructure.Data.Migrations
                     PictureUri = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
                     RestockThreshold = table.Column<int>(nullable: false),
-                    Tags = table.Column<string>(maxLength: 4000, nullable: true)
+                    TagsJson = table.Column<string>(maxLength: 4000, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -3,6 +3,18 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Infraestructure\Setup\CatalogItems.sql" />
+    <None Remove="Infraestructure\Setup\CatalogTags.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Infraestructure\Setup\CatalogItems.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Infraestructure\Setup\CatalogTags.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
@@ -10,9 +22,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="EntityModels\Ordering\" />
+    <Folder Include="Infraestructure\Migrations\" />
     <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\eDashboard.Infrastructure\eDashboard.Infrastructure.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>

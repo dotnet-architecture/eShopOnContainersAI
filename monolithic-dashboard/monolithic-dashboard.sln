@@ -12,16 +12,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopDashboard.Core", "src\ApplicationCore\eShopDashboard.Core.csproj", "{85F186CF-B4F4-4B19-A4FB-F80836F78191}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDashboard.Infrastructure", "src\eDashboard.Infrastructure\eDashboard.Infrastructure.csproj", "{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E880646F-55CE-4B72-A32B-8A59E28AB313}"
 	ProjectSection(SolutionItems) = preProject
 		scripts\add-migration.cmd = scripts\add-migration.cmd
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripts.Cli", "scripts\Scripts.Cli\Scripts.Cli.csproj", "{265CA023-057A-45BD-8D2B-DB560A17C5C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scripts.Cli", "scripts\Scripts.Cli\Scripts.Cli.csproj", "{265CA023-057A-45BD-8D2B-DB560A17C5C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,14 +29,6 @@ Global
 		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85F186CF-B4F4-4B19-A4FB-F80836F78191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85F186CF-B4F4-4B19-A4FB-F80836F78191}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85F186CF-B4F4-4B19-A4FB-F80836F78191}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85F186CF-B4F4-4B19-A4FB-F80836F78191}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{265CA023-057A-45BD-8D2B-DB560A17C5C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{265CA023-057A-45BD-8D2B-DB560A17C5C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265CA023-057A-45BD-8D2B-DB560A17C5C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,8 +39,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0534B6A7-47B8-43E6-A5E6-46AEC13E6CC0} = {1E1D7E0F-2C93-42C7-8602-4F302BAB13C1}
-		{85F186CF-B4F4-4B19-A4FB-F80836F78191} = {1E1D7E0F-2C93-42C7-8602-4F302BAB13C1}
-		{E134C8EC-CCE3-40B5-9DFA-2713CD4CDD27} = {1E1D7E0F-2C93-42C7-8602-4F302BAB13C1}
 		{265CA023-057A-45BD-8D2B-DB560A17C5C1} = {E880646F-55CE-4B72-A32B-8A59E28AB313}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -1,11 +1,8 @@
-﻿using eShopDashboard.Core.Entities;
+﻿using eShopDashboard.EntityModels.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace eDashboard.Infrastructure.Data
+namespace eShopDashboard.Infraestructure.Data
 {
     public class CatalogContext : DbContext
     {
@@ -39,7 +36,7 @@ namespace eDashboard.Infrastructure.Data
             builder.Property(ci => ci.PictureUri)
                 .IsRequired(false);
 
-            builder.Property(ci => ci.Tags)
+            builder.Property(ci => ci.TagsJson)
                 .IsRequired(false)
                 .HasMaxLength(4000);
         }

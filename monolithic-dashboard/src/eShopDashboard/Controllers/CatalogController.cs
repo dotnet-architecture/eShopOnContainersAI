@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eDashboard.Infrastructure.Data;
-using eShopDashboard.Core.Entities;
-using eShopDashboard.Extensions;
-using Microsoft.AspNetCore.Http;
+﻿using eShopDashboard.Extensions;
+using eShopDashboard.Infraestructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eShopDashboard.Controllers
 {
@@ -27,43 +22,38 @@ namespace eShopDashboard.Controllers
         [HttpGet("productSetDetailsByDescription")]
         public async Task<IActionResult> SimilarProducts([FromQuery]string description)
         {
-                if (string.IsNullOrEmpty(description))
-                    return BadRequest();
+            if (string.IsNullOrEmpty(description))
+                return BadRequest();
 
-                var itemList = await _catalogContext.CatalogItems
-                    .Where(c => c.Description.Contains(description))
-                    .ToListAsync();
+            var itemList = await _catalogContext.CatalogItems
+                .Where(c => c.Description.Contains(description))
+                .ToListAsync();
 
-                if (itemList.Any())
+            if (itemList.Any())
+            {
+                var productList = itemList.Select(ci => new
                 {
-                    var productList = itemList.Select(ci =>
-                        {
-                            var tags = JsonConvert.DeserializeObject<CatalogFullTag>(ci.Tags);
-                                
-                            return new
-                            {
-                                ci.Id,
-                                ci.CatalogBrandId,
-                                ci.Description,
-                                ci.Price,
-                                ci.PictureUri,
-                                color = tags.Color.JoinTags(),
-                                size = tags.Size.JoinTags(),
-                                shape = tags.Shape.JoinTags(),
-                                quantity = tags.Quantity.JoinTags(),
-                                tags.agram,
-                                tags.bgram,
-                                tags.abgram,
-                                tags.ygram,
-                                tags.zgram,
-                                tags.yzgram
-                            };
-                        }).ToList();
+                    ci.Id,
+                    ci.CatalogBrandId,
+                    ci.Description,
+                    ci.Price,
+                    ci.PictureUri,
+                    color = ci.Tags.Color.JoinTags(),
+                    size = ci.Tags.Size.JoinTags(),
+                    shape = ci.Tags.Shape.JoinTags(),
+                    quantity = ci.Tags.Quantity.JoinTags(),
+                    ci.Tags.agram,
+                    ci.Tags.bgram,
+                    ci.Tags.abgram,
+                    ci.Tags.ygram,
+                    ci.Tags.zgram,
+                    ci.Tags.yzgram
+                }).ToList();
 
-                    return Ok(productList);
-                }
-                else
-                    return Ok();
+                return Ok(productList);
+            }
+
+            return Ok();
         }
     }
 }

@@ -1,7 +1,13 @@
-﻿namespace eShopDashboard.Core.Entities
+﻿using System;
+using Newtonsoft.Json;
+
+namespace eShopDashboard.EntityModels.Catalog
 {
     public class CatalogItem
     {
+        private CatalogFullTag _tags;
+        private bool _invalidTagJson;
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -38,8 +44,26 @@
         public bool OnReorder { get; set; }
 
 
-        public string Tags { get; set; }
+        public string TagsJson { get; set; }
 
+        public CatalogFullTag Tags
+        {
+            get
+            {
+                if (_tags != null) return _tags;
+                if (_invalidTagJson) return null;
 
+                try
+                {
+                    return TagsJson == null ? null : _tags = JsonConvert.DeserializeObject<CatalogFullTag>(TagsJson);
+                }
+                catch
+                {
+                    _invalidTagJson = true;
+
+                    return null;
+                }
+            }
+        }
     }
 }
