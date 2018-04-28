@@ -1,5 +1,5 @@
 ﻿using eShopDashboard.Extensions;
-using eShopDashboard.Infraestructure.Data;
+using eShopDashboard.Infrastructure.Data.Catalog;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

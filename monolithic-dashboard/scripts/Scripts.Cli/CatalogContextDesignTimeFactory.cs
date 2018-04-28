@@ -1,4 +1,4 @@
-﻿using eShopDashboard.Infraestructure.Data;
+﻿using eShopDashboard.Infrastructure.Data.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

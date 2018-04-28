@@ -1,13 +1,12 @@
-﻿using System.IO;
-using System.Transactions;
-using eShopDashboard.Infraestructure.Data;
-using eShopDashboard.Infraestructure.Setup;
+﻿using eShopDashboard.Infrastructure.Data.Catalog;
+using eShopDashboard.Infrastructure.Setup;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace eShopDashboard
 {

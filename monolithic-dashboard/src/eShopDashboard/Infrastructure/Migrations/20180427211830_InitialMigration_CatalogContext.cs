@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
 
-namespace eShopDashboard.Infraestructure.Migrations
+namespace eShopDashboard.Infrastructure.Migrations
 {
     public partial class InitialMigration_CatalogContext : Migration
     {

@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using eShopDashboard.EntityModels.Catalog;
-using eShopDashboard.Infraestructure.Data;
+using eShopDashboard.Infrastructure.Data.Catalog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace eShopDashboard.Infraestructure.Setup
+namespace eShopDashboard.Infrastructure.Setup
 {
     public class CatalogContextSetup
     {
@@ -31,7 +30,7 @@ namespace eShopDashboard.Infraestructure.Setup
         {
             if (await _dbContext.CatalogItems.AnyAsync()) return;
 
-            var setupPath = Path.Combine(_env.ContentRootPath, "Infraestructure", "Setup");
+            var setupPath = Path.Combine(_env.ContentRootPath, "Infrastructure", "Setup");
 
             _logger.LogInformation($@"Seeding CatalogContext from ""{setupPath}""");
             _logger.LogInformation("Reading CatalogItems seed data");

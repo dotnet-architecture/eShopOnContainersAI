@@ -53,7 +53,7 @@ from (
             from (
             select oo.Address_Country as country, oo.Id as id, YEAR(oo.OrderDate) as [year], MONTH(oo.OrderDate) as [month], oi.UnitPrice * oi.Units as sale
             from [ordering].[orderItems] oi
-            inner join [ordering].[orders] oo on oi.OrderId = oo.Id {(string.IsNullOrEmpty(country) ? string.Empty : " and oo.Address_Country = (@country) ")}
+            inner join [ordering].[orders] oo on oi.OrderId = oo.Id {(string.IsNullOrEmpty(country) ? string.Empty : "and oo.Address_Country = (@country)")}
         ) as T
             group by T.id
         ) as S

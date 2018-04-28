@@ -2,23 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace eShopDashboard.Infraestructure.Data
+namespace eShopDashboard.Infrastructure.Data.Catalog
 {
-    public class CatalogContext : DbContext
+    public class CatalogItemConfiguration : IEntityTypeConfiguration<CatalogItem>
     {
-        public CatalogContext(DbContextOptions<CatalogContext> options)
-            : base(options)
-        {
-        }
-
-        public DbSet<CatalogItem> CatalogItems { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<CatalogItem>(ConfigureCatalogItem);
-        }
-
-        private void ConfigureCatalogItem(EntityTypeBuilder<CatalogItem> builder)
+        public void Configure(EntityTypeBuilder<CatalogItem> builder)
         {
             builder.ToTable("CatalogItems", schema: "Catalog");
 
