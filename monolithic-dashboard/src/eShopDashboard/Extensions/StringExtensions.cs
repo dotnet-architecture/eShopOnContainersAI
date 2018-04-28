@@ -9,5 +9,15 @@ namespace eShopDashboard.Extensions
         {
             return String.Join('-', items ?? new[] {String.Empty});
         }
+
+        public static bool IsBlank(this string stringObject)
+        {
+            return string.IsNullOrWhiteSpace(stringObject);
+        }
+
+        public static bool IsNotAnInt(this string stringObject)
+        {
+            return int.TryParse(stringObject, out int result);
+        }
     }
 }
