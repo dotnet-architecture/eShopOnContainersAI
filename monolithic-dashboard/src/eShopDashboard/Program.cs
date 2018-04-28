@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using eShopDashboard.Infrastructure.Data.Ordering;
 
 namespace eShopDashboard
 {
@@ -44,12 +45,22 @@ namespace eShopDashboard
                 var services = scope.ServiceProvider;
 
                 var env = services.GetService<IHostingEnvironment>();
-                var logger = services.GetService<ILogger<CatalogContextSetup>>();
-                var dbContext = services.GetService<CatalogContext>();
 
-                dbContext.Database.Migrate();
+                var catalogLogger = services.GetService<ILogger<CatalogContextSetup>>();
+                var catalogContext = services.GetService<CatalogContext>();
 
-                new CatalogContextSetup(dbContext, env, logger)
+                catalogContext.Database.Migrate();
+
+                new CatalogContextSetup(catalogContext, env, catalogLogger)
+                    .SeedAsync()
+                    .Wait();
+
+                var orderingLogger = services.GetService<ILogger<OrderingContextSetup>>();
+                var orderingContext = services.GetService<OrderingContext>();
+
+                orderingContext.Database.Migrate();
+
+                new OrderingContextSetup(orderingContext, env, orderingLogger)
                     .SeedAsync()
                     .Wait();
             }

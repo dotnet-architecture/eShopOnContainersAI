@@ -17,13 +17,15 @@ set /p      name="Migration name                : "
 
 set scriptsDir=%cd%
 set cliProjectDir=.\Scripts.Cli
-set migrationsPath=Infraestructure\Migrations
+set migrationsPath=Infrastructure\Migrations
+set migrationsFolder=%dbContext:DbContext=%
+set migrationsFolder=%migrationsFolder:Context=%
 
 @echo cd %cliProjectDir%
 cd %cliProjectDir%
 
 @echo on
-dotnet ef migrations add %name%Migration_%dbContext% -p ..\..\src\%project% -c %dbContext% -o ..\..\src\%project%\%migrationsPath%
+dotnet ef migrations add %name%Migration_%dbContext% -p ..\..\src\%project% -c %dbContext% -o ..\..\src\%project%\%migrationsPath%\%migrationsFolder%
 @echo off
 
 cd %scriptsDir%

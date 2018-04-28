@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eShopDashboard.EntityModels.Ordering;
+using Microsoft.EntityFrameworkCore;
 
 namespace eShopDashboard.Infrastructure.Data.Ordering
 {
@@ -7,12 +8,16 @@ namespace eShopDashboard.Infrastructure.Data.Ordering
         public OrderingContext(DbContextOptions<OrderingContext> options)
             : base(options)
         {
-            
         }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
         }
     }
 }

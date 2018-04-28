@@ -23,7 +23,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\Migrations\Ordering\" />
     <Folder Include="Models\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 </Project>
