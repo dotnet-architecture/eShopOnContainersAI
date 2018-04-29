@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using eShopDashboard.Infrastructure.Data.Ordering;
+﻿using eShopDashboard.Infrastructure.Data.Ordering;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace eShopDashboard.Infrastructure.Setup
 {
@@ -28,23 +26,53 @@ namespace eShopDashboard.Infrastructure.Setup
 
         public async Task SeedAsync()
         {
-            if (await _dbContext.OrderItems.AnyAsync()) return;
+            if (await _dbContext.Orders.AnyAsync()) return;
 
             var setupPath = Path.Combine(_env.ContentRootPath, "Infrastructure", "Setup");
+            _logger.LogInformation($@"----- Seeding OrderingContext from ""{setupPath}""");
 
-            _logger.LogInformation($@"Seeding OrderingContext from ""{setupPath}""");
-            _logger.LogInformation("Reading Orders seed data");
+            await SeedOrdersAsync(setupPath);
+            await SeedOrderItemsAsync(setupPath);
+        }
 
-            var bulkInsertOptions = "format = 'CSV', firstrow = 2";
+        private async Task SeedOrderItemsAsync(string setupPath)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
 
-            var ordersDataFile = Path.Combine(setupPath, "Infrastructure", "Setup", "Orders.csv");
-            var ordersBulkInsert = $@"bulk insert [Ordering].[Orders] from ""{ordersDataFile}"" with ({bulkInsertOptions})";
-            await _dbContext.Database.ExecuteSqlCommandAsync(ordersBulkInsert);
+            _logger.LogInformation("----- Seeding OrderItems");
 
-            var orderItemsDataFile = Path.Combine(setupPath, "Infrastructure", "Setup", "OrderItems.csv");
-            var orderItemsBulkInsert = $@"bulk insert [Ordering].[OrderItems] from ""{orderItemsDataFile}"" with ({bulkInsertOptions})";
-            await _dbContext.Database.ExecuteSqlCommandAsync(orderItemsBulkInsert);
+            var sqlFile = Path.Combine(setupPath, "OrderItems.sql");
 
+            var sqlLines = await File.ReadAllLinesAsync(sqlFile);
+
+            _logger.LogInformation("----- Inserting OrderItems");
+
+            var batcher = new SqlBatcher(_dbContext.Database, _logger);
+
+            await batcher.ExecuteInsertCommandsAsync(sqlLines);
+
+            _logger.LogInformation($"----- OrderItems Inserted ({sw.Elapsed.TotalSeconds:n3}s)");
+        }
+
+        private async Task SeedOrdersAsync(string setupPath)
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            _logger.LogInformation("----- Seeding Orders");
+
+            var sqlFile = Path.Combine(setupPath, "Orders.sql");
+
+            var sqlLines = await File.ReadAllLinesAsync(sqlFile);
+
+            _logger.LogInformation("----- Inserting Orders");
+
+            var batcher = new SqlBatcher(_dbContext.Database, _logger);
+
+            await batcher.ExecuteInsertCommandsAsync(sqlLines);
+
+            _logger.LogInformation($"----- Orders Inserted ({sw.Elapsed.TotalSeconds:n3}s)");
         }
     }
 }

@@ -4,13 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Infrastructure\Setup\CatalogItems.sql" />
-    <None Remove="Infrastructure\Setup\CatalogTags.txt" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Infrastructure\Setup\CatalogItems.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Infrastructure\Setup\CatalogTags.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -25,5 +21,10 @@
   <ItemGroup>
     <Folder Include="Infrastructure\Migrations\Ordering\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Infrastructure\Setup\CatalogTags.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
