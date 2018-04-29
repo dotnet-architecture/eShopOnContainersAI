@@ -44,25 +44,17 @@ namespace eShopDashboard
             {
                 var services = scope.ServiceProvider;
 
-                var env = services.GetService<IHostingEnvironment>();
-
-                var catalogLogger = services.GetService<ILogger<CatalogContextSetup>>();
                 var catalogContext = services.GetService<CatalogContext>();
+                var catalogContextSetup = services.GetService<CatalogContextSetup>();
 
                 catalogContext.Database.Migrate();
+                catalogContextSetup.SeedAsync().Wait();
 
-                new CatalogContextSetup(catalogContext, env, catalogLogger)
-                    .SeedAsync()
-                    .Wait();
-
-                var orderingLogger = services.GetService<ILogger<OrderingContextSetup>>();
                 var orderingContext = services.GetService<OrderingContext>();
+                var orderingContextSetup = services.GetService<OrderingContextSetup>();
 
                 orderingContext.Database.Migrate();
-
-                new OrderingContextSetup(orderingContext, env, orderingLogger)
-                    .SeedAsync()
-                    .Wait();
+                orderingContextSetup.SeedAsync().Wait();
             }
         }
     }

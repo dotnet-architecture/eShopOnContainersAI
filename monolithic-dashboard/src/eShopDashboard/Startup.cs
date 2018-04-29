@@ -1,5 +1,6 @@
 using eShopDashboard.Infrastructure.Data.Catalog;
 using eShopDashboard.Infrastructure.Data.Ordering;
+using eShopDashboard.Infrastructure.Setup;
 using eShopDashboard.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,9 @@ namespace eShopDashboard
 
             services.AddSingleton<IOrderingQueries>((sp) =>
                 new OrderingQueries(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<CatalogContextSetup>();
+            services.AddScoped<OrderingContextSetup>();
 
 
             services.AddMvc();
