@@ -43,7 +43,7 @@ namespace eShopDashboard.Infrastructure.Migrations.Ordering
 
                     b.Property<int>("ProductId");
 
-                    b.Property<string>("Units");
+                    b.Property<int>("Units");
 
                     b.HasKey("Id");
 

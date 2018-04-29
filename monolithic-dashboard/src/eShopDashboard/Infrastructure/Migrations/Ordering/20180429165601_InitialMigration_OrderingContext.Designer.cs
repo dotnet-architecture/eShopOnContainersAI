@@ -11,7 +11,7 @@ using System;
 namespace eShopDashboard.Infrastructure.Migrations.Ordering
 {
     [DbContext(typeof(OrderingContext))]
-    [Migration("20180428181919_InitialMigration_OrderingContext")]
+    [Migration("20180429165601_InitialMigration_OrderingContext")]
     partial class InitialMigration_OrderingContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,7 @@ namespace eShopDashboard.Infrastructure.Migrations.Ordering
 
                     b.Property<int>("ProductId");
 
-                    b.Property<string>("Units");
+                    b.Property<int>("Units");
 
                     b.HasKey("Id");
 

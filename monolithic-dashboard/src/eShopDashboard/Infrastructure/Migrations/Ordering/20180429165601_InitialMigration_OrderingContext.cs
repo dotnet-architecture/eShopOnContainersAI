@@ -33,7 +33,7 @@ namespace eShopDashboard.Infrastructure.Migrations.Ordering
                     Id = table.Column<int>(nullable: false),
                     OrderId = table.Column<int>(nullable: false),
                     ProductId = table.Column<int>(nullable: false),
-                    Units = table.Column<string>(nullable: true)
+                    Units = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

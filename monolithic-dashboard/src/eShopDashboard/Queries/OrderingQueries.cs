@@ -21,7 +21,7 @@ namespace eShopDashboard.Queries
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>(OrderingQueriesText.CountryHistory(country), country);
+                return await connection.QueryAsync<dynamic>(OrderingQueriesText.CountryHistory(country), new { country });
             }
         }
 
@@ -31,7 +31,7 @@ namespace eShopDashboard.Queries
             {
                 connection.Open();
 
-                return await connection.QueryAsync<dynamic>(OrderingQueriesText.ProductHistory(productId), productId);
+                return await connection.QueryAsync<dynamic>(OrderingQueriesText.ProductHistory(productId), new { productId });
             }
         }
 

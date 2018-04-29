@@ -17,7 +17,7 @@ namespace eShopDashboard.Extensions
 
         public static bool IsNotAnInt(this string stringObject)
         {
-            return int.TryParse(stringObject, out int result);
+            return !int.TryParse(stringObject, out int result);
         }
     }
 }
