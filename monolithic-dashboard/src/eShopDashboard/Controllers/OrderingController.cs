@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using eShopDashboard.Extensions;
+using eShopDashboard.Queries;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eShopDashboard.Controllers
 {
@@ -11,11 +10,41 @@ namespace eShopDashboard.Controllers
     [Route("api/ordering")]
     public class OrderingController : Controller
     {
-        // GET: api/Ordering
-        [HttpGet("product/{productId}/history")]
-        public IActionResult ProductHistory(int productId)
+        private readonly IOrderingQueries _queries;
+
+        public OrderingController(IOrderingQueries queries)
         {
-            return Content(ProductHistoryFake.Value(productId), "application/json");
+            _queries = queries;
+        }
+
+        [HttpGet("country/{country}/history")]
+        public async Task<IActionResult> CountryHistory(string country)
+        {
+            if (country.IsBlank()) return BadRequest();
+
+            IEnumerable<dynamic> items = await _queries.GetCountryHistoryAsync(country);
+
+            return Ok(items);
+        }
+
+        [HttpGet("product/{productId}/history")]
+        public async Task<IActionResult> ProductHistory(string productId)
+        {
+            if (productId.IsBlank() || productId.IsNotAnInt()) return BadRequest();
+
+            IEnumerable<dynamic> items = await _queries.GetProductHistoryAsync(productId);
+
+            return Ok(items);
+        }
+
+        [HttpGet("product/{productId}/stats")]
+        public async Task<IActionResult> ProductStats(string productId)
+        {
+            if (string.IsNullOrEmpty(productId)) return BadRequest();
+
+            IEnumerable<dynamic> stats = await _queries.GetProductStatsAsync(productId);
+
+            return Ok(stats);
         }
     }
 }

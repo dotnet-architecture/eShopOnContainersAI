@@ -6,6 +6,12 @@
     <Compile Remove="Controllers\SalesForecastingController.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Infrastructure\Setup\CatalogItems.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.7" />
     <PackageReference Include="Microsoft.MachineLearning" Version="0.0.1-alpha-26424-4" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
@@ -15,9 +21,12 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Infrastructure\Migrations\Ordering\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\eDashboard.Infrastructure\eDashboard.Infrastructure.csproj" />
+    <Content Update="Infrastructure\Setup\CatalogTags.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

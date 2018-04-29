@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\eDashboard.Infrastructure\eDashboard.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\src\eShopDashboard\eShopDashboard.csproj" />
 	</ItemGroup>
 
 </Project>

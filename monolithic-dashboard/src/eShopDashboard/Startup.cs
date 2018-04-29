@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eDashboard.Infrastructure.Data;
+using eShopDashboard.Forecasting;
+using eShopDashboard.Infrastructure.Data.Catalog;
+using eShopDashboard.Infrastructure.Data.Ordering;
+using eShopDashboard.Infrastructure.Setup;
+using eShopDashboard.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +26,19 @@ namespace eShopDashboard
             services.AddDbContext<CatalogContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<OrderingContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddSingleton<IOrderingQueries>((sp) =>
+                new OrderingQueries(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<CatalogContextSetup>();
+            services.AddScoped<OrderingContextSetup>();
+
+            services.AddTransient<IProductSales, ProductSales>();
+            services.AddTransient<ICountrySales, CountrySales>();
 
             services.AddMvc();
 

@@ -1,10 +1,13 @@
-﻿using System.Transactions;
-using eDashboard.Infrastructure.Data;
-using eDashboard.Infrastructure.Setup;
+﻿using eShopDashboard.Infrastructure.Data.Catalog;
+using eShopDashboard.Infrastructure.Setup;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using eShopDashboard.Infrastructure.Data.Ordering;
 
 namespace eShopDashboard
 {
@@ -12,7 +15,18 @@ namespace eShopDashboard
     {
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddEnvironmentVariables();
+                })
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
+                })
                 .Build();
 
         public static void Main(string[] args)
@@ -30,11 +44,17 @@ namespace eShopDashboard
             {
                 var services = scope.ServiceProvider;
 
-                var dbContext = services.GetService<CatalogContext>();
+                var catalogContext = services.GetService<CatalogContext>();
+                var catalogContextSetup = services.GetService<CatalogContextSetup>();
 
-                dbContext.Database.Migrate();
+                catalogContext.Database.Migrate();
+                catalogContextSetup.SeedAsync().Wait();
 
-                CatalogContextSetup.SeedAsync(dbContext).Wait();
+                var orderingContext = services.GetService<OrderingContext>();
+                var orderingContextSetup = services.GetService<OrderingContextSetup>();
+
+                orderingContext.Database.Migrate();
+                orderingContextSetup.SeedAsync().Wait();
             }
         }
     }
