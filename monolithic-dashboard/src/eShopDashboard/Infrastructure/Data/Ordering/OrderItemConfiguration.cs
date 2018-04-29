@@ -20,6 +20,12 @@ namespace eShopDashboard.Infrastructure.Data.Ordering
             builder.Property(oi => oi.OrderId)
                 .IsRequired();
 
+            builder.Property(oi => oi.UnitPrice)
+                .IsRequired();
+
+            builder.Property(oi => oi.Units)
+                .IsRequired();
+
             //builder.HasOne<Order>()
             //    .WithMany()
             //    .HasForeignKey(oi => oi.OrderId);

@@ -35,6 +35,6 @@ select Id, Address_Country, OrderDate
 from Ordering.Orders
 
 -- OrderItems.json
-select Id, OrderId, ProductId, Units
+select Id, OrderId, ProductId, UnitPrice, Units
 from Ordering.OrderItems
 
