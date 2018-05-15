@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace Ordering.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    public class OrderingAIController : ControllerBase
+    public class OrdersAIController : ControllerBase
     {
         private readonly IOrderQueries _orderQueries;
 
-        public OrderingAIController(IOrderQueries orderQueries)
+        public OrdersAIController(IOrderQueries orderQueries)
         {
             _orderQueries = orderQueries ?? throw new ArgumentNullException(nameof(orderQueries));
         }
@@ -22,7 +22,7 @@ namespace Ordering.API.Controllers
         [Route("dumpToCSV")]
         public async Task<IActionResult> DumpToCSV()
         {
-            var orderItems = await _orderQueries.GetOrderItems();
+            var orderItems = await _orderQueries.GetOrderItemsAsync();
 
             var typedOrderItems = orderItems
                 .Select(c => new { c.CustomerId, c.ProductId, c.Units })
@@ -40,7 +40,7 @@ namespace Ordering.API.Controllers
             if (string.IsNullOrEmpty(productId))
                 return BadRequest();
 
-            var items = await _orderQueries.GetProductHistory(productId);
+            var items = await _orderQueries.GetProductHistoryAsync(productId);
                 
             return Ok(items);
         }
@@ -49,7 +49,7 @@ namespace Ordering.API.Controllers
         [Route("product/stats")]
         public async Task<IActionResult> ProductStatsDownload(string format = "csv")
         {
-            var stats = await _orderQueries.GetProductStats(null);
+            var stats = await _orderQueries.GetProductStatsAsync(null);
 
             var typedStats = stats
                 .Select(c => new { c.next, c.productId, c.year, c.month, c.units, c.avg, c.count, c.max, c.min, c.prev })
@@ -76,7 +76,7 @@ namespace Ordering.API.Controllers
             if (string.IsNullOrEmpty(productId))
                 return BadRequest();
 
-            var stats = await _orderQueries.GetProductStats(productId);
+            var stats = await _orderQueries.GetProductStatsAsync(productId);
 
             return Ok(stats);
         }
@@ -88,7 +88,7 @@ namespace Ordering.API.Controllers
             if (string.IsNullOrEmpty(country))
                 return BadRequest();
 
-            var items = await _orderQueries.GetCountryHistory(country);
+            var items = await _orderQueries.GetCountryHistoryAsync(country);
 
             return Ok(items);
         }
@@ -97,10 +97,10 @@ namespace Ordering.API.Controllers
         [Route("country/stats")]
         public async Task<IActionResult> CountryStats()
         {
-            var stats = await _orderQueries.GetCountryStats(String.Empty);
+            var stats = await _orderQueries.GetCountryStatsAsync(String.Empty);
 
             var typedStats = stats
-                .Select(c => new { c.next, c.country, c.year, c.month, c.sales, c.avg, c.count, c.max, c.min, c.p_max, c.p_med, c.p_min, c.std, c.prev })
+                .Select(c => new { c.next, c.country, c.year, c.month, c.max, c.min, c.std, c.count, c.sales, c.med, c.prev })
                 .ToList();
 
             var csvFile = File(Encoding.UTF8.GetBytes(typedStats.FormatAsCSV()), "text/csv");
@@ -115,7 +115,7 @@ namespace Ordering.API.Controllers
             if (string.IsNullOrEmpty(country))
                 return BadRequest();
 
-            var stats = await _orderQueries.GetCountryStats(country);
+            var stats = await _orderQueries.GetCountryStatsAsync(country);
 
             return Ok(stats);
         }
