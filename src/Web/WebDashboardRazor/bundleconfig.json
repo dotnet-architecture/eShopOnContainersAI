@@ -2,15 +2,6 @@
 // More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
   {
-    "outputFileName": "wwwroot/lib/css/fontawesome.min.css",
-    // An array of relative input file paths. Globbing patterns supported
-    "inputFiles": [
-      "wwwroot/lib/css/fontawesome.css",
-      "wwwroot/lib/css/fa-solid.css",
-      "wwwroot/lib/css/fa-regular.css"
-    ]
-  },
-  {
     "outputFileName": "wwwroot/css/site.min.css",
     // An array of relative input file paths. Globbing patterns supported
     "inputFiles": [

@@ -28,7 +28,7 @@
 
 <div id="plot" class="row my-4 d-none">
     <div class="col pl-md-4" style="font-size: 12pt">
-        <span style="font-weight: bold">Jumbo bag owls</span> - Sales Forecast
+        <span id="labelItem" class="font-weight-bold"></span> - Sales Forecast
     </div>
     <div class="w-100 mx-3 border-bottom-highlight"></div>
     <div id="lineChart" class="col-12 col-sm-11 col-md-10 my-2 mx-auto responsive-plot" style="height: 355px;">
@@ -51,15 +51,14 @@
         <div class="row h-100 align-items-center justify-content-center">
             <div class="col-5 col-md" style="line-height: 1.2">
                 <div class="mt-0">
-                    <span class="text-nowrap">Total sales</span><br />
-                    <span class="font-weight-bold" id="total" style="font-size: 27pt;">
-                        11.426.930
-                    </span>
+                    <span class="text-nowrap">Total</span><br />
+                    <span id="labelTotal" class="text-nowrap" style="font-size: 13pt;"></span><br />
+                    <span id="valueTotal" class="font-weight-bold" style="font-size: 27pt;"></span>
                 </div>
-                <div class="mt-5" style="">
-                    <span style="font-weight: bold;">Forecasting</span><br />
-                    <span id="labelForecast" class="text-nowrap" style="font-size: 13pt;">december 2018 sales</span><br />
-                    <span id="valueForecast" class="font-weight-bold es-color" style="font-size: 26pt"></span>
+                <div class="mt-5">
+                    <span class="font-weight-bold">Forecast</span><br />
+                    <span id="labelForecast" class="text-nowrap" style="font-size: 13pt;"></span><br />
+                    <span id="valueForecast" class="font-weight-bold es-color" style="font-size: 26pt;"></span>
                 </div>
             </div>
         </div>

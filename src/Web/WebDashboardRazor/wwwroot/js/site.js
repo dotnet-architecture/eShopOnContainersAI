@@ -87,9 +87,9 @@ function getProductData(product) {
 }
 
 function getForecast(st, pr) {
+    // next,productId,year,month,units,avg,count,max,min,prev
     var surl = `?month=${st.month}&year=${st.year}&avg=${st.avg}&max=${st.max}&min=${st.min}&count=${st.count}&prev=${st.prev}&units=${st.units}`;
-    var purl = `&price=${pr.price}&color=${pr.color || ""}&size=${pr.size || ""}&shape=${pr.shape || ""}&agram=${pr.agram || ""}&bgram=${pr.bgram || ""}&ygram=${pr.ygram || ""}&zgram=${pr.zgram || ""}`
-    return $.getJSON(`${apiUri.forecasting}/product/${st.productId}/unitdemandestimation${surl}${purl}`);
+    return $.getJSON(`${apiUri.forecasting}/product/${st.productId}/unitdemandestimation${surl}`);
 }
 
 function getHistory(productId) {
@@ -101,14 +101,13 @@ function getStats(productId) {
 }
 
 function plotLineChart(fore1, fore2, history, description, price) {
-    for(i = 0; i < history.length; i++) {
+    for (i = 0; i < history.length; i++) {
         history[i].sales = history[i].units * price;
     }
-
     fore2 *= price;
 
     $("footer").removeClass("sticky");
-    updateProductStatistics(description, history, fore2);
+    updateProductStatistics(description, history.slice(history.length - 12), fore2);
 
     var trace_real = TraceProductHistory(history);
 
@@ -129,6 +128,7 @@ function plotLineChart(fore1, fore2, history, description, price) {
             showgrid: false,
             showline: false,
             zeroline: false,
+            range: [trace_real.x.length - 12, trace_real.x.length],
         },
         yaxis: {
             showgrid: false,
@@ -137,6 +137,7 @@ function plotLineChart(fore1, fore2, history, description, price) {
             tickformat: '$,.0'
         },
         hovermode: "closest",
+        //dragmode: 'pan',
         legend: {
             orientation: "h",
             xanchor: "center",
@@ -273,19 +274,16 @@ function getCountryData(country) {
 }
 
 function getCountryForecast(st) {
-    var url = `?month=${st.month}&year=${st.year}&avg=${st.avg}&p_max=${st.p_max}&p_med=${st.p_med}&p_min=${st.p_min}&max=${st.max}&min=${st.min}&prev=${st.prev}&count=${st.count}&std=${st.std}&sales=${st.sales}`;
+    // next,country,year,month,max,min,std,count,sales,med,prev
+    var url = `?month=${st.month}&year=${st.year}&avg=${st.avg}&max=${st.max}&min=${st.min}&prev=${st.prev}&count=${st.count}&med=${st.med}&sales=${st.sales}&std=${st.std}`;
     return $.getJSON(`${apiUri.forecasting}/country/${st.country}/salesforecast${url}`);
 }
 
 function plotLineChartCountry(fore1, fore2, historyItems, country) {
-    //for (i = 0; i < historyItems.length; i++) {
-    //    historyItems[i].sales = Math.pow(10, historyItems[i].sales);
-    //}
-    fore1 = Math.pow(10, fore1);
     fore2 = Math.pow(10, fore2);
 
     $("footer").removeClass("sticky");
-    updateCountryStatistics(country, historyItems, fore2);
+    updateCountryStatistics(country, historyItems.slice(historyItems.length - 12), fore2);
 
     var trace_real = getTraceCountryHistory(historyItems);
 
@@ -306,6 +304,7 @@ function plotLineChartCountry(fore1, fore2, historyItems, country) {
             showgrid: false,
             showline: false,
             zeroline: false,
+            range: [trace_real.x.length - 12, trace_real.x.length],
         },
         yaxis: {
             showgrid: false,
@@ -313,6 +312,7 @@ function plotLineChartCountry(fore1, fore2, historyItems, country) {
             zeroline: false,
             tickformat: '$,.0'
         },
+        //dragmode: 'pan',
         hovermode: "closest",
         legend: {
             orientation: "h",
@@ -420,22 +420,27 @@ function showStatsLayers() {
     $("#plot,#tableHeader,#tableHistory").removeClass('d-none');
 }
 
-function populateForecastDashboard(country, historyItems, forecasting) {
-    var values = historyItems.map(y => y.sales);
-    var total = values.slice(0, values.length - 2).reduce((previous, current) => current += previous);
+function populateForecastDashboard(country, historyItems, forecasting, units = false) {
+    var lastyear = historyItems[historyItems.length - 1].year;
+    var values = historyItems.map(y => (y.year == lastyear) ? y.sales : 0);
+    var total = values.reduce((previous, current) => current += previous);
 
-    var label = nextFullMonth(historyItems[historyItems.length - 1], true).toLowerCase() + " sales";
-
-    $("#total").text(total.toCurrencyLocaleString());
-    $("#valueForecast").text(forecasting.toCurrencyLocaleString());
-    $("#labelForecast").text(label);
-    $("#labelItem").text(country); 
-    $("#tableHeaderCaption").text(`Sales month / ${(1).toCurrencyLocaleString().replace("1.00","")}`)
+    $("#labelTotal").text(`${lastyear} sales`);
+    $("#valueTotal").text(units ? total.toNumberLocaleString() : total.toCurrencyLocaleString());
+    $("#labelForecast").text(`${nextFullMonth(historyItems[historyItems.length - 1], true).toLowerCase()} sales`);
+    $("#valueForecast").text(units ? forecasting.toNumberLocaleString() : forecasting.toCurrencyLocaleString());
+    $("#labelItem").text(country);
+    $("#tableHeaderCaption").text(`Sales ${units ? "units" : (1).toCurrencyLocaleString().replace("1.00", "")} / month`)
 }
 
 function populateHistoryTable(historyItems) {
     var table = '';
+    var lastYear = '';
     for (i = 0; i < historyItems.length; i++) {
+        if (historyItems[i].year != lastYear) {
+            lastYear = historyItems[i].year;
+            table += `<div class="col-11 border-bottom-highlight-table month font-weight-bold">${lastYear}</div>`;
+        }
         table += `<div class="col-8 border-bottom-highlight-table month">${full_months[historyItems[i].month]}</div> <div class="col-3 border-bottom-highlight-table">${historyItems[i].sales.toLocaleString()}</div >`;
     }
     $("#historyTable").empty().append($(table));
@@ -450,3 +455,7 @@ Number.prototype.toCurrencyLocaleString = function toCurrencyLocaleString() {
     return this.toLocaleString(currentLocale, { style: 'currency', currency: 'USD' });
 }
 
+Number.prototype.toNumberLocaleString = function toNumberLocaleString() {
+    var currentLocale = navigator.languages ? navigator.languages[0] : navigator.language;
+    return this.toLocaleString(currentLocale, { useGrouping: true }) + " units";
+}
