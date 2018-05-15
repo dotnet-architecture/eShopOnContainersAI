@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.MachineLearning;
-using Microsoft.MachineLearning.Api;
-using Microsoft.MachineLearning.Data;
+using Microsoft.ML;
+using Microsoft.ML.Runtime.Api;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.Forecasting
 {
@@ -17,27 +15,44 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.For
     /// You are free to remove any fields from the below class. If the fields are not required for scoring, the model 
     /// will continue to work. Otherwise, the exception will be thrown when a prediction engine is created.
     /// </summary>
-    public class CountrySample
+    public class CountryData
     {
-        // next,country,year,month,sales,avg,count,max,min,p_max,p_med,p_min,std,prev
-        public CountrySample(string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
+        // next,country,year,month,max,min,std,count,sales,med,prev
+        public CountryData(string country, int year, int month, float max, float min, float std, int count, float sales, float med, float prev)
         {
             this.country = country;
-            Features = new Single[] { year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev };
+
+            this.year = year;
+            this.month = month;
+            this.max = max;
+            this.min = min;
+            this.std = std;
+            this.count = count;
+            this.sales = sales;
+            this.med = med;
+            this.prev = prev;
         }
 
-        public Single next;
+        [ColumnName("Label")]
+        public float next;
 
         public string country;
 
-        [VectorType(12)]
-        public Single[] Features = new Single[12];
+        public float year;
+        public float month;
+        public float max;
+        public float min;
+        public float std;
+        public float count;
+        public float sales;
+        public float med;
+        public float prev;
     }
 
     /// <summary>
     /// This is the output of the scored model, the prediction.
     /// </summary>
-    public class ScoredCountrySample
+    public class CountrySalesPrediction
     {
         // Below columns are produced by the model's predictor.
         public Single Score;
@@ -48,24 +63,28 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.For
         /// <summary>
         /// This method demonstrates how to run prediction on one example at a time.
         /// </summary>
-        public ScoredCountrySample Predict(string modelPath, string country, int year, int month, float sales, float avg, int count, float max, float min, float p_max, float p_med, float p_min, float std, float prev)
+        /// <summary>
+        /// This method demonstrates how to run prediction on one example at a time.
+        /// </summary>
+        public async Task<CountrySalesPrediction> Predict(string modelPath, string country, int year, int month, float max, float min, float std, int count, float sales, float med, float prev)
         {
-            var env = new TlcEnvironment(conc: 1);
+            // Load model
+            var predictionEngine = await CreatePredictionEngineAsync(modelPath);
 
-            var predictionEngine = CreatePredictionEngine(env, modelPath);
+            // Build country sample
+            var countrySample = new CountryData(country, year, month, max, min, std, count, sales, med, prev);
 
-            var inputExample = new CountrySample(country, year, month, sales, avg, count, max, min, p_max, p_med, p_min, std, prev);
-
-            return predictionEngine.Predict(inputExample);
+            // Returns prediction
+            return predictionEngine.Predict(countrySample);
         }
 
         /// <summary>
         /// This function creates a prediction engine from the model located in the <paramref name="modelPath"/>.
         /// </summary>
-        private PredictionEngine<CountrySample, ScoredCountrySample> CreatePredictionEngine(IHostEnvironment env, string modelPath)
+        private async Task<PredictionModel<CountryData, CountrySalesPrediction>> CreatePredictionEngineAsync(string modelPath)
         {
-            using (var fs = File.OpenRead(modelPath))
-                return env.CreatePredictionEngine<CountrySample, ScoredCountrySample>(fs);
+            PredictionModel<CountryData, CountrySalesPrediction> model = await PredictionModel.ReadAsync<CountryData, CountrySalesPrediction>(modelPath);
+            return model;
         }
     }
 }
