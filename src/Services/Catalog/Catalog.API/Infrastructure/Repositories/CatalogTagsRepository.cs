@@ -30,14 +30,12 @@ namespace Catalog.API.Infrastructure
                 .ToListAsync();
         }
 
-        public Task<List<CatalogTag>> FindMatchingProductsAsync(IEnumerable<int> productIds)
+        public Task<List<CatalogFullTag>> FindMatchingProductsAsync(IEnumerable<int> productIds)
         {
             var filter = Builders<CatalogFullTag>.Filter.In(x => x.ProductId, productIds);
-            var projection = Builders<CatalogFullTag>.Projection.Expression(c => c as CatalogTag);
 
             return dbContext.CatalogFullTags
                 .Find(filter)
-                .Project(projection)
                 .ToListAsync();
         }
 

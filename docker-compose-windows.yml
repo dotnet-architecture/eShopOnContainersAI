@@ -101,13 +101,6 @@ services:
       - ai.productsearchimagebased.tensorflow.api
       - ai.productsearchimagebased.azurecognitiveservices.api
 
-  
-  webstatus:
-    image: eshopai/webstatus-win:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebStatus/Dockerfile
-
   payment.api:
     image: eshopai/payment.api-win:${TAG:-latest}
     build:

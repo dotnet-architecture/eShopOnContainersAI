@@ -37,6 +37,19 @@
       "UpstreamPathTemplate": "/image-tensorflow-api/{version}/{everything}",
       "UpstreamHttpMethod": []
 
+    },
+    {
+      "DownstreamPathTemplate": "/api/{version}/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ai.salesforecasting.mlnet.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/forecasting-mlnet-api/{version}/{everything}",
+      "UpstreamHttpMethod": []
+
     }
   ],
     "GlobalConfiguration": {

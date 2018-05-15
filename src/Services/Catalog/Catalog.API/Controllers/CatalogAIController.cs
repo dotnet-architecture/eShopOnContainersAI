@@ -53,8 +53,52 @@ namespace Catalog.API.Controllers
         }
 
         [HttpGet]
+        [Route("productSetDetailsByDescription")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> SimilarProducts([FromQuery]string description)
+        {
+            if (string.IsNullOrEmpty(description))
+                return BadRequest();
+
+            var catalog = await _catalogContext.CatalogItems
+                .Where(c => c.Description.Contains(description))
+                .ToListAsync();
+
+            if (catalog.Any())
+            {
+                catalog = catalog.ChangeUriPlaceholder(_settings);
+
+                var tags = await _catalogTagsRepository.FindMatchingProductsAsync(catalog.Select(p => p.Id));
+
+                var join = catalog.Join(tags, a => a.Id, b => b.ProductId,
+                (a, b) => new
+                {
+                    a.Id,
+                    a.CatalogBrandId,
+                    a.Description,
+                    a.Price,
+                    a.PictureUri,
+                    color = b.Color.JoinTags(),
+                    size = b.Size.JoinTags(),
+                    shape = b.Shape.JoinTags(),
+                    quantity = b.Quantity.JoinTags(),
+                    b.agram,
+                    b.bgram,
+                    b.abgram,
+                    b.ygram,
+                    b.zgram,
+                    b.yzgram
+                }).ToList();
+
+                return Ok(join);
+            }
+            else
+                return Ok();
+        }
+
+        [HttpGet]
         [Route("dumpToCSV")]
-        public async Task<IActionResult> DumpToCSV()
+        public async Task<IActionResult> DumpToCSV(string format = "csv")
         {
             var catalog = await _catalogContext.CatalogItems
                 .Select(c => new {c.Id, c.CatalogBrandId, c.CatalogTypeId, c.Description, c.Price })
@@ -76,9 +120,17 @@ namespace Catalog.API.Controllers
                     b.ygram, b.zgram, b.yzgram
                 }).ToList();
 
-            var csvFile = File(Encoding.UTF8.GetBytes(join.FormatAsCSV()), "text/csv");
-            csvFile.FileDownloadName = "products.csv";
-            return csvFile;
+            switch (format.ToLower())
+            {
+                case "csv":
+                    var csvFile = File(Encoding.UTF8.GetBytes(join.FormatAsCSV()), "text/csv");
+                    csvFile.FileDownloadName = "products.csv";
+                    return csvFile;
+                case "json":
+                    return Ok(join);
+                default:
+                    return BadRequest();
+            }
         }
 
         [HttpGet]

@@ -14,5 +14,13 @@
         Task<IEnumerable<CardType>> GetCardTypesAsync();
 
         Task<IEnumerable<dynamic>> GetOrderItems();
+
+        Task<IEnumerable<dynamic>> GetProductHistory(string productId);
+
+        Task<IEnumerable<dynamic>> GetProductStats(string productId);
+
+        Task<IEnumerable<dynamic>> GetCountryHistory(string country);
+
+        Task<IEnumerable<dynamic>> GetCountryStats(string country);
     }
 }

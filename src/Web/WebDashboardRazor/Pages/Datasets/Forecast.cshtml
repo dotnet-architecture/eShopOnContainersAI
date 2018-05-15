@@ -1,0 +1,50 @@
+﻿@page
+@model Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Datasets.ForecastModel
+@{
+    ViewData["Title"] = "Sales Forecast dataset";
+}
+
+<div class="row">
+    <div class="col-12 bg-highlight py-3 pl-md-4" style="color: white; font-size: 17pt; line-height: 1.25">
+        @ViewData["Title"]
+    </div>
+</div>
+
+@*<div class="row my-4">
+    <div class="col pl-md-4" style="font-size: 12pt;"></div>
+    <div class="w-100 mx-3 border-bottom-highlight"></div>
+</div>*@
+
+<div class="row my-3">
+    <div class="col-10 offset-1" style="font-size: 11pt;">
+        <p class="pt-4">The file contains the information stored in <b>eShopOnContainersAI SqlServer Database</b></p>
+
+        <p class="pt-1">
+            This data from this file is neede for setting up the TLC experiment.
+            You can find additional information in the <a class="text-success" target="_blank" href="https://github.com/dotnet-architecture/eShopOnContainersAI/wiki/11.-Regression-:-Sales-Forecasting">eShopOnContainersAI wiki</a>.
+        </p>
+        <p class="pt-2" style="text-align: center">
+            Clicking in the following links will download the requested file.
+        </p>
+    </div>
+    <div class="col">
+        <div class="row justify-content-around w-100 pt-5">
+            <div class="col-4 mx-auto">
+                <div class="pb-3 w-100 text-center" style="font-weight: bold; font-size: 14pt">Product Unit Sales</div>
+                <a class="btn btn-lg btn-block text-nowrap" style="background-color: #83d01b; color: white; border-width: 0; border-radius: 0; font-weight: bold; font-size: 12pt;" href="@Model.ProductUrl">
+                    <i class="eshop-icon icon-download pr-4 align-middle" style="font-size: 26pt;"></i>
+                    <span class="align-middle">DOWNLOAD FILE</span>
+                </a>
+            </div>
+            <div class="col-4 mx-auto">
+                <div class="pb-3 w-100 text-center" style="font-weight: bold; font-size: 14pt">Country Sales</div>
+                <a class="btn btn-lg btn-block text-nowrap" style="background-color: #83d01b; color: white; border-width: 0; border-radius: 0; font-weight: bold; font-size: 12pt;" href="@Model.CountryUrl">
+                    <i class="eshop-icon icon-download pr-4 align-middle" style="font-size: 26pt;"></i>
+                    <span class="align-middle">DOWNLOAD FILE</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
