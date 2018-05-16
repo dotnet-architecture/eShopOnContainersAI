@@ -22,5 +22,7 @@
         Task<IEnumerable<dynamic>> GetCountryHistoryAsync(string country);
 
         Task<IEnumerable<dynamic>> GetCountryStatsAsync(string country);
+
+        Task<IEnumerable<dynamic>> GetProductsHistoryDepthAsync(IEnumerable<int> products);
     }
 }

@@ -25,5 +25,13 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
 
             return JsonConvert.DeserializeObject<IEnumerable<ProductInfo>>(dataString);
         }
+
+        public async Task<IEnumerable<ProductInfo>> GetSimilarProductsAsync(string description)
+        {
+            var dataString = await apiClient.GetStringAsync(API.Catalog.SimilarProducts(appSettings.WebShoppingUrl, description));
+
+            return JsonConvert.DeserializeObject<IEnumerable<ProductInfo>>(dataString);
+        }
+
     }
 }

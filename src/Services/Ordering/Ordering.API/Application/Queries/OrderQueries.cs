@@ -182,6 +182,26 @@ order by R.country, R.year, R.month";
             return countryHistory.Where(p => p.next != null && p.prev != null);
         }
 
+        public async Task<IEnumerable<dynamic>> GetProductsHistoryDepthAsync(IEnumerable<int> products)
+        {
+            var sqlCommandText = $@"
+select productId, count(*) as [count]
+from (
+    select distinct oi.ProductId as productId, YEAR(oo.OrderDate) as [year], MONTH(oo.OrderDate) as [month]
+    from [ordering].[orderItems] oi
+    inner join [ordering].[orders] oo on oi.OrderId = oo.Id and oi.ProductId in ({String.Join(',',products.Select(p => p.ToString()))})
+) as R
+group by R.productId
+";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                return await connection.QueryAsync<dynamic>(sqlCommandText);
+            }
+        }
+
         private Order MapOrderItems(dynamic result)
         {
             var order = new Order

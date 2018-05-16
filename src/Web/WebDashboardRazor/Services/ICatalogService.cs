@@ -7,5 +7,6 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
     public interface ICatalogService
     {
         Task<IEnumerable<ProductInfo>> GetProductInfoAsync();
+        Task<IEnumerable<ProductInfo>> GetSimilarProductsAsync(string description);
     }
 }

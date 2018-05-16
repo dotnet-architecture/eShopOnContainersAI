@@ -25,5 +25,12 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
 
             return JsonConvert.DeserializeObject<IEnumerable<ProductSales>>(dataString);
         }
+
+        public async Task<IEnumerable<dynamic>> GetProductHistoryDepthAsync(IEnumerable<string> productIds)
+        {
+            var dataString = await apiClient.GetStringAsync(API.Ordering.ProductsDepths(appSettings.WebShoppingUrl, productIds));
+
+            return JsonConvert.DeserializeObject<IEnumerable<dynamic>>(dataString);
+        }
     }
 }

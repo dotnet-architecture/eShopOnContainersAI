@@ -38,7 +38,7 @@ function setUpProductDescriptionTypeahead(typeaheadSelector = "#remote .typeahea
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: `${apiUri.catalog}/productSetDetailsByDescription?description=%QUERY`,
+            url: `${apiUri.catalog}?description=%QUERY`,
             wildcard: '%QUERY'
         }
     });

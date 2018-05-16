@@ -59,7 +59,7 @@ namespace Ordering.API.Controllers
             {
                 case "csv":
                     var csvFile = File(Encoding.UTF8.GetBytes(typedStats.FormatAsCSV()), "text/csv");
-                    csvFile.FileDownloadName = "orderItems.stats.csv";
+                    csvFile.FileDownloadName = "products.stats.csv";
                     return csvFile;
                 case "json":
                     return Ok(typedStats);
@@ -120,5 +120,16 @@ namespace Ordering.API.Controllers
             return Ok(stats);
         }
 
+        [HttpGet]
+        [Route("product/depth")]
+        public async Task<IActionResult> ProductHistoryDepth([FromQuery]string products)
+        {
+            if (string.IsNullOrEmpty(products))
+                return BadRequest();
+
+            var depths = await _orderQueries.GetProductsHistoryDepthAsync(products.Split(',').Select(p => Int32.Parse(p)));
+
+            return Ok(depths);
+        }
     }
 }
