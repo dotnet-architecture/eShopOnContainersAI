@@ -12,6 +12,7 @@
     }
   },
   "AzureServiceBusEnabled": false,
+  "EventBusConnection": "localhost",
   "SubscriptionClientName": "Ordering",
   "GracePeriodTime": "1",
   "CheckUpdateTime": "30000",
