@@ -29,7 +29,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Datasets
 
             CustomerUrl = API.Identity.UserInfo(appSettings.WebShoppingUrl);
             ProductUrl = API.Catalog.ProductInfo(appSettings.WebShoppingUrl, "csv");
-            OrderItemsUrl = API.Ordering.CountryStats(appSettings.WebShoppingUrl);
+            OrderItemsUrl = API.Ordering.ProductSales(appSettings.WebShoppingUrl);
         }
     }
 }
