@@ -52,5 +52,22 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Controllers
                     return BadRequest();
             }
         }
+
+        [HttpGet]
+        [Route("product/similar")]
+        public async Task<IActionResult> SimilarProducts([FromQuery]string description)
+        {
+            // for product forecasting, we only take into consideration
+            // products with more than 8 months of history
+            const int minimalProductSalesHistoryDepth = 8;
+
+            var products = await catalogService.GetSimilarProductsAsync(description);
+            var productDepths = await orderingService.GetProductHistoryDepthAsync(products.Select(p => p.id));
+            var productDepthIds = productDepths.Where(p => p.count > minimalProductSalesHistoryDepth).Select(p => p.productId.ToString());
+
+            var validProducts = products.Where(p => productDepthIds.Contains(p.id));
+
+            return Ok(validProducts);
+        }
     }
 }

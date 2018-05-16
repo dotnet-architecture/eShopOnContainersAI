@@ -20,11 +20,15 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
             {
                 return $"{baseUrl.TrimEndSlash()}{urlSuffix}/dumpToCSV?format={format}";
             }
+            public static string SimilarProducts(string baseUrl, string description)
+            {
+                return $"{baseUrl.TrimEndSlash()}{urlSuffix}/productSetDetailsByDescription?description={description}";
+            }
         }
 
         public static class Ordering
         {
-            private static string urlSuffix = "/ordering-ai-api/v1/OrderingAI";
+            private static string urlSuffix = "/ordering-ai-api/v1/OrdersAI";
             public static string ControllerUrl(string baseUrl)
             {
                 return $"{baseUrl.TrimEndSlash()}{urlSuffix}";
@@ -43,6 +47,11 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
             public static string CountryStats(string baseUrl)
             {
                 return $"{baseUrl.TrimEndSlash()}{urlSuffix}/country/stats";
+            }
+
+            public static string ProductsDepths(string baseUrl, IEnumerable<string> productIds)
+            {
+                return $"{baseUrl.TrimEndSlash()}{urlSuffix}/product/depth?products={String.Join(',',productIds)}";
             }
         }
 

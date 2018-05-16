@@ -7,5 +7,6 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
     public interface IOrderingService
     {
         Task<IEnumerable<ProductSales>> GetProductSalesAsync();
+        Task<IEnumerable<dynamic>> GetProductHistoryDepthAsync(IEnumerable<string> productIds);
     }
 }

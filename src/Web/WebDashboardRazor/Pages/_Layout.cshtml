@@ -130,7 +130,7 @@
 
     <script type="text/javascript">
         var apiUri = {
-            catalog: "@API.Catalog.ControllerUrl(AppSettings.Value.WebShoppingUrl)",
+            catalog: "@Url.Action("SimilarProducts", "Products")",
             ordering: "@API.Ordering.ControllerUrl(AppSettings.Value.WebShoppingUrl)",
             forecasting: "@API.Forecasting.ControllerUrl(AppSettings.Value.ArtificialIntelligenceUrl)"
         };

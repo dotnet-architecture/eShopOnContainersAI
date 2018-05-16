@@ -1,4 +1,4 @@
-﻿/// <binding Clean='copy-assets' />
+﻿/// <binding BeforeBuild='copy-assets' />
 // gulpfile.js
 
 var _ = require('lodash'),
@@ -25,12 +25,6 @@ gulp.task('copy-assets', function () {
             `${node}bootstrap/dist/css/bootstrap.css`,
             `${node}bootstrap/dist/css/bootstrap.map`,
             `${node}bootstrap/dist/css/bootstrap.min.css`,
-            `${node}@fortawesome/fontawesome-free-webfonts/css/fontawesome.css`,
-            `${node}@fortawesome/fontawesome-free-webfonts/css/fa-solid.css`,
-            `${node}@fortawesome/fontawesome-free-webfonts/css/fa-regular.css`
-        ],
-        webfonts: [
-            `${node}@fortawesome/fontawesome-free-webfonts/webfonts/*`
         ]
     };
     _(assets).forEach(function (assets, type) {
