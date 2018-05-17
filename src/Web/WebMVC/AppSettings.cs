@@ -28,6 +28,7 @@ namespace Microsoft.eShopOnContainers.WebMVC
 
         public string ArtificialIntelligenceUrl { get; set; }
         public string PurchaseUrl { get; set; }
+        public string SignalrHubUrl { get; set; }
         public bool ActivateCampaignDetailFunction { get; set; }
         public Logging Logging { get; set; }
         public bool UseCustomizationData { get; set; }
