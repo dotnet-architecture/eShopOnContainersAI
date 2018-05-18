@@ -10,19 +10,24 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
     {
         public static class Catalog
         {
-            private static string urlSuffix = "/catalog-ai-api/v1/CatalogAI";
+            private static string urlAISuffix = "/catalog-ai-api/v1/CatalogAI";
+            private static string urlSuffix = "/api/v1/c/catalog";
 
             public static string ControllerUrl(string baseUrl)
             {
-                return $"{baseUrl.TrimEndSlash()}{urlSuffix}";
+                return $"{baseUrl.TrimEndSlash()}{urlAISuffix}";
             }
             public static string ProductInfo(string baseUrl, string format="json")
             {
-                return $"{baseUrl.TrimEndSlash()}{urlSuffix}/dumpToCSV?format={format}";
+                return $"{baseUrl.TrimEndSlash()}{urlAISuffix}/dumpToCSV?format={format}";
             }
             public static string SimilarProducts(string baseUrl, string description)
             {
-                return $"{baseUrl.TrimEndSlash()}{urlSuffix}/productSetDetailsByDescription?description={description}";
+                return $"{baseUrl.TrimEndSlash()}{urlAISuffix}/productSetDetailsByDescription?description={description}";
+            }
+            public static string ProductPicture(string baseUrl, string id)
+            {
+                return $"{baseUrl.TrimEndSlash()}{urlSuffix}/items/{id}/pic";
             }
         }
 

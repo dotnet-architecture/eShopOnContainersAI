@@ -128,32 +128,32 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNe
 
             dataSample = new CountryData()
             {
-                country = "United States",
+                country = "Germany",
                 month = 10,
                 year = 2017,
-                med = 394.35F,
-                max = 560.22F,
-                min = 359.68F,
-                std = 363.38736F,
-                prev = 4694.47F,
-                count = 11,
-                sales = 6189.66F
+                med = 410.0349F,
+                max = 912.8460F,
+                min = 148.226F,
+                std = 527.95676F,
+                prev = 19553.63F,
+                count = 58,
+                sales = 33507.58F
             };
             prediction = model.Predict(dataSample);
-            Console.WriteLine($"Country: {dataSample.country}, month: {dataSample.month + 1}, year: {dataSample.year} - Real value (US$): {Math.Pow(3.850846F, 10)}, Forecasting (US$): {Math.Pow(prediction.Score,10)}");
+            Console.WriteLine($"Country: {dataSample.country}, month: {dataSample.month + 1}, year: {dataSample.year} - Real value (US$): {Math.Pow(4.483736F, 10)}, Forecasting (US$): {Math.Pow(prediction.Score,10)}");
 
             dataSample = new CountryData()
             {
-                country = "United States",
+                country = "Germany",
                 month = 11,
                 year = 2017,
-                med = 364.4F,
-                max = 1199.85F,
-                min = 277.11F,
-                std = 447.607827F,
-                prev = 6189.66F,
-                count = 11,
-                sales = 7093.27F,
+                med = 353.755F,
+                max = 668.076F,
+                min = 123.2400F,
+                std = 403.04297F,
+                prev = 33507.58F,
+                count = 68,
+                sales = 30460.45F,
             };
             prediction = model.Predict(dataSample);
             Console.WriteLine($"Country: {dataSample.country}, month: {dataSample.month + 1}, year: {dataSample.year} - Forecasting (US$):  {Math.Pow(prediction.Score,10)}");

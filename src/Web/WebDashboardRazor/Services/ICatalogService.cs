@@ -8,5 +8,6 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
     {
         Task<IEnumerable<ProductInfo>> GetProductInfoAsync();
         Task<IEnumerable<ProductInfo>> GetSimilarProductsAsync(string description);
+        string GetProductPicture(string productId);
     }
 }

@@ -107,7 +107,7 @@ function plotLineChart(fore1, fore2, history, description, price) {
     fore2 *= price;
 
     $("footer").removeClass("sticky");
-    updateProductStatistics(description, history.slice(history.length - 12), fore2);
+    updateProductStatistics(description, history, fore2);
 
     var trace_real = TraceProductHistory(history);
 
@@ -128,7 +128,7 @@ function plotLineChart(fore1, fore2, history, description, price) {
             showgrid: false,
             showline: false,
             zeroline: false,
-            range: [trace_real.x.length - 12, trace_real.x.length],
+            range: [0, trace_real.x.length],
         },
         yaxis: {
             showgrid: false,
@@ -283,7 +283,7 @@ function plotLineChartCountry(fore1, fore2, historyItems, country) {
     fore2 = Math.pow(10, fore2);
 
     $("footer").removeClass("sticky");
-    updateCountryStatistics(country, historyItems.slice(historyItems.length - 12), fore2);
+    updateCountryStatistics(country, historyItems, fore2);
 
     var trace_real = getTraceCountryHistory(historyItems);
 
@@ -304,7 +304,7 @@ function plotLineChartCountry(fore1, fore2, historyItems, country) {
             showgrid: false,
             showline: false,
             zeroline: false,
-            range: [trace_real.x.length - 12, trace_real.x.length],
+            range: [0, trace_real.x.length],
         },
         yaxis: {
             showgrid: false,
