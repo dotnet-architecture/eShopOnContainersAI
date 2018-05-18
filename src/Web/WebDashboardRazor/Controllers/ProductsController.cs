@@ -65,7 +65,9 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Controllers
             var productDepths = await orderingService.GetProductHistoryDepthAsync(products.Select(p => p.id));
             var productDepthIds = productDepths.Where(p => p.count > minimalProductSalesHistoryDepth).Select(p => p.productId.ToString());
 
-            var validProducts = products.Where(p => productDepthIds.Contains(p.id));
+            var validProducts = products
+                .Where(p => productDepthIds.Contains(p.id))
+                .Select(p => new { p.id, p.description, p.price, pictureUri = catalogService.GetProductPicture(p.id) });
 
             return Ok(validProducts);
         }

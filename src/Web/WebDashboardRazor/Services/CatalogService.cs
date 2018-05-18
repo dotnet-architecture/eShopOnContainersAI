@@ -33,5 +33,10 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
             return JsonConvert.DeserializeObject<IEnumerable<ProductInfo>>(dataString);
         }
 
+        public string GetProductPicture(string productId)
+        {
+            return API.Catalog.ProductPicture(appSettings.WebShoppingUrl, productId);
+        }
+
     }
 }
