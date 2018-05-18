@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.eShopOnContainers.WebMVC;
 using Microsoft.eShopOnContainers.WebMVC.Controllers;
 using Microsoft.eShopOnContainers.WebMVC.Services;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.eShopOnContainers.WebMVC.ViewModels.CatalogViewModels;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,10 +16,16 @@ namespace UnitTest.Catalog.Application
     public class CatalogControllerTest
     {
         private readonly Mock<ICatalogService> _catalogServiceMock;
+        private readonly Mock<ICatalogAIService> _catalogAIServiceMock;
+        private readonly Mock<IProductSearchImageBasedService> _productSearchImageBasedMock;
+        private readonly Mock<IOptionsSnapshot<AppSettings>> _options;
 
         public CatalogControllerTest()
         {
             _catalogServiceMock = new Mock<ICatalogService>();
+            _catalogAIServiceMock = new Mock<ICatalogAIService>();
+            _productSearchImageBasedMock = new Mock<IProductSearchImageBasedService>();
+            _options = new Mock<IOptionsSnapshot<AppSettings>>();
         }
 
         [Fact]
@@ -43,8 +51,8 @@ namespace UnitTest.Catalog.Application
              .Returns(Task.FromResult(fakeCatalog));
 
             //Act
-            var orderController = new CatalogController(_catalogServiceMock.Object);
-            var actionResult = await orderController.Index(fakeBrandFilterApplied, fakeTypesFilterApplied, fakePage, null);
+            var orderController = new CatalogController(_catalogServiceMock.Object, _catalogAIServiceMock.Object, _productSearchImageBasedMock.Object, _options.Object);
+            var actionResult = await orderController.Index(fakeBrandFilterApplied, fakeTypesFilterApplied, fakePage, null, null, null);
 
             //Assert
             var viewResult = Assert.IsType<ViewResult>(actionResult);
