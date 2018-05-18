@@ -261,8 +261,10 @@ pub/
 .eshopdocker_*
 /src/Web/WebMVC/wwwroot/lib
 /src/Web/WebMVC/wwwroot/css/site.min.css
+
 **/.kube/**
 src/Services/Catalog/Catalog.API/Pics/
+src/Services/Catalog/Catalog.API/Setup/CatalogItemsAI.zip
 cli/
 /workbench/__pycache__
 .mfractor
