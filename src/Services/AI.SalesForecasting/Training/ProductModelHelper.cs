@@ -106,7 +106,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNe
             dataSample = new ProductData()
             {
                 productId = "263", month = 11, year = 2017, avg = 29, max = 221, min = 1,
-                count = 35, prev = 910, units = 551
+                count = 19, prev = 910, units = 551
             };
 
             prediction = model.Predict(dataSample);
