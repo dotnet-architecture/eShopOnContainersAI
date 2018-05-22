@@ -1,18 +1,16 @@
-﻿using System;
+﻿using IdentityModel.Client;
+using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
+using Microsoft.Bots.Bot.API.Models;
+using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Autofac;
-using IdentityModel.Client;
 using Microsoft.Bot.Builder.ConnectorEx;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
-using Microsoft.Bot.Connector;
 using Microsoft.Bots.Bot.API.Infrastructure;
-using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
-using Microsoft.Bots.Bot.API.Models;
 using Microsoft.Bots.Bot.API.Services;
 
 namespace Microsoft.Bots.Bot.API.Controllers
@@ -85,20 +83,20 @@ namespace Microsoft.Bots.Bot.API.Controllers
             }
         }
 
-        private static Activity CreateLoginContinueActivity(Activity activity, string userName)
+        private static Microsoft.Bot.Connector.Activity CreateLoginContinueActivity(Microsoft.Bot.Connector.Activity activity, string userName)
         {
             var reply = activity.CreateReply($"{userName} is now logged in ... you can continue.");
-            var cardActions = new List<CardAction>
+            var cardActions = new List<Microsoft.Bot.Connector.CardAction>
             {
-                new CardAction()
+                new Microsoft.Bot.Connector.CardAction()
                 {
                     Title = "Continue",
-                    Type = ActionTypes.ImBack,
+                    Type = Microsoft.Bot.Connector.ActionTypes.ImBack,
                     Value = "Continue"
                 }
             };
 
-            reply.SuggestedActions = new SuggestedActions()
+            reply.SuggestedActions = new Microsoft.Bot.Connector.SuggestedActions()
             {
                 Actions = cardActions
             };

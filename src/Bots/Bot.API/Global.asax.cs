@@ -6,7 +6,6 @@ using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
-using Microsoft.Bot.Builder.Azure;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
@@ -43,7 +42,7 @@ namespace Microsoft.Bots.Bot.API
 
                    var store = new InMemoryDataStore();
                    builder.Register(c => store)
-                             .Keyed<IBotDataStore<BotData>>(AzureModule.Key_DataStore)
+                             .Keyed<IBotDataStore<BotData>>(nameof(InMemoryDataStore))
                              .AsSelf()
                              .SingleInstance();
 
