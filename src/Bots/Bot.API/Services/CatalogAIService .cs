@@ -18,7 +18,7 @@ namespace Microsoft.Bots.Bot.API.Services
         {
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{settings.PurchasingUrl}/catalog-ai-api/v1/";
+            _remoteServiceBaseUrl = $"{settings.PurchasingUrl}/catalog-ai-api/v1/CatalogAI/";
         }
 
         public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
@@ -40,7 +40,7 @@ namespace Microsoft.Bots.Bot.API.Services
 
             var dataString = await _apiClient.GetStringAsync(allcatalogItemsUri);
 
-            var response = JsonConvert.DeserializeObject<Catalog>(dataString);
+            var response = string.IsNullOrEmpty(dataString) ? Catalog.Empty : JsonConvert.DeserializeObject<Catalog>(dataString);
 
             return response;
         }

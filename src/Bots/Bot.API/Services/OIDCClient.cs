@@ -1,14 +1,12 @@
-﻿using System;
+﻿using IdentityModel;
+using IdentityModel.Client;
+using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
+using Microsoft.Bots.Bot.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Threading.Tasks;
-using IdentityModel;
-using IdentityModel.Client;
-using Microsoft.Bot.Connector;
-using Microsoft.Bots.Bot.API.Infrastructure;
-using Microsoft.Bots.Bot.API.Infrastructure.Extensions;
-using Microsoft.Bots.Bot.API.Models;
 
 namespace Microsoft.Bots.Bot.API.Services
 {
@@ -18,7 +16,7 @@ namespace Microsoft.Bots.Bot.API.Services
         Task<TokenResponse> GetAccessToken(string tokenEndpoint, string code);
         Task<UserInfoResponse> GetUserInfo(string userInfoEndpoint, string accessToken);
         Task<CompactDiscoveryResponse> GetDiscoveryClient();
-        Task<string> CreateAuthorizeUrlAsync(IActivity activity);
+        Task<string> CreateAuthorizeUrlAsync(Microsoft.Bot.Connector.IActivity activity);
     }
 
     public class CompactDiscoveryResponse
@@ -36,18 +34,18 @@ namespace Microsoft.Bots.Bot.API.Services
 
     public class OIDCClient : IOIDCClient
     {
-        private readonly BotSettings botSettings;
+        private readonly Infrastructure.BotSettings botSettings;
         private readonly string signinUrl;
         private readonly CompactDiscoveryResponse discoveryResponse;
 
-        public OIDCClient(BotSettings botSettings)
+        public OIDCClient(Infrastructure.BotSettings botSettings)
         {
             this.botSettings = botSettings;
             signinUrl = ConfigurationManager.AppSettings["SignInUrl"];
             discoveryResponse = new CompactDiscoveryResponse(this.botSettings.IdentityUrl);
         }
 
-        public async Task<string> CreateAuthorizeUrlAsync(IActivity activity)
+        public async Task<string> CreateAuthorizeUrlAsync(Microsoft.Bot.Connector.IActivity activity)
         {
             var doc = await GetDiscoveryClient();
 
@@ -70,9 +68,6 @@ namespace Microsoft.Bots.Bot.API.Services
 
         public Task<CompactDiscoveryResponse> GetDiscoveryClient()
         {
-            //var discoveryClient = new DiscoveryClient(botSettings.IdentityUrl);
-            //var doc = await discoveryClient.GetAsync();
-            //return doc;
             return Task.FromResult(discoveryResponse);
         }
 

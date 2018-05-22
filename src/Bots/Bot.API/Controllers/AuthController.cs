@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IdentityModel.Client;
+using Microsoft.Bots.Bot.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,13 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Autofac;
-using IdentityModel.Client;
 using Microsoft.Bot.Builder.ConnectorEx;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
-using Microsoft.Bot.Connector;
 using Microsoft.Bots.Bot.API.Infrastructure;
-using Microsoft.Bots.Bot.API.Models;
 
 namespace Microsoft.Bots.Bot.API.Controllers
 {
@@ -118,7 +117,7 @@ namespace Microsoft.Bots.Bot.API.Controllers
 
             using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, activity))
             {
-                var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                var botDataStore = scope.Resolve<IBotDataStore<Microsoft.Bot.Connector.BotData>>();
                 var key = Address.FromActivity(activity);
                 var userState = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
 
@@ -140,16 +139,16 @@ namespace Microsoft.Bots.Bot.API.Controllers
                 // resolve BotToUser
                 IBotToUser boToUser = scope.Resolve<IBotToUser>();
                 var reply = activity.CreateReply($"{userName} you are now logeed, you can continue.");
-                var cardActions = new List<CardAction>();
+                var cardActions = new List<Microsoft.Bot.Connector.CardAction>();
 
-                cardActions.Add(new CardAction()
+                cardActions.Add(new Microsoft.Bot.Connector.CardAction()
                 {
                     Title = "Continue",
-                    Type = ActionTypes.ImBack,
+                    Type = Microsoft.Bot.Connector.ActionTypes.ImBack,
                     Value = "Continue"
                 });
 
-                reply.SuggestedActions = new SuggestedActions()
+                reply.SuggestedActions = new Microsoft.Bot.Connector.SuggestedActions()
                 {
                     Actions = cardActions
                 };
