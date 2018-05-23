@@ -27,9 +27,9 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Datasets
         {
             ViewData.SetSelectedMenu(SelectedMenu.Data_SalesByCountry);
 
-            CustomerUrl = API.Identity.UserInfo(appSettings.WebShoppingUrl);
-            ProductUrl = API.Catalog.ProductInfo(appSettings.WebShoppingUrl, "csv");
-            OrderItemsUrl = API.Ordering.ProductSales(appSettings.WebShoppingUrl);
+            CustomerUrl = API.Identity.UserInfo(appSettings.WebShoppingUrlExternal);
+            ProductUrl = API.Catalog.ProductInfo(appSettings.WebShoppingUrlExternal, "csv");
+            OrderItemsUrl = API.Ordering.ProductSales(appSettings.WebShoppingUrlExternal);
         }
     }
 }

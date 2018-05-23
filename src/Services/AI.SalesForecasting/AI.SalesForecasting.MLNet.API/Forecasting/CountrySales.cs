@@ -7,13 +7,6 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.MLNet.API.For
 {
     /// <summary>
     /// This is the input to the trained model.
-    ///
-    /// In most pipelines, not all columns that are used in training are also used in scoring. Namely, the label 
-    /// and weight columns are almost never required at scoring time. Since TLC doesn't know which columns 
-    /// are 'optional' in this sense, all the columns are listed below.
-    ///
-    /// You are free to remove any fields from the below class. If the fields are not required for scoring, the model 
-    /// will continue to work. Otherwise, the exception will be thrown when a prediction engine is created.
     /// </summary>
     public class CountryData
     {

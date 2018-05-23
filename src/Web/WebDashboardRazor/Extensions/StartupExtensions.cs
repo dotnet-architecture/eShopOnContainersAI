@@ -19,6 +19,8 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Extensions
 
         public static IServiceCollection AddResilienceHttp(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             if (configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
             {
                 services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>

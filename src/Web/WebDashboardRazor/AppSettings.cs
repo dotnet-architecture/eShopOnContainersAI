@@ -4,6 +4,7 @@
     {
         public string ArtificialIntelligenceUrl { get; set; }
         public string WebShoppingUrl { get; set; }
+        public string WebShoppingUrlExternal { get; set; }
 
         public Logging Logging { get; set; }
     }

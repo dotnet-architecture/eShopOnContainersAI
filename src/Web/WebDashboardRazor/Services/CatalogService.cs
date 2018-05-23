@@ -35,7 +35,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Services
 
         public string GetProductPicture(string productId)
         {
-            return API.Catalog.ProductPicture(appSettings.WebShoppingUrl, productId);
+            return API.Catalog.ProductPicture(appSettings.WebShoppingUrlExternal, productId);
         }
 
     }
