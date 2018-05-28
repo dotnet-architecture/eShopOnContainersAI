@@ -9,7 +9,7 @@ This repo has a forked version of [https://github.com/dotnet-architecture/eShopO
 
 Main AI/ML technologies used are:
 
-- **ML.NET (Machine Learning .NET)*
+- **ML.NET (Machine Learning .NET)**
 - **Azure Cognitive Services (Computer Vision)**
 - **TensorFlow / TensorFlowSharp**
 - **CNTK**
