@@ -19,6 +19,9 @@ Here's a vision of the architecture where the grayed area is what is coming deri
 
 ![image](https://user-images.githubusercontent.com/1712635/36817649-bd7c21ee-1c96-11e8-8825-96089de61be7.png)
 
+(*) Note that the architecture diagram is currently missing the ML.NET microservice, but the ML.NET scenario is explained in the Wiki.
+This diagram will be updated soon.
+
 The following diagram positions the multiple AI technologies per AI function and type:
 
 ![image](https://user-images.githubusercontent.com/1222398/36477436-746362e6-1701-11e8-9312-52faecbda715.png)
