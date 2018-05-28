@@ -7,6 +7,14 @@ This repo has a forked version of [https://github.com/dotnet-architecture/eShopO
 *eShopOnContainers* is a cloud-native application based on microservices architecture and Docker containers.
 *eShopOnContainersAI* is therefore a forked version of eShopOnContainers that is extended with AI features (Machine Learning and Deep Learning) plus a Bot client as a new client app which surfaces all the AI features along with the modified MVC web application.
 
+Main AI/ML technologies used are:
+
+- **ML.NET (Machine Learning .NET)*
+- **Azure Cognitive Services (Computer Vision)**
+- **TensorFlow / TensorFlowSharp**
+- **CNTK**
+- **Bot Framework**
+
 Here's a vision of the architecture where the grayed area is what is coming derived from [https://github.com/dotnet-architecture/eShopOnContainers](eShopOnContainers) and the rest of the diagram is about the new added AI features.
 
 ![image](https://user-images.githubusercontent.com/1712635/36817649-bd7c21ee-1c96-11e8-8825-96089de61be7.png)
@@ -18,7 +26,7 @@ The following diagram positions the multiple AI technologies per AI function and
 You will learn how to use Pre-Built models (such as in Cognitive Services), Pre-Trained and Custom models to add AI and ML features into any application:
 
 *	Regression Models: These models are the most well-known and used around any kind of scenarios. Although they are very simple (compared with other models like deep neural networks) they are still the most used around the world. In eShopOnContainersAI we will use regression models to predict future product demand, training the algorithm with the order history data.
-*	Recommendation systems: These models were very successful in the last decade, and today are still evolving. One of the most used cases, recommend products from the basket, will be used as example of these models.
+*	Recommendation systems: One of the most used cases, recommend products from the basket, will be used as example of these models.
 *	Natural Language Processing: Bots are the corner stone of current AI applications. You will learn how to create new solutions based in BOT framework, integrate bots in your current applications, or use L.U.I.S. to get information about user intents, 
 *	Computer Vision: These models gained much traction in current decade, and industry is investing large amount of resources in this field. Using different strategies, you will learn how to search for similar images, using Cognitive Services or deploying your own custom trained models.
 
