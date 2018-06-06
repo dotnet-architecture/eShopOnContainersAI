@@ -8,7 +8,7 @@ services:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - basket.data
       - identity.api
@@ -20,7 +20,7 @@ services:
       context: .
       dockerfile: src/Services/AI.SalesForecasting/AI.SalesForecasting.MLNet.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
 
   ai.productrecommender.azureml.api:
     image: eshopai/ai.productrecommender.azureml.api:${TAG:-latest}
@@ -28,7 +28,7 @@ services:
       context: .
       dockerfile: src/Services/AI.ProductRecommender/AI.ProductRecommender.AzureML.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
 
   ai.productsearchimagebased.tensorflow.api:
     image: eshopai/ai.productsearchimagebased.tensorflow.api:${TAG:-latest}
@@ -36,7 +36,7 @@ services:
       context: .
       dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.TensorFlow.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
 
   ai.productsearchimagebased.azurecognitiveservices.api:
     image: eshopai/ai.productsearchimagebased.azurecognitiveservices.api:${TAG:-latest}
@@ -44,7 +44,7 @@ services:
       context: .
       dockerfile: src/Services/AI.ProductSearchImageBased/AI.ProductSearchImageBased.AzureCognitiveServices.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
 
   catalog.api:
     image: eshopai/catalog.api:${TAG:-latest}
@@ -52,7 +52,7 @@ services:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - sql.data
       - nosql.data
@@ -64,7 +64,7 @@ services:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - sql.data
 
@@ -74,7 +74,7 @@ services:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - sql.data
       - rabbitmq
@@ -85,7 +85,7 @@ services:
       context: .
       dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - sql.data
       - rabbitmq
@@ -107,7 +107,7 @@ services:
       context: .
       dockerfile: src/Web/WebMVC/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - catalog.api
       - ordering.api
@@ -129,7 +129,7 @@ services:
       context: .
       dockerfile: src/Web/WebDashboardRazor/Dockerfile    
       args:
-        - configuration
+        configuration: "${configuration}"
     depends_on:
       - catalog.api
       - ordering.api
@@ -223,5 +223,4 @@ services:
       context: .
       dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
       args:
-        - configuration
-
+        configuration: "${configuration}"
