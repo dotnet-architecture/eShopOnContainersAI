@@ -366,7 +366,8 @@
         private void GetCatalogItemPictures(string contentRootPath, string picturePath, string zipFilePath)
         {
             string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", zipFilePath);
-            ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+            if (File.Exists(zipFileCatalogItemPictures))
+                ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
         }
 
         private static void CleanUpItemPictures(string picturePath)
