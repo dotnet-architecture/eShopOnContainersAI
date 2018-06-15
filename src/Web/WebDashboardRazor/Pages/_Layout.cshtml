@@ -1,7 +1,7 @@
 ﻿@using Microsoft.Extensions.Options
 @using Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure
 @using Microsoft.eShopOnContainers.WebDashboardRazor.Models
-@inject IOptionsSnapshot<Microsoft.eShopOnContainers.WebDashboardRazor.AppSettings> AppSettings
+@inject IOptions<Microsoft.eShopOnContainers.WebDashboardRazor.AppSettings> AppSettings
 @{
     var selectedMenu = ViewData.GetSelectedMenu();
 }

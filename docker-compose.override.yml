@@ -136,7 +136,6 @@ services:
       UseCustomizationDataAI: "True"
       AzureServiceBusEnabled: "False"
       CheckUpdateTime: 30000
-      GracePeriodTime: 1
       ApplicationInsights__InstrumentationKey: ${INSTRUMENTATION_KEY}
       OrchestratorType: ${ORCHESTRATOR_TYPE}
       UseLoadTest: ${USE_LOADTEST:-False}
@@ -290,8 +289,7 @@ services:
     ports:
       - "5200:80"   
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:/app/configuration
- 
+      - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
   mobilemarketingapigw:
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
@@ -299,7 +297,7 @@ services:
     ports:
       - "5201:80"   
     volumes:
-      - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:/app/configuration
+      - ./src/ApiGateways/Mobile.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webshoppingapigw:
     environment:
@@ -308,7 +306,7 @@ services:
     ports:
       - "5202:80"   
     volumes:
-      - ./src/ApiGateways/Web.Bff.Shopping/apigw:/app/configuration
+      - ./src/ApiGateways/Web.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   webmarketingapigw:
     environment:
@@ -317,7 +315,7 @@ services:
     ports:
       - "5203:80"   
     volumes:
-      - ./src/ApiGateways/Web.Bff.Marketing/apigw:/app/configuration
+      - ./src/ApiGateways/Web.Bff.Marketing/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
 
   mobileshoppingagg:
     environment:

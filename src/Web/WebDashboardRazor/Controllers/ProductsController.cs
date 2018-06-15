@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Controllers
         private readonly IOrderingService orderingService;
         private readonly ICatalogService catalogService;
 
-        public ProductsController(IOptionsSnapshot<AppSettings> appSettings, IOrderingService orderingService, ICatalogService catalogService)
+        public ProductsController(IOptions<AppSettings> appSettings, IOrderingService orderingService, ICatalogService catalogService)
         {
             this.appSettings = appSettings.Value;
             this.orderingService = orderingService;

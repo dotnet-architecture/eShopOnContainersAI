@@ -1,10 +1,10 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
-using Microsoft.eShopOnContainers.WebMVC.ViewModels;
+﻿using Microsoft.eShopOnContainers.WebMVC.ViewModels;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 
@@ -12,11 +12,11 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class CatalogAIService : ICatalogAIService
     {
-        private readonly IHttpClient _apiClient;
+        private readonly HttpClient _apiClient;
 
         private readonly string _remoteServiceBaseUrl;
 
-        public CatalogAIService(IOptionsSnapshot<AppSettings> settings, IHttpClient httpClient)
+        public CatalogAIService(IOptions<AppSettings> settings, HttpClient httpClient)
         {
             _apiClient = httpClient;
 
