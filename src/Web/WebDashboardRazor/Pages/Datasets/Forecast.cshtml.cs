@@ -14,7 +14,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Datasets
     {
         private readonly AppSettings appSettings;
 
-        public ForecastModel(IOptionsSnapshot<AppSettings> appSettings)
+        public ForecastModel(IOptions<AppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

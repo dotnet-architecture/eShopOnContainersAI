@@ -1,8 +1,5 @@
-﻿using ML = Microsoft.ML;
+﻿using Microsoft.ML.Data;
 using Microsoft.ML;
-using Microsoft.ML.Runtime;
-using Microsoft.ML.Runtime.Data;
-using Microsoft.ML.Runtime.EntryPoints;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -42,7 +39,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNe
             var learningPipeline = new LearningPipeline();
 
             // First stage in the pipeline will be reading the source csv file
-            learningPipeline.Add(new TextLoader<ProductData>(dataPath, useHeader: true, separator: ","));
+            learningPipeline.Add(new TextLoader(dataPath).CreateFrom<ProductData>(useHeader: true, separator: ','));
 
             // The model needs the columns to be arranged into a single column of numeric type
             // First, we group all numeric columns into a single array named NumericalFeatures

@@ -1,15 +1,15 @@
 ARG configuration
 
-FROM microsoft/aspnetcore:2.0.5 AS base
+FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0.5-2.1.4 AS build
+FROM microsoft/dotnet:2.1-sdk AS build
 ARG configuration
 WORKDIR /src
 COPY . .
-RUN dotnet restore -nowarn:msb3202,nu1503
 WORKDIR /src/src/Services/Ordering/Ordering.API
+RUN dotnet restore -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c ${configuration} -o /app
 
 FROM build AS publish

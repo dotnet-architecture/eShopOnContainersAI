@@ -1,6 +1,29 @@
 version: '3.4'
 
 services:
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest
+    volumes:
+      - ./mssql:/var/opt/bulk
+
+  nosql.data:
+    image: mongo
+
+  basket.data:
+    image: redis:alpine
+      
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  identity.api:
+    image: eshopai/identity.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile    
+      args:
+        configuration: "${configuration}"
+    depends_on:
+      - sql.data
 
   basket.api:
     image: eshopai/basket.api:${TAG:-latest}
@@ -58,15 +81,6 @@ services:
       - nosql.data
       - rabbitmq
 
-  identity.api:
-    image: eshopai/identity.api:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Services/Identity/Identity.API/Dockerfile    
-      args:
-        configuration: "${configuration}"
-    depends_on:
-      - sql.data
 
   ordering.api:
     image: eshopai/ordering.api:${TAG:-latest}
@@ -80,7 +94,7 @@ services:
       - rabbitmq
 
   ordering.backgroundtasks:
-    image: eshop/ordering.backgroundtasks:${TAG:-latest}
+    image: eshopai/ordering.backgroundtasks:${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile    
@@ -101,49 +115,6 @@ services:
       - identity.api
       - rabbitmq
 
-  webmvc:
-    image: eshopai/webmvc:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebMVC/Dockerfile    
-      args:
-        configuration: "${configuration}"
-    depends_on:
-      - catalog.api
-      - ordering.api
-      - identity.api
-      - basket.api
-      - marketing.api
-      - ai.productrecommender.azureml.api
-      - ai.productsearchimagebased.tensorflow.api
-      - ai.productsearchimagebased.azurecognitiveservices.api
-      - ordering.backgroundtasks
-      - ordering.signalrhub
-      - webshoppingagg
-      - webshoppingapigw
-      - webaiapigw
-
-  webraz:
-    image: eshopai/webraz:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebDashboardRazor/Dockerfile    
-      args:
-        configuration: "${configuration}"
-    depends_on:
-      - catalog.api
-      - ordering.api
-      - identity.api
-      - ai.salesforecasting.mlnet.api
-      - webshoppingapigw
-      - webaiapigw
-
-  webstatus:
-    image: eshopai/webstatus:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebStatus/Dockerfile
-
   payment.api:
     image: eshopai/payment.api:${TAG:-latest}
     build:
@@ -161,66 +132,152 @@ services:
       - nosql.data
       - rabbitmq
 
-  sql.data:
-    image: microsoft/mssql-server-linux:2017-latest
-    volumes:
-      - ./mssql:/var/opt/bulk
-
-  nosql.data:
-    image: mongo
-
-  basket.data:
-    image: redis:alpine
-      
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-
   mobileshoppingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
  
   mobilemarketingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
  
   webshoppingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
 
   webmarketingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
 
   mobileshoppingagg:
     image: eshopai/mobileshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
 
   webshoppingagg:
     image: eshopai/webshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
+
+  ordering.signalrhub:
+    image: eshopai/ordering.signalrhub:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+    depends_on:
+      - nosql.data
+      - sql.data
+      - identity.api
+      - rabbitmq
+      - ordering.api
+      - marketing.api
+      - catalog.api
+      - basket.api
+
+  webstatus:
+    image: eshopai/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebStatus/Dockerfile
 
   webaiapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
+    depends_on:
+      - ai.productrecommender.azureml.api
+      - ai.productsearchimagebased.tensorflow.api
+      - ai.productsearchimagebased.azurecognitiveservices.api
 
-  ordering.signalrhub:
-    image: eshop/ordering.signalrhub:${TAG:-latest}
+  webraz:
+    image: eshopai/webraz:${TAG:-latest}
     build:
       context: .
-      dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+      dockerfile: src/Web/WebDashboardRazor/Dockerfile    
       args:
         configuration: "${configuration}"
+    depends_on:
+      - catalog.api
+      - ordering.api
+      - identity.api
+      - ai.salesforecasting.mlnet.api
+      - webshoppingapigw
+      - webaiapigw
+
+  webmvc:
+    image: eshopai/webmvc:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebMVC/Dockerfile    
+      args:
+        configuration: "${configuration}"
+    depends_on:
+      - webshoppingagg
+      - webshoppingapigw
+      - webmarketingapigw
+      - webaiapigw
+

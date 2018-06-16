@@ -4,9 +4,8 @@ namespace Microsoft.eShopOnContainers.WebMVC
 {
     public class AppSettings
     {
-        public Connectionstrings ConnectionStrings { get; set; }
+        //public Connectionstrings ConnectionStrings { get; set; }
         public string MarketingUrl { get; set; }
-
         public string ProductSearchImageUrl
         {
             get

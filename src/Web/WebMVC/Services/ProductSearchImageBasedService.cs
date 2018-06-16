@@ -1,8 +1,9 @@
-﻿using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
+﻿using Microsoft.eShopOnContainers.WebMVC.Extensions;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using WebMVC.Infrastructure;
 
@@ -11,9 +12,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
     public class ProductSearchImageBasedService : IProductSearchImageBasedService
     {
         private readonly string remoteServiceBaseUrl;
-        private readonly IHttpClient httpClient;
+        private readonly HttpClient httpClient;
 
-        public ProductSearchImageBasedService(IOptionsSnapshot<AppSettings> settings, IHttpClient httpClient)
+        public ProductSearchImageBasedService(IOptions<AppSettings> settings, HttpClient httpClient)
         {
             remoteServiceBaseUrl = $"{settings.Value.ProductSearchImageUrl}/v1/productSearchImage/";
             this.httpClient = httpClient;

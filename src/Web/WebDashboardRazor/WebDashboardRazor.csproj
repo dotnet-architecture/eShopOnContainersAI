@@ -1,23 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.WebDashboardRazor</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Infrastructure\IResilientHttpClientFactory.cs" />
+    <Compile Remove="Infrastructure\ResilientHttpClientFactory.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\BuildingBlocks\Resilience\Resilience.Http\Resilience.Http.csproj" />
   </ItemGroup>
 </Project>

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.eShopOnContainers.BuildingBlocks.Resilience.Http;
 using Microsoft.eShopOnContainers.WebDashboardRazor.Infrastructure;
 using Microsoft.eShopOnContainers.WebDashboardRazor.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Extensions.Http;
+using System;
+using System.Net.Http;
 
 namespace Microsoft.eShopOnContainers.WebDashboardRazor.Extensions
 {
@@ -17,39 +19,44 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Extensions
             return services;
         }
 
-        public static IServiceCollection AddResilienceHttp(this IServiceCollection services, IConfiguration configuration)
+        // Adds all Http client services (like Service-Agents) using resilient Http requests based on HttpClient factory and Polly's policies 
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            if (configuration.GetValue<string>("UseResilientHttp") == bool.TrueString)
-            {
-                services.AddSingleton<IResilientHttpClientFactory, ResilientHttpClientFactory>(sp =>
-                {
-                    var logger = sp.GetRequiredService<ILogger<ResilientHttpClient>>();
-                    var httpContextAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddTransient<HttpClientRequestIdDelegatingHandler>();
 
-                    var retryCount = 6;
-                    if (!string.IsNullOrEmpty(configuration["HttpClientRetryCount"]))
-                    {
-                        retryCount = int.Parse(configuration["HttpClientRetryCount"]);
-                    }
+            //set 5 min as the lifetime for each HttpMessageHandler int the pool
+            services.AddHttpClient("extendedhandlerlifetime").SetHandlerLifetime(TimeSpan.FromMinutes(5));
 
-                    var exceptionsAllowedBeforeBreaking = 5;
-                    if (!string.IsNullOrEmpty(configuration["HttpClientExceptionsAllowedBeforeBreaking"]))
-                    {
-                        exceptionsAllowedBeforeBreaking = int.Parse(configuration["HttpClientExceptionsAllowedBeforeBreaking"]);
-                    }
+            //add http client services
+            services.AddHttpClient<ICatalogService, CatalogService>()
+                   .AddPolicyHandler(GetRetryPolicy())
+                   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-                    return new ResilientHttpClientFactory(logger, httpContextAccessor, exceptionsAllowedBeforeBreaking, retryCount);
-                });
-                services.AddSingleton<IHttpClient, ResilientHttpClient>(sp => sp.GetService<IResilientHttpClientFactory>().CreateResilientHttpClient());
-            }
-            else
-            {
-                services.AddSingleton<IHttpClient, StandardHttpClient>();
-            }
+            services.AddHttpClient<IOrderingService, OrderingService>()
+                 .AddPolicyHandler(GetRetryPolicy())
+                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             return services;
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+              .HandleTransientHttpError()
+              .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+              .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
+        }
+
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }

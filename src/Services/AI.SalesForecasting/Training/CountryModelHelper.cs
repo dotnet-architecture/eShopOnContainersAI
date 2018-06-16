@@ -1,10 +1,7 @@
-﻿using ML = Microsoft.ML;
-using Microsoft.ML.Runtime;
-using Microsoft.ML.Runtime.Data;
-using Microsoft.ML.Runtime.EntryPoints;
+﻿using Microsoft.ML.Data;
+using Microsoft.ML;
 using System;
 using System.IO;
-using Microsoft.ML;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNet.API
@@ -39,9 +36,8 @@ namespace Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNe
             Console.WriteLine("Training country forecasting model using Pipeline");
 
             var learningPipeline = new LearningPipeline();
-
             // First node in the workflow will be reading the source csv file, following the schema defined by dataSchema
-            learningPipeline.Add(new TextLoader<CountryData>(dataPath, useHeader: true, separator: ","));
+            learningPipeline.Add(new TextLoader(dataPath).CreateFrom<CountryData>(useHeader: true, separator: ','));
 
             // The model needs the columns to be arranged into a single column of numeric type
             // First, we group all numeric columns into a single array named NumericalFeatures

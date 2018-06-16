@@ -14,7 +14,7 @@ namespace Microsoft.eShopOnContainers.WebDashboardRazor.Pages.Datasets
     {
         private readonly AppSettings appSettings;
 
-        public RecommendationModel(IOptionsSnapshot<AppSettings> appSettings)
+        public RecommendationModel(IOptions<AppSettings> appSettings)
         {
             this.appSettings = appSettings.Value;
         }

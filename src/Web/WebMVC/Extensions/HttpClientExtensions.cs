@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -19,6 +20,36 @@ namespace Microsoft.eShopOnContainers.WebMVC.Extensions
 
         public static void SetBearerToken(this HttpClient client, string token) =>
             client.SetToken(JwtConstants.TokenType, token);
+
+        public static async Task<HttpResponseMessage> PostFileAsync(this HttpClient httpClient, string uri, byte[] fileRaw, string apiParamName, string fileName = null, string requestId = null)
+        {
+            var method = HttpMethod.Post;
+
+            var requestMessage = new HttpRequestMessage(method, uri);
+
+            requestMessage.Content = new MultipartFormDataContent
+                    {
+                        { new ByteArrayContent(fileRaw), $"\"{apiParamName}\"", $"\"{fileName ?? apiParamName}\"" }
+                    };
+
+            if (requestId != null)
+            {
+                requestMessage.Headers.Add("x-requestid", requestId);
+            }
+
+            var response = await httpClient.SendAsync(requestMessage);
+
+            // raise exception if HttpResponseCode 500
+            // needed for circuit breaker to track fails
+
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
+            {
+                throw new HttpRequestException();
+            }
+
+            return response;
+        }
+
     }
 
     public class BasicAuthenticationHeaderValue : AuthenticationHeaderValue
