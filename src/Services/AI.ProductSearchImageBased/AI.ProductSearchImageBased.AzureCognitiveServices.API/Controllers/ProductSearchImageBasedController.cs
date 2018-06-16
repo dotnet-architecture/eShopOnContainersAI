@@ -3,25 +3,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Classifier;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Infrastructure;
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Controllers
 {
+    public enum ViewApproaches {basic, online, offline, @default };
+
     [Route("api/v1/productSearchImage")]
     public class ProductSearchImageBasedController : Controller
     {
-        private readonly ICognitiveServicesPrediction cognitiveServicesPrediction;
+        private readonly IVisionStrategy visionStrategy;
 
-        public ProductSearchImageBasedController(ICognitiveServicesPrediction predictionServices)
+        public ProductSearchImageBasedController(IVisionStrategy visionStrategy)
         {
-            this.cognitiveServicesPrediction = predictionServices;
+            this.visionStrategy = visionStrategy;
         }
 
         [HttpPost]
         [Route("classifyImage")]
-        public async Task<IActionResult> ClassifyImage(IFormFile imageFile)
+        public Task<IActionResult> ClassifyImage(IFormFile imageFile)
+        {
+            return ClassifyImage(ViewApproaches.@default, imageFile);
+        }
+
+        [HttpPost]
+        [Route("classifyImage/{approach}")]
+        public async Task<IActionResult> ClassifyImage([FromRoute]ViewApproaches approach, IFormFile imageFile)
         {
             if (imageFile.Length == 0)
                 return NoContent();
@@ -34,24 +42,27 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
                 if (!imageData.IsValidImage())
                     return StatusCode(StatusCodes.Status415UnsupportedMediaType);
 
-                tags = await ClassifyImageAsync(imageData);
+                Approaches classifyApproach;
+                switch (approach)
+                {
+                    case ViewApproaches.offline:
+                        classifyApproach = Approaches.CustomVisionOffline;
+                        break;
+                    case ViewApproaches.online:
+                        classifyApproach = Approaches.CustomVisionOnline;
+                        break;
+                    case ViewApproaches.basic:
+                        classifyApproach = Approaches.ComputerVision;
+                        break;
+                    default:
+                        classifyApproach = Approaches.Default;
+                        break;
+                }
+
+                tags = await visionStrategy.ClassifyImageAsync(imageData, classifyApproach);
             }
+
             return Ok(tags);
-        }
-
-        /// <summary>
-        /// Classify an image, using a model
-        /// </summary>
-        /// <param name="image">image (jpeg) file to be analyzed</param>
-        /// <param name="model">model used for classification</param>
-        /// <returns>image related labels</returns>
-        private async Task<IEnumerable<string>> ClassifyImageAsync(byte[] image)
-        {
-            var classification = await cognitiveServicesPrediction.ClassifyImageAsync(image);
-
-            return classification.DefaultIfEmpty()
-                .OrderByDescending(c => c.Probability)
-                .Select(c => c.Label);
         }
     }
 }

@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Classifier
 {
-    public interface ICognitiveServicesPredictionClient
+    public interface IComputerVisionClient
     {
-        Task<IEnumerable<LabelConfidence>> Tags(byte[] image, CognitiveServicesSettings settings);
+        Task<IEnumerable<LabelConfidence>> Tags(byte[] image, ComputerVisionSettings settings);
     }
 
-    public class CognitiveServicesSettings
+    public class ComputerVisionSettings
     {
         public string ComputerVisionAPIKey { get; set; }
         public string ComputerVisionUri { get; set; }
@@ -23,18 +23,18 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
         public int MaxLength { get; set; }
     }
 
-    public class CognitiveServicesPredictionClient : ICognitiveServicesPredictionClient
+    public class ComputerVisionClient : IComputerVisionClient
     {
         private readonly IOptionsSnapshot<AppSettings> settings;
-        private readonly ILogger<CognitiveServicesPredictionClient> logger;
+        private readonly ILogger<ComputerVisionClient> logger;
 
-        public CognitiveServicesPredictionClient(IOptionsSnapshot<AppSettings> settings, ILogger<CognitiveServicesPredictionClient> logger)
+        public ComputerVisionClient(IOptionsSnapshot<AppSettings> settings, ILogger<ComputerVisionClient> logger)
         {
             this.settings = settings;
             this.logger = logger;
         }
 
-        public async Task<IEnumerable<LabelConfidence>> Tags(byte[] image, CognitiveServicesSettings settings)
+        public async Task<IEnumerable<LabelConfidence>> Tags(byte[] image, ComputerVisionSettings settings)
         {
             using (var client = new HttpClient())
             {

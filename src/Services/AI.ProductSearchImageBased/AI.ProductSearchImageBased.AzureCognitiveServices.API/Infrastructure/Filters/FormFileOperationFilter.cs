@@ -35,7 +35,9 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
                     Type = "file"
                 };
 
-                operation.Parameters.Clear();
+                var oldParameter = operation.Parameters.Single(p => p.Name == formFileParameterName);
+                operation.Parameters.Remove(oldParameter);
+
                 operation.Parameters.Add(parameter);
 
                 if (!operation.Consumes.Contains(FormDataMimeType))
