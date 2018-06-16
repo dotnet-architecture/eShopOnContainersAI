@@ -101,6 +101,8 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AI\ImageClassifier.cs" />
+    <Compile Include="AI\ImageExtensions.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
@@ -126,9 +128,13 @@
     <BundleResource Include="Resources\menu_campaigns%402x.png" />
     <BundleResource Include="Resources\menu_campaigns%403x.png" />
     <None Include="packages.config" />
+    <Compile Include="Resources\ModelsAI\customvision.cs">
+      <DependentUpon>customvision.mlmodel</DependentUpon>
+    </Compile>
     <Compile Include="Services\LocationServiceImplementation.cs" />
     <Compile Include="Services\PermissionsService.cs" />
     <Compile Include="Services\GeolocationSingleUpdateDelegate.cs" />
+    <BundleResource Include="Resources\ModelsAI\customvision.mlmodel" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Icon-60%403x.png" />
@@ -413,7 +419,9 @@
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="Resources\fake_product_06.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
