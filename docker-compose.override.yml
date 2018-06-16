@@ -69,6 +69,7 @@ services:
       ComputerVision__VisionUri: ${ESHOPAI_CS_VIS_URI}
       CustomVision__PredictionKey: ${ESHOPAI_CV_PRED_KEY}
       CustomVision__ProjectId: ${ESHOPAI_CV_PROJECT_ID}
+      CognitiveServicesPredictionDefaultModel: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
       ApplicationInsights__InstrumentationKey: ${INSTRUMENTATION_KEY}
       OrchestratorType: ${ORCHESTRATOR_TYPE}
     ports:

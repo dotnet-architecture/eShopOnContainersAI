@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API;
 using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Classifier;
 using Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API.Infrastructure.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureCognitiveServices.API
 {
@@ -29,8 +24,9 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration);
-            services.AddTransient<ICognitiveServicesPrediction, CognitiveServicesPrediction>();
-            services.AddTransient<ICognitiveServicesPredictionClient, CognitiveServicesPredictionClient>();
+            services.AddTransient<IComputerVisionClient, ComputerVisionClient>();
+            services.AddTransient<ICustomVisionClient, CustomVisionClient>();
+            services.AddTransient<IVisionStrategy, VisionStrategy>();
 
             services.AddMvc(options =>
             {
