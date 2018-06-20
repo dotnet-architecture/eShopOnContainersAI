@@ -15,11 +15,12 @@ namespace eShopOnContainers.Core.ViewModels
         private CatalogBrand _brand;
         private ObservableCollection<CatalogType> _types;
         private CatalogType _type;
-        private ICatalogService _productsService;
+        private ICatalogService _catalogService;
+        private byte[] _imageFilter;
 
         public CatalogViewModel(ICatalogService productsService)
         {
-            _productsService = productsService;
+            _catalogService = productsService;
         }
 
         public ObservableCollection<CatalogItem> Products
@@ -74,22 +75,41 @@ namespace eShopOnContainers.Core.ViewModels
             }
         }
 
-        public bool IsFilter { get { return Brand != null || Type != null; } }
+        public byte[] ImageFilter { get => _imageFilter;
+            set {
+                _imageFilter = value;
+                RaisePropertyChanged(() => ImageFilter);
+                RaisePropertyChanged(() => IsFilter);
+            }
+        }
+
+
+        private ImageSource _imageSource;
+        public ImageSource ImageFilterSource {
+            get => _imageSource;
+            set
+            {
+                _imageSource = value;
+                RaisePropertyChanged(() => ImageFilterSource);
+            }
+        }
+
+        public bool IsFilter { get { return Brand != null || Type != null || ImageFilter != null; } }
 
         public ICommand AddCatalogItemCommand => new Command<CatalogItem>(AddCatalogItem);
 
         public ICommand FilterCommand => new Command(async () => await FilterAsync());
 
-		public ICommand ClearFilterCommand => new Command(async () => await ClearFilterAsync());
+        public ICommand ClearFilterCommand => new Command(async () => await ClearFilterAsync());
 
         public override async Task InitializeAsync(object navigationData)
         {
             IsBusy = true;
 
             // Get Catalog, Brands and Types
-            Products = await _productsService.GetCatalogAsync();
-            Brands = await _productsService.GetCatalogBrandAsync();
-            Types = await _productsService.GetCatalogTypeAsync();
+            Products = await _catalogService.GetCatalogAsync();
+            Brands = await _catalogService.GetCatalogBrandAsync();
+            Types = await _catalogService.GetCatalogTypeAsync();
 
             IsBusy = false;
         }
@@ -102,7 +122,7 @@ namespace eShopOnContainers.Core.ViewModels
 
         private async Task FilterAsync()
         {
-            if (Brand == null || Type == null)
+            if (!IsFilter)
             {
                 return;
             }
@@ -111,7 +131,7 @@ namespace eShopOnContainers.Core.ViewModels
 
             // Filter catalog products
             MessagingCenter.Send(this, MessageKeys.Filter);
-            Products = await _productsService.FilterAsync(Brand.Id, Type.Id);
+            Products = await _catalogService.FilterAsync(Brand?.Id ?? 0, Type?.Id ?? 0, ImageFilter);
 
             IsBusy = false;
         }
@@ -122,7 +142,10 @@ namespace eShopOnContainers.Core.ViewModels
 
             Brand = null;
             Type = null;
-            Products = await _productsService.GetCatalogAsync();
+            ImageFilter = null;
+            ImageFilterSource = null;
+
+            Products = await _catalogService.GetCatalogAsync();
 
             IsBusy = false;
         }

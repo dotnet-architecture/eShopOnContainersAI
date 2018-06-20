@@ -4,9 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:slideOverKit="clr-namespace:SlideOverKit" 
     x:Class="eShopOnContainers.Core.Views.FiltersView"
+    x:Name="FilterView"
     MenuOrientations="TopToBottom"
     BackgroundColor="{StaticResource BackgroundColor}"
-    HeightRequest="250"
+    HeightRequest="550"
     IsFullScreen="True">
   <slideOverKit:SlideMenuView.Resources>
     <ResourceDictionary>
@@ -65,6 +66,7 @@
     <Grid.RowDefinitions>      
       <RowDefinition Height="60" />
       <RowDefinition Height="60" /> 
+      <RowDefinition Height="300" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
@@ -96,13 +98,34 @@
         </OnPlatform>
       </Picker.HeightRequest> 
     </Picker>
+    <!--IMAGE FILTER-->
+    <StackLayout Grid.Row="2" HeightRequest="300" Margin="0,2">
+            <Label Text="IMAGE" FontSize="15" FontFamily="Segoe UI" HeightRequest="20"></Label>
+            <Button x:Name="takePhoto" Text="Take Photo" IsVisible="{Binding Source={x:Reference FilterView}, Path=CanTakePhoto}">
+                <Button.HeightRequest>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="iOS, Android" Value="48" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="36" />
+                    </OnPlatform>
+                </Button.HeightRequest>
+            </Button>
+            <Button x:Name="pickPhoto" Text="Pick Photo" IsVisible="{Binding Source={x:Reference FilterView}, Path=CanPickPhoto}">
+                <Button.HeightRequest>
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="iOS, Android" Value="48" />
+                        <On Platform="UWP, WinRT, WinPhone" Value="36" />
+                    </OnPlatform>
+                </Button.HeightRequest>
+            </Button>
+            <Image x:Name="image" HeightRequest="227" WidthRequest="227" Source="{Binding ImageFilterSource}"  />
+    </StackLayout>
     <Button 
-      Grid.Row="2"
+      Grid.Row="3"
       Text="Apply" 
       Style="{StaticResource FilterButtonStyle}"
       Command="{Binding FilterCommand}"/>   
     <Button
-      Grid.Row="3"
+      Grid.Row="4"
       Text="Clear"
       IsVisible="{Binding IsFilter}"
       Style="{StaticResource ClearFilterButtonStyle}"

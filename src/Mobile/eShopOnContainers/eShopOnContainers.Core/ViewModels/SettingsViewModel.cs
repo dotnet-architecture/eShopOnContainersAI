@@ -13,8 +13,14 @@ namespace eShopOnContainers.Core.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
+        private string _titleUseAzureServices;
+        private string _descriptionUseAzureServices;
         private bool _useAzureServices;
+        private string _titleUseFakeLocation;
+        private string _descriptionUseFakeLocation;
         private bool _allowGpsLocation;
+        private string _titleAllowGpsLocation;
+        private string _descriptionAllowGpsLocation;
         private bool _useFakeLocation;
         private string _endpoint;
         private double _latitude;
@@ -42,16 +48,21 @@ namespace eShopOnContainers.Core.ViewModels
 
         public string TitleUseAzureServices
         {
-            get { return !UseAzureServices ? "Use Mock Services" : "Use Microservices/Containers from eShopOnContainers"; }
+            get => _titleUseAzureServices;
+            set
+            {
+                _titleUseAzureServices = value;
+                RaisePropertyChanged(() => TitleUseAzureServices);
+            }
         }
 
         public string DescriptionUseAzureServices
         {
-            get
+            get => _descriptionUseAzureServices;
+            set
             {
-                return !UseAzureServices
-                    ? "Mock Services are simulated objects that mimic the behavior of real services using a controlled approach."
-                        : "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker containers at the specified base endpoint, which will must be reachable through the network.";
+                _descriptionUseAzureServices = value;
+                RaisePropertyChanged(() => DescriptionUseAzureServices);
             }
         }
 
@@ -61,23 +72,30 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _useAzureServices = value;
+
                 UpdateUseAzureServices();
+
                 RaisePropertyChanged(() => UseAzureServices);
             }
         }
 
         public string TitleUseFakeLocation
         {
-            get { return !UseFakeLocation ? "Use Real Location" : "Use Fake Location"; }
+            get => _titleUseFakeLocation;
+            set
+            {
+                _titleUseFakeLocation = value;
+                RaisePropertyChanged(() => TitleUseFakeLocation);
+            }
         }
 
         public string DescriptionUseFakeLocation
         {
-            get
+            get => _descriptionUseFakeLocation;
+            set
             {
-                return !UseFakeLocation
-                    ? "When enabling location, the app will attempt to use the location from the device."
-                        : "Fake Location data is added for marketing campaign testing.";
+                _descriptionUseFakeLocation = value;
+                RaisePropertyChanged(() => DescriptionUseFakeLocation);
             }
         }
 
@@ -87,23 +105,30 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _useFakeLocation = value;
+
                 UpdateFakeLocation();
+
                 RaisePropertyChanged(() => UseFakeLocation);
             }
         }
 
         public string TitleAllowGpsLocation
         {
-            get { return !AllowGpsLocation ? "GPS Location Disabled" : "GPS Location Enabled"; }
+            get => _titleAllowGpsLocation;
+            set
+            {
+                _titleAllowGpsLocation = value;
+                RaisePropertyChanged(() => TitleAllowGpsLocation);
+            }
         }
 
         public string DescriptionAllowGpsLocation
         {
-            get
+            get => _descriptionAllowGpsLocation;
+            set
             {
-                return !AllowGpsLocation
-                    ? "When disabling location, you won't receive location campaigns based upon your location."
-                        : "When enabling location, you'll receive location campaigns based upon your location.";
+                _descriptionAllowGpsLocation = value;
+                RaisePropertyChanged(() => DescriptionAllowGpsLocation);
             }
         }
 
@@ -123,10 +148,12 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _endpoint = value;
+
                 if (!string.IsNullOrEmpty(_endpoint))
                 {
                     UpdateEndpoint();
                 }
+
                 RaisePropertyChanged(() => Endpoint);
             }
         }
@@ -137,7 +164,9 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _latitude = value;
+
                 UpdateLatitude();
+
                 RaisePropertyChanged(() => Latitude);
             }
         }
@@ -148,7 +177,9 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _longitude = value;
+
                 UpdateLongitude();
+
                 RaisePropertyChanged(() => Longitude);
             }
         }
@@ -159,7 +190,9 @@ namespace eShopOnContainers.Core.ViewModels
             set
             {
                 _allowGpsLocation = value;
+
                 UpdateAllowGpsLocation();
+
                 RaisePropertyChanged(() => AllowGpsLocation);
             }
         }
@@ -174,11 +207,19 @@ namespace eShopOnContainers.Core.ViewModels
 
         public ICommand ToggleAllowGpsLocationCommand => new Command(ToggleAllowGpsLocation);
 
+        public override Task InitializeAsync(object navigationData)
+        {
+            UpdateInfoUseAzureServices();
+            UpdateInfoFakeLocation();
+            UpdateInfoAllowGpsLocation();
+
+            return base.InitializeAsync(navigationData);
+        }
+
         private async Task ToggleMockServicesAsync()
         {
             ViewModelLocator.UpdateDependencies(!UseAzureServices);
-            RaisePropertyChanged(() => TitleUseAzureServices);
-            RaisePropertyChanged(() => DescriptionUseAzureServices);
+            UpdateInfoUseAzureServices();
 
             var previousPageViewModel = NavigationService.PreviousPageViewModel;
             if (previousPageViewModel != null)
@@ -202,8 +243,7 @@ namespace eShopOnContainers.Core.ViewModels
         private void ToggleFakeLocationAsync()
         {
             ViewModelLocator.UpdateDependencies(!UseAzureServices);
-            RaisePropertyChanged(() => TitleUseFakeLocation);
-            RaisePropertyChanged(() => DescriptionUseFakeLocation);
+            UpdateInfoFakeLocation();
         }
 
         private async Task ToggleSendLocationAsync()
@@ -223,10 +263,53 @@ namespace eShopOnContainers.Core.ViewModels
 
         private void ToggleAllowGpsLocation()
         {
-            RaisePropertyChanged(() => TitleAllowGpsLocation);
-            RaisePropertyChanged(() => DescriptionAllowGpsLocation);
+            UpdateInfoAllowGpsLocation();
         }
 
+        private void UpdateInfoUseAzureServices()
+        {
+            if (!UseAzureServices)
+            {
+                TitleUseAzureServices = "Use Mock Services";
+                DescriptionUseAzureServices = "Mock Services are simulated objects that mimic the behavior of real services using a controlled approach.";
+            }
+            else
+            {
+                TitleUseAzureServices = "Use Microservices/Containers from eShopOnContainers";
+                DescriptionUseAzureServices = "When enabling the use of microservices/containers, the app will attempt to use real services deployed as Docker containers at the specified base endpoint, which will must be reachable through the network.";
+            }
+        }
+
+        private void UpdateInfoFakeLocation()
+        {
+            if (!UseFakeLocation)
+            {
+                TitleUseFakeLocation = "Use Real Location";
+                DescriptionUseFakeLocation = "When enabling location, the app will attempt to use the location from the device.";
+
+            }
+            else
+            {
+                TitleUseFakeLocation = "Use Fake Location";
+                DescriptionUseFakeLocation = "Fake Location data is added for marketing campaign testing.";
+            }
+        }
+
+        private void UpdateInfoAllowGpsLocation()
+        {
+            if (!AllowGpsLocation)
+            {
+                TitleAllowGpsLocation = "GPS Location Disabled";
+                DescriptionAllowGpsLocation = "When disabling location, you won't receive location campaigns based upon your location.";
+            }
+            else
+            {
+                TitleAllowGpsLocation = "GPS Location Enabled";
+                DescriptionAllowGpsLocation = "When enabling location, you'll receive location campaigns based upon your location.";
+
+            }
+        }
+        
         private void UpdateUseAzureServices()
         {
             // Save use mocks services to local storage
