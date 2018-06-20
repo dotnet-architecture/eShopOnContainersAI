@@ -61,6 +61,26 @@ namespace eShopOnContainers.Core.Services.RequestProvider
             return result;
         }
 
+        public async Task<TResult> PostFileAsync<TResult>(string uri, byte[] contents, string apiParamName, string fileName = null, string token = "")
+        {
+            HttpClient httpClient = CreateHttpClient(token);
+            var requestMessage = new HttpRequestMessage(HttpMethod.Post, uri);
+            requestMessage.Content = new MultipartFormDataContent
+                    {
+                        { new ByteArrayContent(contents), $"\"{apiParamName}\"", $"\"{fileName ?? apiParamName}\"" }
+                    };
+
+            var response = await httpClient.SendAsync(requestMessage);
+            await HandleResponse(response);
+
+            string serialized = await response.Content.ReadAsStringAsync();
+
+            TResult result = await Task.Run(() =>
+                JsonConvert.DeserializeObject<TResult>(serialized, _serializerSettings));
+
+            return result;
+        }
+
         public async Task<TResult> PostAsync<TResult>(string uri, string data, string clientId, string clientSecret)
         {
 			HttpClient httpClient = CreateHttpClient(string.Empty);

@@ -54,14 +54,17 @@ namespace eShopOnContainers.Core.Views
 
         private void Filter()
         {
-            if (SlideMenu.IsShown)
+            try
             {
-                HideMenuAction?.Invoke();
-            }
-            else
-            {
-                ShowMenuAction?.Invoke();
-            }
+                if (SlideMenu.IsShown)
+                {
+                    HideMenuAction?.Invoke();
+                }
+                else if (!SlideMenu.IsShown)
+                {
+                    ShowMenuAction?.Invoke();
+                }
+            } catch { }
         }
     }
 }
