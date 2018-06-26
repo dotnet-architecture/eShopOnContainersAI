@@ -10,6 +10,7 @@ using FFImageLoading.Forms.Droid;
 using System;
 using Xamarin.Forms.Platform.Android;
 using eShopOnContainers.Droid.Services;
+using Plugin.CurrentActivity;
 
 namespace eShopOnContainers.Droid.Activities
 {
@@ -41,6 +42,8 @@ namespace eShopOnContainers.Droid.Activities
             window.ClearFlags(WindowManagerFlags.TranslucentStatus);
             window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
             window.SetStatusBarColor(Android.Graphics.Color.Rgb(0, 166, 156));
+
+            CrossCurrentActivity.Current.Init(this, bundle);
         }
 
         /// <summary>
@@ -58,6 +61,8 @@ namespace eShopOnContainers.Droid.Activities
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             ((PermissionsService)PermissionsService.Instance).OnRequestPermissionResult(requestCode, permissions, grantResults);
+
+            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }
