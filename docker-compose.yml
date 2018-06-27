@@ -249,6 +249,9 @@ services:
       context: .
       dockerfile: src/ApiGateways/ApiGw-Base/Dockerfile
     depends_on:
+      - ai.salesforecasting.mlnet.api
+      - catalog.api
+      - ordering.api
       - ai.productrecommender.azureml.api
       - ai.productsearchimagebased.tensorflow.api
       - ai.productsearchimagebased.azurecognitiveservices.api
@@ -261,10 +264,6 @@ services:
       args:
         configuration: "${configuration}"
     depends_on:
-      - catalog.api
-      - ordering.api
-      - identity.api
-      - ai.salesforecasting.mlnet.api
       - webshoppingapigw
       - webaiapigw
 
