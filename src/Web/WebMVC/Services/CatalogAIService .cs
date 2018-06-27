@@ -25,6 +25,9 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 
         public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
         {
+            if (String.IsNullOrEmpty(productId) || productIDs == null || !productIDs.Any())
+                return Enumerable.Empty<CatalogItem>();
+
             var recommendationsUri = API.CatalogAI.GetProducSetDetailsByIDs(_remoteServiceBaseUrl, productId, productIDs);
 
             var dataString = await _apiClient.GetStringAsync(recommendationsUri);

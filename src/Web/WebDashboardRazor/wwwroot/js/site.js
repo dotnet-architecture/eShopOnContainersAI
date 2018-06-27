@@ -75,7 +75,9 @@ function getProductData(product) {
 
     getHistory(productId)
         .done(function (history) {
-            if (history.length < 4) return;
+            var yearFilter = new Date().getFullYear();
+            // remove sales from current year, as predictions are based on data from previous year
+            history = history.filter(h => h.year != yearFilter);
             $.when(
                 getForecast(history[history.length - 2], product),
                 getForecast(history[history.length - 1], product)
@@ -262,7 +264,11 @@ function onLoadCountryForecasting() {
 function getCountryData(country) {
     $.getJSON(`${apiUri.ordering}/country/${country}/history`)
         .done(function (history) {
-            if (history.length < 4) return;
+            //if (history.length < 4) return;
+            var yearFilter = new Date().getFullYear();
+            // remove sales from current year, as predictions are based on data from previous year
+            history = history.filter(h => h.year != yearFilter);
+
             $.when(
                 getCountryForecast(history[history.length - 2]),
                 getCountryForecast(history[history.length - 1])

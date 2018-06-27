@@ -59,7 +59,12 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductRecommender.AzureML.API
                 }
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-                client.BaseAddress = new Uri(apiUri);
+                if (!Uri.TryCreate(apiUri, UriKind.Absolute, out Uri api))
+                {
+                    _logger.LogError("API URI not valid URI format");
+                    return Enumerable.Empty<string>();
+                }
+                client.BaseAddress = api;
 
                 HttpResponseMessage response = await client.PostAsync(String.Empty, new JsonContent(scoreRequest));
 

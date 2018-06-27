@@ -15,13 +15,15 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
         {
             this.customVisionClient = customVisionClient;
 
+            Guid projectId;
+            if (settings.Value.CustomVision == null || string.IsNullOrEmpty(settings.Value.CustomVision.ProjectId) || !Guid.TryParse(settings.Value.CustomVision.ProjectId, out projectId))
+                projectId = Guid.Empty;                
+
             //TODO: move these settings to setting file
             customVisionSettings = new CustomVisionSettings
             {
                 CustomVisionPredictionKey = settings.Value.CustomVision?.PredictionKey,
-                CustomVisionProjectId = settings.Value.CustomVision == null || string.IsNullOrEmpty(settings.Value.CustomVision.ProjectId) ? 
-                    Guid.Empty : 
-                    Guid.Parse(settings.Value.CustomVision.ProjectId),
+                CustomVisionProjectId = projectId,
                 Threshold = 0.85f,
                 MaxLength = 5
             };

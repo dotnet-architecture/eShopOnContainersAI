@@ -216,7 +216,6 @@ services:
       MarketingUrlHC: http://marketing.api/hc
       PaymentUrlHC: http://payment.api/hc
       ArtificialIntelligenceUrl: http://webaiapigw
-      ProductRecommenderUrl: ${ESHOPAI_PRODUCTRECOMMENDER_URI}
       ProductSearchImageBased__CognitiveUrl: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_COGNITIVE_MICROSERVICE_URI}
       ProductSearchImageBased__TensorFlowUrl: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_TENSORFLOW_MICROSERVICE_URI}
       ProductSearchImageBased__Approach: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
