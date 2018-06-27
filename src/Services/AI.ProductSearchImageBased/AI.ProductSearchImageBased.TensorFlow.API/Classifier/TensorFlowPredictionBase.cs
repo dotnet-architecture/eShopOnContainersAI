@@ -67,8 +67,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
                 var probabilities = (float[,])results[0].GetValue(jagged: false);
 
                 var idx = 0;
-                return from label in labels                       
-                       select new LabelConfidence { Label = label, Probability = probabilities[0, idx++] };
+                return labels.Select(l => new LabelConfidence() { Label = l, Probability = probabilities[0, idx++] }).ToArray();
             }
         }
     }
