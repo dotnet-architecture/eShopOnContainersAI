@@ -1,0 +1,22 @@
+{
+    "name": "eShopOnContainersAI-Bot.Net.Core",
+    "secretKey": "",
+  "services": [
+    {
+      "type": "endpoint",
+      "name": "eShopBot-Local",
+      "id": "http://localhost:6654/api/messages",
+      "appId": "",
+      "appPassword": "",
+      "endpoint": "http://localhost:6654/api/messages"
+    },
+    {
+      "type": "endpoint",
+      "name": "eShopBot-Docker",
+      "id": "http://localhost:5135/api/messages",
+      "appId": "",
+      "appPassword": "",
+      "endpoint": "http://localhost:5135/api/messages"
+    }
+  ]
+}

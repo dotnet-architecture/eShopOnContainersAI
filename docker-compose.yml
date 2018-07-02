@@ -81,7 +81,6 @@ services:
       - nosql.data
       - rabbitmq
 
-
   ordering.api:
     image: eshopai/ordering.api:${TAG:-latest}
     build:
@@ -255,6 +254,17 @@ services:
       - ai.productrecommender.azureml.api
       - ai.productsearchimagebased.tensorflow.api
       - ai.productsearchimagebased.azurecognitiveservices.api
+
+  bot.api:
+    image: eshopai/bot.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Bots/Bot.Core.API/Dockerfile
+      args:
+        configuration: "${configuration}"
+    depends_on:
+      - webshoppingapigw
+      - webaiapigw
 
   webraz:
     image: eshopai/webraz:${TAG:-latest}
