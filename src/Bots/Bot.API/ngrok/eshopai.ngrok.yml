@@ -17,3 +17,9 @@ tunnels:
     bind_tls: true
     subdomain: <your_eshopaicatalog_subdomain>
     host_header: localhost:5202
+  catalog.ai.api: 
+    addr: 5204
+    proto: http
+    bind_tls: true
+    subdomain: <your_eshopaicatalog_subdomain>
+    host_header: localhost:5204
