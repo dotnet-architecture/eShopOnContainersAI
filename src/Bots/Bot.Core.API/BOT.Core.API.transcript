@@ -1,0 +1,1554 @@
+[
+  {
+    "type": "conversationUpdate",
+    "membersAdded": [
+      {
+        "id": "http://localhost:6654/api/messages",
+        "name": "Bot"
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "17151301-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:52+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:45:52.304Z",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "conversationUpdate",
+    "membersAdded": [
+      {
+        "id": "default-user",
+        "name": "User"
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "17151302-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:52+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:45:52.304Z",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "list",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.hero",
+        "content": {
+          "title": "Welcome Bot!",
+          "images": [
+            {
+              "url": "http://localhost:6654/images/brand.png",
+              "alt": "eShop Logo"
+            }
+          ]
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "17151301-7de5-11e8-9053-b524cdc1a650",
+    "id": "17cffe91-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:53+02:00",
+    "timestamp": "2018-07-02T10:45:53.529Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Howdy! - I am eShopAI-Bot.",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "17151301-7de5-11e8-9053-b524cdc1a650",
+    "id": "1825e6c1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:54+02:00",
+    "timestamp": "2018-07-02T10:45:54.092Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "I can show you the eShopAI Catalog, add items to your shopping cart, place a new order and explore your order's status.",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "17151301-7de5-11e8-9053-b524cdc1a650",
+    "id": "184e7d61-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:54+02:00",
+    "timestamp": "2018-07-02T10:45:54.358Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Just type whatever you want to do, for example: *show me the product catalog*",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "17151301-7de5-11e8-9053-b524cdc1a650",
+    "id": "1875db81-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:45:54+02:00",
+    "timestamp": "2018-07-02T10:45:54.616Z"
+  },
+  {
+    "type": "message",
+    "text": "Hello!!",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:46:04.833Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.0"
+    },
+    "entities": [
+      {
+        "type": "ClientCapabilities",
+        "requiresBotState": true,
+        "supportsTts": true,
+        "supportsListening": true
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "1e8cd910-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:04+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Hi. How can I help you?",
+    "inputHint": "acceptingInput",
+    "replyToId": "1e8cd910-7de5-11e8-9053-b524cdc1a650",
+    "id": "1fa993b0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:06+02:00",
+    "timestamp": "2018-07-02T10:46:06.699Z"
+  },
+  {
+    "type": "message",
+    "text": "I want to buy a mug for a friend, give me some recommendations",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:46:08.761Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.2"
+    },
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "20e43690-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:08+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "carousel",
+    "text": "Page 1 of 1 ( 2 items )",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Black & White Mug",
+          "subtitle": "8.50 $",
+          "text": ".NET Black & White Mug",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/2/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "Cup<T> White Mug",
+          "subtitle": "12.00 $",
+          "text": "Cup<T> White Mug",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/9/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "20e43690-7de5-11e8-9053-b524cdc1a650",
+    "id": "216351a1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:09+02:00",
+    "timestamp": "2018-07-02T10:46:09.594Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "choose one option",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "postBack",
+          "title": "Home",
+          "displayText": "Home",
+          "value": "{ 'ActionType': 'Back'}"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "20e43690-7de5-11e8-9053-b524cdc1a650",
+    "id": "218afde1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:09+02:00",
+    "timestamp": "2018-07-02T10:46:09.854Z"
+  },
+  {
+    "type": "message",
+    "text": "{ 'ActionType': 'Back'}",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "243c6240-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:14+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:46:14.372Z",
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Type what do you want to do.",
+    "inputHint": "acceptingInput",
+    "replyToId": "243c6240-7de5-11e8-9053-b524cdc1a650",
+    "id": "245ce291-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:14+02:00",
+    "timestamp": "2018-07-02T10:46:14.585Z"
+  },
+  {
+    "type": "message",
+    "text": "show me more products",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:46:25.839Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.4"
+    },
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "2b121bf0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:25+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Please select a brand you'd like to search for",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "2b121bf0-7de5-11e8-9053-b524cdc1a650",
+    "id": "2b84b3e1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:26+02:00",
+    "timestamp": "2018-07-02T10:46:26.590Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "You can also upload an image/photo to search for similar products",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "imBack",
+          "title": "All",
+          "value": "All"
+        },
+        {
+          "type": "imBack",
+          "title": "Azure",
+          "value": "Azure"
+        },
+        {
+          "type": "imBack",
+          "title": ".NET",
+          "value": ".NET"
+        },
+        {
+          "type": "imBack",
+          "title": "Visual Studio",
+          "value": "Visual Studio"
+        },
+        {
+          "type": "imBack",
+          "title": "SQL Server",
+          "value": "SQL Server"
+        },
+        {
+          "type": "imBack",
+          "title": "Other",
+          "value": "Other"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogBrandTestOne",
+          "value": "CatalogBrandTestOne"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogBrandTestTwo",
+          "value": "CatalogBrandTestTwo"
+        },
+        {
+          "type": "imBack",
+          "title": "Retail",
+          "value": "Retail"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "2b121bf0-7de5-11e8-9053-b524cdc1a650",
+    "id": "2bac8731-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:26+02:00",
+    "timestamp": "2018-07-02T10:46:26.851Z"
+  },
+  {
+    "type": "message",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "timestamp": "2018-07-02T10:46:55.975Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.6"
+    },
+    "attachments": [
+      {
+        "name": "parasol_prep.jpg",
+        "contentType": "image/jpeg",
+        "contentUrl": "data:application/octet-stream;base64,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"
+      }
+    ],
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "3d087f71-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:55+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "carousel",
+    "text": "Page 1 of 3 ( 15 items )",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "BLUE PAPER PARASOL",
+          "subtitle": "2.93 $",
+          "text": "BLUE PAPER PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/115/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "BLUE POLKADOT GARDEN PARASOL",
+          "subtitle": "7.81 $",
+          "text": "BLUE POLKADOT GARDEN PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/121/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "EDWARDIAN PARASOL BLACK",
+          "subtitle": "5.89 $",
+          "text": "EDWARDIAN PARASOL BLACK",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/118/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "EDWARDIAN PARASOL NATURAL",
+          "subtitle": "5.87 $",
+          "text": "EDWARDIAN PARASOL NATURAL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/119/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "EDWARDIAN PARASOL PINK",
+          "subtitle": "5.94 $",
+          "text": "EDWARDIAN PARASOL PINK",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/120/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "EDWARDIAN PARASOL RED",
+          "subtitle": "5.92 $",
+          "text": "EDWARDIAN PARASOL RED",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/242/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "3d087f71-7de5-11e8-9053-b524cdc1a650",
+    "id": "3d6b5ff0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:56+02:00",
+    "timestamp": "2018-07-02T10:46:56.623Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "choose one option",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "postBack",
+          "title": "Home",
+          "displayText": "Home",
+          "value": "{ 'ActionType': 'Back'}"
+        },
+        {
+          "type": "postBack",
+          "title": "Show more",
+          "displayText": "Show more",
+          "value": "{ 'ActionType': 'NextPage'}"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "3d087f71-7de5-11e8-9053-b524cdc1a650",
+    "id": "3d92be11-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:46:56+02:00",
+    "timestamp": "2018-07-02T10:46:56.881Z"
+  },
+  {
+    "type": "message",
+    "text": "{ 'ActionType': 'NextPage'}",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "4177e780-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:03+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:47:03.416Z",
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "carousel",
+    "text": "Page 2 of 3 ( 15 items )",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "HIPPY CHIC DECORATIVE PARASOL",
+          "subtitle": "7.25 $",
+          "text": "HIPPY CHIC DECORATIVE PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/774/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "ICE CREAM DESIGN GARDEN PARASOL",
+          "subtitle": "6.35 $",
+          "text": "ICE CREAM DESIGN GARDEN PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/123/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "PACK OF 6 COCKTAIL PARASOL STRAWS",
+          "subtitle": "0.42 $",
+          "text": "PACK OF 6 COCKTAIL PARASOL STRAWS",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/2051/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "PINK PAPER PARASOL",
+          "subtitle": "3.02 $",
+          "text": "PINK PAPER PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/114/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "PINK POLKADOT GARDEN PARASOL",
+          "subtitle": "7.86 $",
+          "text": "PINK POLKADOT GARDEN PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/122/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "PURPLE PAPER PARASOL",
+          "subtitle": "2.94 $",
+          "text": "PURPLE PAPER PARASOL",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/116/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "4177e780-7de5-11e8-9053-b524cdc1a650",
+    "id": "419ab1c1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:03+02:00",
+    "timestamp": "2018-07-02T10:47:03.644Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "choose one option",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "postBack",
+          "title": "Home",
+          "displayText": "Home",
+          "value": "{ 'ActionType': 'Back'}"
+        },
+        {
+          "type": "postBack",
+          "title": "Show more",
+          "displayText": "Show more",
+          "value": "{ 'ActionType': 'NextPage'}"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "4177e780-7de5-11e8-9053-b524cdc1a650",
+    "id": "41c28511-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:03+02:00",
+    "timestamp": "2018-07-02T10:47:03.905Z"
+  },
+  {
+    "type": "message",
+    "text": "{ 'ActionType': 'Back'}",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "4f5e6810-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:26+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:47:26.737Z",
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Type what do you want to do.",
+    "inputHint": "acceptingInput",
+    "replyToId": "4f5e6810-7de5-11e8-9053-b524cdc1a650",
+    "id": "4f799130-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:26+02:00",
+    "timestamp": "2018-07-02T10:47:26.915Z"
+  },
+  {
+    "type": "message",
+    "text": "show me more products",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:47:35.832Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.8"
+    },
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "54ca3180-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:35+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Please select a brand you'd like to search for",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "54ca3180-7de5-11e8-9053-b524cdc1a650",
+    "id": "55481411-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:36+02:00",
+    "timestamp": "2018-07-02T10:47:36.657Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "You can also upload an image/photo to search for similar products",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "imBack",
+          "title": "All",
+          "value": "All"
+        },
+        {
+          "type": "imBack",
+          "title": "Azure",
+          "value": "Azure"
+        },
+        {
+          "type": "imBack",
+          "title": ".NET",
+          "value": ".NET"
+        },
+        {
+          "type": "imBack",
+          "title": "Visual Studio",
+          "value": "Visual Studio"
+        },
+        {
+          "type": "imBack",
+          "title": "SQL Server",
+          "value": "SQL Server"
+        },
+        {
+          "type": "imBack",
+          "title": "Other",
+          "value": "Other"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogBrandTestOne",
+          "value": "CatalogBrandTestOne"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogBrandTestTwo",
+          "value": "CatalogBrandTestTwo"
+        },
+        {
+          "type": "imBack",
+          "title": "Retail",
+          "value": "Retail"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "54ca3180-7de5-11e8-9053-b524cdc1a650",
+    "id": "556fc050-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:36+02:00",
+    "timestamp": "2018-07-02T10:47:36.917Z"
+  },
+  {
+    "type": "message",
+    "text": "All",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:47:39.201Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.10"
+    },
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "56cc4310-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:39+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Please select a type you'd like to search for",
+    "inputHint": "acceptingInput",
+    "attachments": [],
+    "entities": [],
+    "replyToId": "56cc4310-7de5-11e8-9053-b524cdc1a650",
+    "id": "56ee7111-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:39+02:00",
+    "timestamp": "2018-07-02T10:47:39.425Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "You can also upload an image/photo to search for similar products",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "imBack",
+          "title": "All",
+          "value": "All"
+        },
+        {
+          "type": "imBack",
+          "title": "Mug",
+          "value": "Mug"
+        },
+        {
+          "type": "imBack",
+          "title": "T-Shirt",
+          "value": "T-Shirt"
+        },
+        {
+          "type": "imBack",
+          "title": "Sheet",
+          "value": "Sheet"
+        },
+        {
+          "type": "imBack",
+          "title": "USB Memory Stick",
+          "value": "USB Memory Stick"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogTypeTestOne",
+          "value": "CatalogTypeTestOne"
+        },
+        {
+          "type": "imBack",
+          "title": "CatalogTypeTestTwo",
+          "value": "CatalogTypeTestTwo"
+        },
+        {
+          "type": "imBack",
+          "title": "Retail",
+          "value": "Retail"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "56cc4310-7de5-11e8-9053-b524cdc1a650",
+    "id": "571707b0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:39+02:00",
+    "timestamp": "2018-07-02T10:47:39.691Z"
+  },
+  {
+    "type": "message",
+    "text": "All",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "textFormat": "plain",
+    "timestamp": "2018-07-02T10:47:41.160Z",
+    "channelData": {
+      "clientActivityId": "1530528352267.4784478693655838.12"
+    },
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "57f72e80-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:41+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "carousel",
+    "text": "Page 1 of 613 ( 3676 items )",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Black & White Mug",
+          "subtitle": "8.50 $",
+          "text": ".NET Black & White Mug",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/2/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Blue Hoodie",
+          "subtitle": "12.00 $",
+          "text": ".NET Blue Hoodie",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/6/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Bot Black Hoodie",
+          "subtitle": "19.50 $",
+          "text": ".NET Bot Black Hoodie",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/1/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Foundation Sheet",
+          "subtitle": "12.00 $",
+          "text": ".NET Foundation Sheet",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/10/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": ".NET Foundation T-shirt",
+          "subtitle": "12.00 $",
+          "text": ".NET Foundation T-shirt",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/4/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "10 COLOUR SPACEBOY PEN",
+          "subtitle": "0.87 $",
+          "text": "10 COLOUR SPACEBOY PEN",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/1382/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "57f72e80-7de5-11e8-9053-b524cdc1a650",
+    "id": "581cb7e0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:41+02:00",
+    "timestamp": "2018-07-02T10:47:41.406Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "choose one option",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "postBack",
+          "title": "Home",
+          "displayText": "Home",
+          "value": "{ 'ActionType': 'Back'}"
+        },
+        {
+          "type": "postBack",
+          "title": "Show more",
+          "displayText": "Show more",
+          "value": "{ 'ActionType': 'NextPage'}"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "57f72e80-7de5-11e8-9053-b524cdc1a650",
+    "id": "58465ff1-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:41+02:00",
+    "timestamp": "2018-07-02T10:47:41.679Z"
+  },
+  {
+    "type": "message",
+    "text": "{ 'ActionType': 'NextPage'}",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "5a894b10-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:45+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:47:45.473Z",
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "attachmentLayout": "carousel",
+    "text": "Page 2 of 613 ( 3676 items )",
+    "inputHint": "acceptingInput",
+    "attachments": [
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 COLOURED PARTY BALLOONS",
+          "subtitle": "0.66 $",
+          "text": "12 COLOURED PARTY BALLOONS",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/1400/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 DAISY PEGS IN WOOD BOX",
+          "subtitle": "1.65 $",
+          "text": "12 DAISY PEGS IN WOOD BOX",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/676/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 EGG HOUSE PAINTED WOOD",
+          "subtitle": "12.92 $",
+          "text": "12 EGG HOUSE PAINTED WOOD",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/1260/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 HANGING EGGS HAND PAINTED",
+          "subtitle": "2.08 $",
+          "text": "12 HANGING EGGS HAND PAINTED",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/2350/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 IVORY ROSE PEG PLACE SETTINGS",
+          "subtitle": "1.25 $",
+          "text": "12 IVORY ROSE PEG PLACE SETTINGS",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/675/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      },
+      {
+        "contentType": "application/vnd.microsoft.card.thumbnail",
+        "content": {
+          "title": "12 MESSAGE CARDS WITH ENVELOPES",
+          "subtitle": "1.64 $",
+          "text": "12 MESSAGE CARDS WITH ENVELOPES",
+          "images": [
+            {
+              "url": "http://localhost:5202/api/v1/c/catalog/items/1847/pic/"
+            }
+          ],
+          "buttons": []
+        }
+      }
+    ],
+    "entities": [],
+    "replyToId": "5a894b10-7de5-11e8-9053-b524cdc1a650",
+    "id": "5ab00cf0-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:45+02:00",
+    "timestamp": "2018-07-02T10:47:45.727Z"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "choose one option",
+    "inputHint": "acceptingInput",
+    "suggestedActions": {
+      "actions": [
+        {
+          "type": "postBack",
+          "title": "Home",
+          "displayText": "Home",
+          "value": "{ 'ActionType': 'Back'}"
+        },
+        {
+          "type": "postBack",
+          "title": "Show more",
+          "displayText": "Show more",
+          "value": "{ 'ActionType': 'NextPage'}"
+        }
+      ]
+    },
+    "attachments": [],
+    "entities": [],
+    "replyToId": "5a894b10-7de5-11e8-9053-b524cdc1a650",
+    "id": "5ad82e60-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:45+02:00",
+    "timestamp": "2018-07-02T10:47:45.990Z"
+  },
+  {
+    "type": "message",
+    "text": "{ 'ActionType': 'Back'}",
+    "from": {
+      "id": "default-user",
+      "name": "User"
+    },
+    "locale": "en-US",
+    "channelId": "emulator",
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "id": "5cb0e600-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:49+02:00",
+    "recipient": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "timestamp": "2018-07-02T10:47:49.088Z",
+    "serviceUrl": "https://4511f44b.ngrok.io"
+  },
+  {
+    "type": "message",
+    "serviceUrl": "https://4511f44b.ngrok.io",
+    "channelId": "emulator",
+    "from": {
+      "id": "http://localhost:6654/api/messages",
+      "name": "Bot",
+      "role": "bot"
+    },
+    "conversation": {
+      "id": "170f6db0-7de5-11e8-9075-e5af97802296|livechat"
+    },
+    "recipient": {
+      "id": "default-user",
+      "role": "user"
+    },
+    "text": "Type what do you want to do.",
+    "inputHint": "acceptingInput",
+    "replyToId": "5cb0e600-7de5-11e8-9053-b524cdc1a650",
+    "id": "5cccd271-7de5-11e8-9053-b524cdc1a650",
+    "localTimestamp": "2018-07-02T12:47:49+02:00",
+    "timestamp": "2018-07-02T10:47:49.271Z"
+  }
+]
