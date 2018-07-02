@@ -62,7 +62,7 @@
         <Grid
             BackgroundColor="{StaticResource LightGreenColor}">
             <Label 
-                Text="FILTER"
+                Text="INTELLIGENT FILTER"
                 Style="{StaticResource FilterLabelStyle}"/>
             <Grid.GestureRecognizers>
                 <TapGestureRecognizer 
