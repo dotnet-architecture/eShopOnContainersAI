@@ -25,6 +25,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Extensions
         public static bool AttachmentContainsImageFile(this Activity self)
         {
             var attachment = self.Attachments?.FirstOrDefault(a =>
+                    a.ContentType.ToLower() == "image" || // SKYPE
                     a.ContentType.ToLower() == "image/jpg" ||
                     a.ContentType.ToLower() == "image/jpeg" ||
                     a.ContentType.ToLower() == "image/pjpeg" ||
@@ -35,34 +36,34 @@ namespace Microsoft.eShopOnContainers.Bot.API.Extensions
             return attachment != default(Attachment);
         }
 
-        public static async Task<byte[]> GetFileAsync(this Activity self)
+        public static async Task<byte[]> GetFileAsync(this Activity self, AppSettings appSettings)
         {
             byte[] content = null;
-            if (self.Attachments != null && self.Attachments.Count > 0)
+            if (self.Attachments?.Count > 0)
             {
                 var attachment = self.Attachments[0];
-                byte[] imageFile = null;
                 try
                 {
-                    var client = new ConnectorClient(new Uri(self.ServiceUrl) /*, new Microsoft.Bot.Connector.Authentication.MicrosoftAppCredentials()*/);
+                    Rest.ServiceClientCredentials credentials = String.IsNullOrEmpty(appSettings.MicrosoftAppId) ? null : 
+                        new Microsoft.Bot.Connector.Authentication.MicrosoftAppCredentials(appSettings.MicrosoftAppId, appSettings.MicrosoftAppPassword);
+                    var client = new ConnectorClient(new Uri(self.ServiceUrl), credentials);
                     var stream = await client.HttpClient.GetStreamAsync(attachment.ContentUrl);
                     using (var ms = new MemoryStream())
                     {
                         await stream.CopyToAsync(ms);
-                        imageFile = ms.ToArray();
+                        content = ms.ToArray();
                     }
 
                 }
                 catch (Exception ex) { }
-                return imageFile;
             }
             return content;
         }
 
-        public static async Task UpdateCatalogFilterTagsAsync(this ITurnContext context, IProductSearchImageService productSearchImageService)
+        public static async Task UpdateCatalogFilterTagsAsync(this ITurnContext context, IProductSearchImageService productSearchImageService, AppSettings appSettings)
         {
             var userState = context.GetUserState<UserInfo>();
-            var imageFile = await context.Activity.GetFileAsync();
+            var imageFile = await context.Activity.GetFileAsync(appSettings);
             var tags = await productSearchImageService.ClassifyImageAsync(imageFile);
             if (userState.CatalogFilter == null)
                 userState.CatalogFilter = new CatalogFilterData();

@@ -1,0 +1,13 @@
+tunnels:
+  bot.api:
+    addr: 5135
+    proto: http
+    bind_tls: true
+    host_header: localhost:5135
+    subdomain: <your_eshopaibot_subdomain>
+  catalog.api: 
+    addr: 5202
+    proto: http
+    bind_tls: true
+    host_header: localhost:5202
+    subdomain: <your_eshopaicatalog_subdomain>
