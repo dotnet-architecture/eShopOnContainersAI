@@ -154,25 +154,6 @@ services:
     ports:
       - "5100:80"
 
-  webstatus:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://0.0.0.0:80
-      - CatalogUrl=http://catalog.api/hc
-      - OrderingUrl=http://ordering.api/hc
-      - OrderingBackgroundTasksUrl=http://ordering.backgroundtasks/hc
-      - BasketUrl=http://basket.api/hc
-      - IdentityUrl=http://identity.api/hc
-      - LocationsUrl=http://locations.api/hc
-      - MarketingUrl=http://marketing.api/hc
-      - PaymentUrl=http://payment.api/hc
-      - mvc=http://webmvc/hc
-      - spa=http://webspa/hc
-      - ApplicationInsights__InstrumentationKey=${INSTRUMENTATION_KEY}
-      - OrchestratorType=${ORCHESTRATOR_TYPE}
-    ports:
-      - "5107:80"
-
   payment.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development

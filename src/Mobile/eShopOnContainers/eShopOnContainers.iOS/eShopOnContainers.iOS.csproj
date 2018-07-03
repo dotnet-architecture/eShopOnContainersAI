@@ -101,8 +101,6 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AI\ImageClassifier.cs" />
-    <Compile Include="AI\ImageExtensions.cs" />
     <Compile Include="Effects\EntryLineColorEffect.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
@@ -128,13 +126,9 @@
     <BundleResource Include="Resources\menu_campaigns%402x.png" />
     <BundleResource Include="Resources\menu_campaigns%403x.png" />
     <None Include="packages.config" />
-    <Compile Include="Resources\ModelsAI\customvision.cs">
-      <DependentUpon>customvision.mlmodel</DependentUpon>
-    </Compile>
     <Compile Include="Services\LocationServiceImplementation.cs" />
     <Compile Include="Services\PermissionsService.cs" />
     <Compile Include="Services\GeolocationSingleUpdateDelegate.cs" />
-    <BundleResource Include="Resources\ModelsAI\customvision.mlmodel" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Icon-60%403x.png" />
@@ -226,12 +220,6 @@
     </Reference>
     <Reference Include="IdentityModel">
       <HintPath>..\..\..\..\packages\IdentityModel.3.0.0\lib\netstandard2.0\IdentityModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Permissions">
-      <HintPath>..\..\..\..\packages\Plugin.Permissions.3.0.0.12\lib\xamarinios10\Plugin.Permissions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Media">
-      <HintPath>..\..\..\..\packages\Xam.Plugin.Media.4.0.0.9\lib\xamarinios10\Plugin.Media.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -425,9 +413,7 @@
       <Name>eShopOnContainers.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <BundleResource Include="Resources\fake_product_06.png" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
