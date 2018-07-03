@@ -236,12 +236,6 @@ services:
       - catalog.api
       - basket.api
 
-  webstatus:
-    image: eshopai/webstatus:${TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/Web/WebStatus/Dockerfile
-
   webaiapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
     build:
