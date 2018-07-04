@@ -17,7 +17,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs
         private readonly ICatalogAIService catalogAIService;
         private readonly ICatalogService catalogService;
 
-        public CatalogDialog(ICatalogAIService catalogAIService, ICatalogService catalogService) : base(Id)
+        public CatalogDialog(ICatalogAIService catalogAIService, ICatalogService catalogService, IDialogFactory dialogFactory) : base(Id)
         {
             this.catalogAIService = catalogAIService;
             this.catalogService = catalogService;

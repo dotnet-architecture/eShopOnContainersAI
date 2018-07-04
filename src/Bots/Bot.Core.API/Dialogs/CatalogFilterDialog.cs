@@ -19,13 +19,13 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs
         private const string PromptTypes = "PromptTypes";
         private readonly IOptions<AppSettings> appSettings;
         private readonly ICatalogService catalog;
-        private readonly IProductSearchImageService productSearchImageService;
+        private readonly ICatalogFilterDialogService catalogFilterDialogService;
 
-        public CatalogFilterDialog(IOptions<AppSettings> appSettings, ICatalogService catalogService, IProductSearchImageService productSearchImageService, IDialogFactory dialogFactory) : base(Id)
+        public CatalogFilterDialog(IOptions<AppSettings> appSettings, ICatalogService catalogService, ICatalogFilterDialogService catalogFilterDialogService, IDialogFactory dialogFactory) : base(Id)
         {
             this.appSettings = appSettings;
             catalog = catalogService;
-            this.productSearchImageService = productSearchImageService;
+            this.catalogFilterDialogService = catalogFilterDialogService;
 
             this.Dialogs.AddCatalogDialog(dialogFactory);
             this.Dialogs.Add(Id, new WaterfallStep[]
@@ -61,7 +61,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs
 
             if (dc.Context.Activity.AttachmentContainsImageFile())
             {
-                await dc.Context.UpdateCatalogFilterTagsAsync(productSearchImageService, appSettings.Value);
+                await catalogFilterDialogService.UpdateCatalogFilterUserStateWithTagsAsync(dc.Context);
                 await dc.Replace(CatalogDialog.Id);
             }
             else
@@ -101,7 +101,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs
 
             if (dc.Context.Activity.AttachmentContainsImageFile())
             {
-                await dc.Context.UpdateCatalogFilterTagsAsync(productSearchImageService, appSettings.Value);
+                await catalogFilterDialogService.UpdateCatalogFilterUserStateWithTagsAsync(dc.Context);
                 await dc.Replace(CatalogDialog.Id);
             }
             else

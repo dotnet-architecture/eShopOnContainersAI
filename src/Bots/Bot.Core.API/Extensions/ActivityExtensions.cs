@@ -6,6 +6,7 @@ using Microsoft.eShopOnContainers.Bot.API.Services;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Bot.API.Extensions
@@ -19,7 +20,12 @@ namespace Microsoft.eShopOnContainers.Bot.API.Extensions
 
         public static bool IsSkypeChannel(this IActivity self)
         {
-            return self.ChannelId == "skype";
+            return self.ChannelId.Equals("skype", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public static bool IsMsTeamsChannel(this IActivity self)
+        {
+            return self.ChannelId.Equals("msteams", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool AttachmentContainsImageFile(this Activity self)
@@ -34,40 +40,6 @@ namespace Microsoft.eShopOnContainers.Bot.API.Extensions
                     a.ContentType.ToLower() == "image/png");
 
             return attachment != default(Attachment);
-        }
-
-        public static async Task<byte[]> GetFileAsync(this Activity self, AppSettings appSettings)
-        {
-            byte[] content = null;
-            if (self.Attachments?.Count > 0)
-            {
-                var attachment = self.Attachments[0];
-                try
-                {
-                    Rest.ServiceClientCredentials credentials = String.IsNullOrEmpty(appSettings.MicrosoftAppId) ? null : 
-                        new Microsoft.Bot.Connector.Authentication.MicrosoftAppCredentials(appSettings.MicrosoftAppId, appSettings.MicrosoftAppPassword);
-                    var client = new ConnectorClient(new Uri(self.ServiceUrl), credentials);
-                    var stream = await client.HttpClient.GetStreamAsync(attachment.ContentUrl);
-                    using (var ms = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(ms);
-                        content = ms.ToArray();
-                    }
-
-                }
-                catch (Exception ex) { }
-            }
-            return content;
-        }
-
-        public static async Task UpdateCatalogFilterTagsAsync(this ITurnContext context, IProductSearchImageService productSearchImageService, AppSettings appSettings)
-        {
-            var userState = context.GetUserState<UserInfo>();
-            var imageFile = await context.Activity.GetFileAsync(appSettings);
-            var tags = await productSearchImageService.ClassifyImageAsync(imageFile);
-            if (userState.CatalogFilter == null)
-                userState.CatalogFilter = new CatalogFilterData();
-            userState.CatalogFilter.Tags = tags.ToArray();
         }
     }
 }

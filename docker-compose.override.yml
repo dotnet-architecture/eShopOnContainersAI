@@ -307,6 +307,7 @@ services:
       - "5200:80"   
     volumes:
       - ./src/ApiGateways/Mobile.Bff.Shopping/apigw:${ESHOP_OCELOT_VOLUME_SPEC:-/app/configuration}
+
   mobilemarketingapigw:
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
