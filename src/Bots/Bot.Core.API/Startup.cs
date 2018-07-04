@@ -47,8 +47,8 @@ namespace AspNetCore_SimplePrompt_Bot
             services.AddTransient<ILuisService, LuisService>();
             services.AddTransient<HttpClient, HttpClient>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddSingleton<CatalogFilterDialog>();
-            //services.AddSingleton<CatalogDialog>();
+            services.AddTransient<ICatalogFilterDialogService, CatalogFilterDialogService>();
+            services.AddTransient<IAttachmentService, AttachmentService>();
             services.AddTransient<IDialogFactory, DialogFactory>();
 
             services.AddBot<eShopBot>(options =>
