@@ -26,7 +26,7 @@ namespace eShopOnContainers.Core.Services.Order
 
         public async Task<ObservableCollection<Models.Orders.Order>> GetOrdersAsync(string token)
         {
-            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayShoppingEndpoint, ApiUrlBase);
+            var uri = UriHelper.CombineUri(GlobalSetting.Instance.GatewayShoppingEndpoint, $"{ApiUrlBase}/all");
 
             ObservableCollection<Models.Orders.Order> orders =
                 await _requestProvider.GetAsync<ObservableCollection<Models.Orders.Order>>(uri, token);
