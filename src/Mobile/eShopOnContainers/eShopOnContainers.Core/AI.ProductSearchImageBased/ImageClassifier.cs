@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eShopOnContainers.Core.AI.ProductSearchImageBased
@@ -7,6 +8,12 @@ namespace eShopOnContainers.Core.AI.ProductSearchImageBased
     {
         Task Init();
         Task<IReadOnlyList<ImageClassification>> ClassifyImage(byte[] image);
+    }
+
+    public class ImageClassifierException : Exception
+    {
+        public ImageClassifierException(string message) : base(message) { }
+        public ImageClassifierException(string message, Exception innerException) : base(message, innerException) { }
     }
     public struct ImageClassification
     {
