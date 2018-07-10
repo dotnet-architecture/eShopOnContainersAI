@@ -64,7 +64,9 @@ namespace eShopOnContainers.Core.Views
                 {
                     ShowMenuAction?.Invoke();
                 }
-            } catch { }
+            } catch (Exception ex) { 
+                System.Diagnostics.Debug.Print("Error ---> {0}", ex);
+            }
         }
     }
 }
