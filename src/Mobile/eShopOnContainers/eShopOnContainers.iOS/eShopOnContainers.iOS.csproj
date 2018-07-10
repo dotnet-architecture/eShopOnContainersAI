@@ -151,12 +151,6 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Plugin.Settings.Abstractions">
-      <HintPath>..\..\..\..\packages\Xam.Plugins.Settings.3.1.1\lib\Xamarin.iOS10\Plugin.Settings.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Settings">
-      <HintPath>..\..\..\..\packages\Xam.Plugins.Settings.3.1.1\lib\Xamarin.iOS10\Plugin.Settings.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>

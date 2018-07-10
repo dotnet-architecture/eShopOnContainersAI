@@ -21,7 +21,7 @@ namespace eShopOnContainers.Core.Views
             if (CanTakePhoto)
                 takePhoto.Clicked += async (sender, args) =>
                 {
-                    var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                    var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
                     {
                         Directory = "eshop",
                         SaveToAlbum = true,
@@ -38,7 +38,7 @@ namespace eShopOnContainers.Core.Views
             if (CanPickPhoto)
                 pickPhoto.Clicked += async (sender, args) =>
                 {
-                    var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
+                    var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
                     {
                         PhotoSize = PhotoSize.Full,
 

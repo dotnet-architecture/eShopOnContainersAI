@@ -218,7 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\eShopOnContainers.UnitTests\eShopOnContainers.UnitTests.csproj">
-      <Project>{FDD910BC-DF0F-483D-B7D5-C7D831855172}</Project>
+      <Project>{9B9D8174-A124-4343-A833-0BEE92BF8E0B}</Project>
       <Name>eShopOnContainers.UnitTests</Name>
     </ProjectReference>
   </ItemGroup>
