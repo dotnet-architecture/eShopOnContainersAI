@@ -22,7 +22,11 @@
           }
         ],
         "UpstreamPathTemplate": "/api/{version}/l/{everything}",
-        "UpstreamHttpMethod": []
+        "UpstreamHttpMethod": [],
+        "AuthenticationOptions": {
+          "AuthenticationProviderKey": "IdentityApiKey",
+          "AllowedScopes": []
+        }
       }
   
     ],
