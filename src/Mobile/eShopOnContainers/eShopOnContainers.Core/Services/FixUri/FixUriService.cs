@@ -38,7 +38,7 @@ namespace eShopOnContainers.Core.Services.FixUri
                         MatchCollection serverResult = IpRegex.Matches(catalogItem.PictureUri);
                         MatchCollection localResult = IpRegex.Matches(_settingsService.IdentityEndpointBase);
 
-                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        if (serverResult.Count > 0 && localResult.Count > 0)
                         {
                             var serviceIp = serverResult[0].Value;
                             var localIp = localResult[0].Value;
@@ -71,7 +71,7 @@ namespace eShopOnContainers.Core.Services.FixUri
                         MatchCollection serverResult = IpRegex.Matches(basketItem.PictureUrl);
                         MatchCollection localResult = IpRegex.Matches(_settingsService.IdentityEndpointBase);
 
-                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        if (serverResult.Count > 0 && localResult.Count > 0)
                         {
                             var serviceIp = serverResult[0].Value;
                             var localIp = localResult[0].Value;
@@ -103,7 +103,7 @@ namespace eShopOnContainers.Core.Services.FixUri
                         MatchCollection serverResult = IpRegex.Matches(campaignItem.PictureUri);
                         MatchCollection localResult = IpRegex.Matches(_settingsService.IdentityEndpointBase);
 
-                        if (serverResult.Count != -1 && localResult.Count != -1)
+                        if (serverResult.Count > 0 && localResult.Count > 0)
                         {
                             var serviceIp = serverResult[0].Value;
                             var localIp = localResult[0].Value;

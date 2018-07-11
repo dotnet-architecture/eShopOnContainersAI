@@ -10,43 +10,52 @@ namespace eShopOnContainers.Core.Views
 {
     public partial class FiltersView : SlideMenuView
     {
-        public bool CanTakePhoto => CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported;
-        public bool CanPickPhoto => CrossMedia.Current.IsPickPhotoSupported;
+        //public bool CanTakePhoto => CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported;
+        //public bool CanPickPhoto => CrossMedia.Current.IsPickPhotoSupported;
 
         public FiltersView()
         {
             var result = CrossMedia.Current.Initialize().Result;
             InitializeComponent();
 
-            if (CanTakePhoto)
-                takePhoto.Clicked += async (sender, args) =>
-                {
-                    var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
-                    {
-                        Directory = "eshop",
-                        SaveToAlbum = true,
-                        CompressionQuality = 75,
-                        CustomPhotoSize = 50,
-                        PhotoSize = PhotoSize.Full,
-                        MaxWidthHeight = 1024,
-                        DefaultCamera = CameraDevice.Rear
-                    });
+            //if (CanTakePhoto)
+            if (CrossMedia.Current.IsCameraAvailable && CrossMedia.Current.IsTakePhotoSupported) {
+                System.EventHandler p = async (sender, args) =>
+                   {
+                       var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                       {
+                           Directory = "eshop",
+                           SaveToAlbum = true,
+                           CompressionQuality = 75,
+                           CustomPhotoSize = 50,
+                           PhotoSize = PhotoSize.Full,
+                           MaxWidthHeight = 1024,
+                           DefaultCamera = CameraDevice.Rear
+                       });
 
-                    await SetImageFilter(file);
-                };
+                       await SetImageFilter(file);
+                   };
+                takePhoto.Clicked += p;
+            }
+                
 
-            if (CanPickPhoto)
-                pickPhoto.Clicked += async (sender, args) =>
-                {
-                    var file = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
-                    {
-                        PhotoSize = PhotoSize.Full,
+            //if (CanPickPhoto)
+            if (CrossMedia.Current.IsPickPhotoSupported)
+            {
+                System.EventHandler p1 = async (sender, args) =>
+                   {
+                       var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+                       {
+                           PhotoSize = PhotoSize.Full,
 
-                    });
+                       });
 
-                    await SetImageFilter(file);
-                };
+                       await SetImageFilter(file);
+                   };
+                pickPhoto.Clicked += p1;
 
+            }
+                
         }
 
         private async Task SetImageFilter(MediaFile file)

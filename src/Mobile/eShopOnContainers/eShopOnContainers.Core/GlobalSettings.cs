@@ -104,10 +104,7 @@ namespace eShopOnContainers.Core
 
         private string ExtractBaseUri(string endpoint)
         {
-            var uri = new Uri(endpoint);
-            var baseUri = uri.GetLeftPart(System.UriPartial.Authority);
-
-            return baseUri;
+            return Uri.TryCreate(endpoint, UriKind.Absolute, out Uri uri) ? uri.GetLeftPart(UriPartial.Authority) : String.Empty;
         }
     }
 }

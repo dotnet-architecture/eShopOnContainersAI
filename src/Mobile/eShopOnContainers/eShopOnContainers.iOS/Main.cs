@@ -1,4 +1,6 @@
 ﻿using UIKit;
+using System;
+using System.Diagnostics;
 
 namespace eShopOnContainers.iOS
 {
@@ -9,7 +11,12 @@ namespace eShopOnContainers.iOS
         {
             // if you want to use a different Application Delegate class from "AppDelegate"
             // you can specify it here.
-            UIApplication.Main(args, null, "AppDelegate");
+            try {
+                UIApplication.Main(args, null, "AppDelegate");    
+            } catch (Exception ex) {
+                Debug.Print("Error : {0}", ex);
+            }
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using eShopOnContainers.Core.Services.Basket;
+﻿using eShopOnContainers.Core.AI.ProductSearchImageBased;
+using eShopOnContainers.Core.Services.Basket;
 using eShopOnContainers.Core.Services.Catalog;
 using eShopOnContainers.Core.Services.Dependency;
 using eShopOnContainers.Core.Services.FixUri;
@@ -69,6 +70,7 @@ namespace eShopOnContainers.Core.ViewModels.Base
             _container.Register<IOrderService, OrderMockService>();
             _container.Register<IUserService, UserMockService>();
             _container.Register<ICampaignService, CampaignMockService>();
+            _container.Register<IOnlineImageClassifier, OnlineImageClassifier>();
         }
 
         public static void UpdateDependencies(bool useMockServices)

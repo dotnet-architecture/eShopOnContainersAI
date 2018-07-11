@@ -10,15 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
-    <PackageReference Include="Acr.UserDialogs" Version="6.5.1" />
-    <PackageReference Include="SlideOverKit" Version="2.1.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="PCLCrypto" Version="2.0.147" />
-    <PackageReference Include="Xam.Plugin.Media" Version="4.0.0.9" />
-    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.3.4" />
-    <PackageReference Include="Xamarin.Forms" Version="3.0.0.482510" />
-    <PackageReference Include="IdentityModel" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.583944" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.3.840" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.1" />
+    <PackageReference Include="SlideOverKit" Version="2.1.6.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.1" />
+    <PackageReference Include="IdentityModel" Version="3.8.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\Permissions\" />

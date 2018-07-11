@@ -4,18 +4,10 @@ using System.Threading.Tasks;
 
 namespace eShopOnContainers.Core.AI.ProductSearchImageBased
 {
-    public struct ImageClassification
+    public interface IImageClassifier
     {
-        public ImageClassification(string tag, float probability)
-        {
-            Tag = tag;
-            Probability = probability;
-        }
-
-        public string Tag { get; }
-        public float Probability { get; }
-
-        public override string ToString() => $"Tag={Tag}, Probability={Probability:N2}";
+        Task Init();
+        Task<IReadOnlyList<ImageClassification>> ClassifyImage(byte[] image);
     }
 
     public class ImageClassifierException : Exception
@@ -23,27 +15,15 @@ namespace eShopOnContainers.Core.AI.ProductSearchImageBased
         public ImageClassifierException(string message) : base(message) { }
         public ImageClassifierException(string message, Exception innerException) : base(message, innerException) { }
     }
-
-    public enum ModelType
+    public struct ImageClassification
     {
-        General,
-        Landscape,
-        Retail
-    }
-
-    public interface IImageClassifier
-    {
-        Task Init();
-        Task<IReadOnlyList<ImageClassification>> ClassifyImage(byte[] image);
-    }
-
-    public static class CrossImageClassifier
-    {
-        static CrossImageClassifier()
+        public ImageClassification(string tag, float probability)
         {
-            Current = Xamarin.Forms.DependencyService.Get<IImageClassifier>();
+            Tag = tag;
+            Probability = probability;
         }
-
-        public static IImageClassifier Current { get; private set; }
+        public string Tag { get; }
+        public float Probability { get; }
+        public override string ToString() => $"Tag={Tag}, Probability={Probability:N2}";
     }
 }

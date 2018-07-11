@@ -145,6 +145,8 @@ services:
       - marketing.api
       - catalog.api
       - basket.api
+      - ai.productsearchimagebased.tensorflow.api
+      - ai.productsearchimagebased.azurecognitiveservices.api
  
   mobilemarketingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
@@ -160,6 +162,7 @@ services:
       - marketing.api
       - catalog.api
       - basket.api
+      - locations.api
  
   webshoppingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}

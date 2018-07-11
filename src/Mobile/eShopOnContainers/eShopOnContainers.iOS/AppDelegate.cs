@@ -1,4 +1,5 @@
-﻿using FFImageLoading.Forms.Touch;
+﻿
+
 using Foundation;
 using UIKit;
 
@@ -13,7 +14,8 @@ namespace eShopOnContainers.iOS
             LoadApplication(new App());
 
             SlideOverKit.iOS.SlideOverKit.Init();
-            CachedImageRenderer.Init();
+            //FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             return base.FinishedLaunching(app, options);
         }
