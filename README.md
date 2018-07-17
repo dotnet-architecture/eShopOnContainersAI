@@ -17,7 +17,7 @@ Main AI/ML technologies used are:
 
 Here's a vision of the architecture where the grayed area is what is coming derived from [https://github.com/dotnet-architecture/eShopOnContainers](eShopOnContainers) and the rest of the diagram is about the new added AI features.
 
-![image](https://user-images.githubusercontent.com/1712635/36817649-bd7c21ee-1c96-11e8-8825-96089de61be7.png)
+![image](https://user-images.githubusercontent.com/1712635/42792118-bc21b18e-8928-11e8-9084-a5a6af87c8ba.png)
 
 (*) Note that the architecture diagram is currently missing the ML.NET microservice, but the ML.NET scenario is explained in the Wiki.
 This diagram will be updated soon.
