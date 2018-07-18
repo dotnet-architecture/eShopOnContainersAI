@@ -79,11 +79,9 @@ function getProductData(product) {
             // remove sales from current year, as predictions are based on data from previous year
             history = history.filter(h => h.year != yearFilter);
             $.when(
-                getForecast(history[history.length - 2], product),
                 getForecast(history[history.length - 1], product)
-            ).done(function (fore1, fore2) {
-                if (fore2[1] === "success")
-                    plotLineChart(fore1[0], fore2[0], history, description, product.price)
+            ).done(function (forecast) {
+                plotLineChart(forecast, history, description, product.price)
             });
         });
 }
@@ -102,14 +100,14 @@ function getStats(productId) {
     return $.getJSON(`${apiUri.ordering}/product/${productId}/stats`);
 }
 
-function plotLineChart(fore1, fore2, history, description, price) {
+function plotLineChart(forecast, history, description, price) {
     for (i = 0; i < history.length; i++) {
         history[i].sales = history[i].units * price;
     }
-    fore2 *= price;
+    forecast *= price;
 
     $("footer").removeClass("sticky");
-    updateProductStatistics(description, history, fore2);
+    updateProductStatistics(description, history, forecast);
 
     var trace_real = TraceProductHistory(history);
 
@@ -119,8 +117,7 @@ function plotLineChart(fore1, fore2, history, description, price) {
         nextFullMonth(history[history.length - 1]),
         trace_real.text[trace_real.text.length - 1],
         trace_real.y,
-        fore1,
-        fore2);
+        forecast);
 
     var trace_mean = TraceMean(trace_real.x.concat(trace_forecast.x), trace_real.y, '#ffcc33');
 
@@ -190,11 +187,11 @@ function TraceProductHistory(historyItems) {
     };
 }
 
-function TraceProductForecast(labels, next_x_label, next_text, prev_text, values, fore1, fore2) {
+function TraceProductForecast(labels, next_x_label, next_text, prev_text, values, forecast) {
     return {
         x: [labels[labels.length - 1], next_x_label],
-        y: [values[values.length - 1], fore2],
-        text: [prev_text, `${next_text}<br><b>${fore2.toCurrencyLocaleString()}</b>`],
+        y: [values[values.length - 1], forecast],
+        text: [prev_text, `${next_text}<br><b>${forecast.toCurrencyLocaleString()}</b>`],
         mode: 'lines+markers',
         name: 'forecasting',
         hoveron: 'points',
@@ -270,11 +267,9 @@ function getCountryData(country) {
             history = history.filter(h => h.year != yearFilter);
 
             $.when(
-                getCountryForecast(history[history.length - 2]),
                 getCountryForecast(history[history.length - 1])
-            ).done(function (fore1, fore2) {
-                if (fore1[1] === "success" && fore2[1] === "success")
-                    plotLineChartCountry(fore1[0], fore2[0], history, country)
+            ).done(function (forecast) {
+                plotLineChartCountry(forecast, history, country)
             });
         });
 }
@@ -285,11 +280,11 @@ function getCountryForecast(st) {
     return $.getJSON(`${apiUri.forecasting}/country/${st.country}/salesforecast${url}`);
 }
 
-function plotLineChartCountry(fore1, fore2, historyItems, country) {
-    fore2 = Math.pow(10, fore2);
+function plotLineChartCountry(forecast, historyItems, country) {
+    forecast = Math.pow(10, forecast);
 
     $("footer").removeClass("sticky");
-    updateCountryStatistics(country, historyItems, fore2);
+    updateCountryStatistics(country, historyItems, forecast);
 
     var trace_real = getTraceCountryHistory(historyItems);
 
@@ -299,8 +294,7 @@ function plotLineChartCountry(fore1, fore2, historyItems, country) {
         nextFullMonth(historyItems[historyItems.length - 1]),
         trace_real.text[trace_real.text.length - 1],
         trace_real.y,
-        fore1,
-        fore2);
+        forecast);
 
     var trace_mean = TraceMean(trace_real.x.concat(trace_forecast.x), trace_real.y, '#999999');
 
@@ -370,11 +364,11 @@ function getTraceCountryHistory(historyItems) {
     };
 }
 
-function getTraceCountryForecast(labels, next_y_label, next_text, prev_text, values, fore1, fore2) {
+function getTraceCountryForecast(labels, next_y_label, next_text, prev_text, values, forecast) {
     return {
         x: [labels[labels.length - 1], next_y_label],
-        y: [values[values.length - 1], fore2],
-        text: [prev_text, `${next_text}<br><b>${fore2.toCurrencyLocaleString()}</b>`],
+        y: [values[values.length - 1], forecast],
+        text: [prev_text, `${next_text}<br><b>${forecast.toCurrencyLocaleString()}</b>`],
         mode: 'lines+markers',
         name: 'forecasting',
         hoveron: 'points',
