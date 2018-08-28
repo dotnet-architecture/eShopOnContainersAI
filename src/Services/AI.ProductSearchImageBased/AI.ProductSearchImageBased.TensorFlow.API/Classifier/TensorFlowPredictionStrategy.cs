@@ -38,8 +38,7 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.Tensor
         /// <summary>
         /// Classify an image, using a model
         /// </summary>
-        /// <param name="image">image (jpeg) file to be analyzed</param>
-        /// <param name="model">model used for classification</param>
+        /// <param name="image">image (jpeg) bytes to be analyzed</param>
         /// <returns>image related labels</returns>
         public async System.Threading.Tasks.Task<IEnumerable<string>> ClassifyImageAsync(byte[] image)
         {
