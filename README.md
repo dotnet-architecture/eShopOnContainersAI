@@ -2,7 +2,7 @@
 
 ## Definition and goals
 
-This repo has a forked version of [https://github.com/dotnet-architecture/eShopOnContainers](eShopOnContainers) which has been evolved by adding AI and ML features.
+This repo has a forked version of https://github.com/dotnet-architecture/eShopOnContainers which has been evolved by adding AI and ML features.
 
 *eShopOnContainers* is a cloud-native application based on microservices architecture and Docker containers.
 *eShopOnContainersAI* is therefore a forked version of eShopOnContainers that is extended with AI features (Machine Learning and Deep Learning) plus a Bot client as a new client app which surfaces all the AI features along with the modified MVC web application.
@@ -15,7 +15,7 @@ Main AI/ML technologies used are:
 - **CNTK**
 - **Bot Framework**
 
-Here's a vision of the architecture where the grayed area is what is coming derived from [https://github.com/dotnet-architecture/eShopOnContainers](eShopOnContainers) and the rest of the diagram is about the new added AI features.
+Here's a vision of the architecture where the grayed area is what is coming derived from https://github.com/dotnet-architecture/eShopOnContainers and the rest of the diagram is about the new added AI features.
 
 ![image](https://user-images.githubusercontent.com/1712635/42792118-bc21b18e-8928-11e8-9084-a5a6af87c8ba.png)
 
