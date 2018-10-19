@@ -5,9 +5,21 @@ tunnels:
     bind_tls: true
     host_header: localhost:5135
     subdomain: <your_eshopaibot_subdomain>
+  identity.api: 
+    addr: 5105
+    proto: http
+    bind_tls: both
+    host_header: localhost:5105
+    subdomain: <your_eshopaiidentity_subdomain>
   catalog.api: 
     addr: 5202
     proto: http
     bind_tls: true
     host_header: localhost:5202
     subdomain: <your_eshopaicatalog_subdomain>
+  catalog.ai.api: 
+    addr: 5204
+    proto: http
+    bind_tls: true
+    host_header: localhost:5204
+    subdomain: <your_eshopaicatalogai_subdomain>

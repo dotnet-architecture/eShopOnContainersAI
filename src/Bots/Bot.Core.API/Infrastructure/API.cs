@@ -37,6 +37,57 @@ namespace Microsoft.eShopOnContainers.Bot.API.Infrastructure
             }
         }
 
+        public static class Order
+        {
+            public static string GetOrder(string baseUri, string orderId)
+            {
+                return $"{baseUri}/id/{orderId}";
+            }
+
+            public static string GetAllMyOrders(string baseUri, string userId)
+            {
+                return $"{baseUri}/user/{userId}";
+            }
+
+            public static string AddNewOrder(string baseUri)
+            {
+                return $"{baseUri}/new";
+            }
+
+            public static string CancelOrder(string baseUri)
+            {
+                return $"{baseUri}/cancel";
+            }
+
+            public static string ShipOrder(string baseUri)
+            {
+                return $"{baseUri}/ship";
+            }
+        }
+
+        public static class Basket
+        {
+            public static string GetBasket(string baseUri, string basketId)
+            {
+                return $"{baseUri}/{basketId}";
+            }
+
+            public static string UpdateBasket(string baseUri)
+            {
+                return baseUri;
+            }
+
+            public static string CheckoutBasket(string baseUri)
+            {
+                return $"{baseUri}/checkout";
+            }
+
+            public static string CleanBasket(string baseUri, string basketId)
+            {
+                return $"{baseUri}/{basketId}";
+            }
+        }
+
         public static class ProductSearchImageService
         {
             public static string ClassifyImage(string baseUri)

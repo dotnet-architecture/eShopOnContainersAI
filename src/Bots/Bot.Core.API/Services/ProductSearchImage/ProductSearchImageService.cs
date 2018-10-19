@@ -7,24 +7,19 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Bot.API.Services
+namespace Microsoft.eShopOnContainers.Bot.API.Services.ProductSearchImage
 {
-    public interface IProductSearchImageService
-    {
-        Task<IEnumerable<string>> ClassifyImageAsync(byte[] imageFile);
-    }
-
     public class ProductSearchImageService : IProductSearchImageService
     {
         private readonly string remoteServiceBaseUrl;
         private readonly ILogger<IProductSearchImageService> logger;
-        private readonly HttpClient httpClient;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public ProductSearchImageService(IOptions<AppSettings> settings, ILogger<IProductSearchImageService> logger, HttpClient httpClient)
+        public ProductSearchImageService(IOptions<AppSettings> settings, ILogger<IProductSearchImageService> logger, IHttpClientFactory httpClientFactory)
         {
             remoteServiceBaseUrl = $"{settings.Value.ArtificialIntelligenceUrl}{settings.Value.ProductSearchImagePath}/v1/productSearchImage/";
             this.logger = logger;
-            this.httpClient = httpClient;
+            this.httpClientFactory = httpClientFactory;
         }
 
         public async Task<IEnumerable<string>> ClassifyImageAsync(byte[] imageFile)
@@ -34,7 +29,13 @@ namespace Microsoft.eShopOnContainers.Bot.API.Services
             logger.LogDebug($"{nameof(analyzeImageUri)}: {analyzeImageUri}");
             try
             {
-                var response = await httpClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
+                var httpClient = httpClientFactory.CreateClient();
+                //var response = await httpClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
+                HttpContent content = new MultipartFormDataContent()
+                {
+                    { new ByteArrayContent(imageFile), "\"imageFile\"", "\"imageFile\"" }
+                };
+                var response = await httpClient.PostAsync(analyzeImageUri, content);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();

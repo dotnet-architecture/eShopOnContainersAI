@@ -3,6 +3,9 @@
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace AspNetCore_SimplePrompt_Bot
 {
@@ -10,11 +13,29 @@ namespace AspNetCore_SimplePrompt_Bot
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args)
+                .Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    // Add Azure Logging
+                    //logging.AddAzureWebAppDiagnostics();
+
+                    // Other Loggers.
+                    // There are other logging options available:
+                    // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-2.1
+                    logging.AddDebug();
+                    // logging.AddConsole();
+                })
+
+                // Application Insights.
+                // An alternative logging and metrics service for your application.
+                // https://azure.microsoft.com/en-us/services/application-insights/
+                // .UseApplicationInsights()
                 .UseStartup<Startup>()
                 .Build();
     }

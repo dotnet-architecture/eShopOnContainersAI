@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Microsoft.eShopOnContainers.Bot.API
 {
     public class AppSettings
     {
-        public string MicrosoftAppId { get; set; }
-        public string MicrosoftAppPassword { get; set; }
         public string PurchaseUrl { get; set; }
         public string ArtificialIntelligenceUrl { get; set; }
-
-        public LuisSchema Luis { get; set; }
+        public string IdentityUrl { get; set; }
+        public string ImageUrl { get; set; }
+        public string AuthenticationConnectionName { get; set; }
 
         public ProductSearchImageBasedSchema ProductSearchImageBased { get; set; }
 
@@ -40,13 +36,6 @@ namespace Microsoft.eShopOnContainers.Bot.API
             }
         }
 
-    }
-
-    public class LuisSchema
-    {
-        public string ModelId { get; set; }
-        public string SubscriptionKey { get; set; }
-        public string ServiceUri { get; set; }
     }
 
     public class ProductSearchImageBasedSchema

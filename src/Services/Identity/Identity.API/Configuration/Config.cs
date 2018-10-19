@@ -134,14 +134,15 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         new Secret("secret".Sha256())
                     },
                     ClientUri = $"{clientsUrl["Bot"]}",                             // public uri of the client
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials, // new [] { GrantType.ClientCredentials, GrantType.AuthorizationCode },
-                    AllowAccessTokensViaBrowser = false,
+                    AllowedGrantTypes = new [] { GrantType.AuthorizationCode }, // for using Azure Authentication
+                    AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
                     AllowOfflineAccess = true,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     RedirectUris = new List<string>
                     {
-                        $"{clientsUrl["Bot"]}/account/signin-oidc"
+                        $"{clientsUrl["Bot"]}/account/signin-oidc",
+                        "https://token.botframework.com/.auth/web/redirect"
                     },
                     PostLogoutRedirectUris = new List<string>
                     {
@@ -155,7 +156,8 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                         "orders",
                         "basket",
                         "locations",
-                        "marketing"
+                        "marketing",
+                        "webshoppingagg"
                     },
                 },
                 new Client

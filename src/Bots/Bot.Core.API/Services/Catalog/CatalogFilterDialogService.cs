@@ -1,41 +1,36 @@
 ﻿using Microsoft.Bot.Builder;
-using Microsoft.Bot.Builder.Core.Extensions;
+using Microsoft.eShopOnContainers.Bot.API.Services.Attachment;
+using Microsoft.eShopOnContainers.Bot.API.Services.ProductSearchImage;
 using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Bot.API.Services
+namespace Microsoft.eShopOnContainers.Bot.API.Services.Catalog
 {
-    public interface ICatalogFilterDialogService
-    {
-        Task UpdateCatalogFilterUserStateWithTagsAsync(ITurnContext context);
-    }
-
     public class CatalogFilterDialogService : ICatalogFilterDialogService
     {
+        private readonly DomainPropertyAccessors accessors;
         private readonly IProductSearchImageService productSearchImageService;
         private readonly IAttachmentService attachmentService;
-        private readonly AppSettings appSettings;
 
-        public CatalogFilterDialogService(IOptions<AppSettings> appSettings, IProductSearchImageService productSearchImageService, IAttachmentService attachmentService)
+        public CatalogFilterDialogService(DomainPropertyAccessors accessors, IProductSearchImageService productSearchImageService, IAttachmentService attachmentService)
         {
+            this.accessors = accessors;
             this.productSearchImageService = productSearchImageService;
             this.attachmentService = attachmentService;
-            this.appSettings = appSettings.Value;
         }
 
         public async Task UpdateCatalogFilterUserStateWithTagsAsync(ITurnContext context)
         {
-            var userState = context.GetUserState<UserInfo>();
+            var catalogFilter = await accessors.CatalogFilterProperty.GetAsync(context, () => new CatalogFilterData());
             var imageFile = await attachmentService.DownloadAttachmentFromActivityAsync(context.Activity);
             var tags = Enumerable.Empty<string>();
             if (imageFile != null)
             {
                 tags = await productSearchImageService.ClassifyImageAsync(imageFile);
             }
-            if (userState.CatalogFilter == null)
-                userState.CatalogFilter = new CatalogFilterData();
-            userState.CatalogFilter.Tags = tags.ToArray();
+            catalogFilter.Tags = tags.ToArray();
+            await accessors.CatalogFilterProperty.SetAsync(context, catalogFilter);
         }
     }
 }

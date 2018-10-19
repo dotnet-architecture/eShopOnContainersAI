@@ -208,12 +208,10 @@ services:
       ASPNETCORE_URLS: http://0.0.0.0:80
       PurchaseUrl: http://webshoppingapigw
       ArtificialIntelligenceUrl: http://webaiapigw
-      MicrosoftAppId: ${ESHOPAI_BOT_APP_ID}
-      MicrosoftAppPassword: ${ESHOPAI_BOT_APP_PASSWORD}
-      Luis__ModelId: ${ESHOPAI_BOT_LUIS_MODEL_ID}
-      Luis__SubscriptionKey: ${ESHOPAI_BOT_LUIS_SUBSCRIPTION_KEY}
-      Luis__ServiceUri: ${ESHOPAI_BOT_LUIS_SERVICE_URI}
+      IdentityUrl: http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
+      ImageUrl: ${ESHOPAI_BOT_IMAGEURL:-http://webaiapigw}
       ProductSearchImageBased__Approach: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
+      AuthenticationConnectionName: ${ESHOPAI_BOT_AUTHENTICATION_CONNECTION_NAME}
       ApplicationInsights__InstrumentationKey: ${INSTRUMENTATION_KEY}
     ports:
       - "5135:80"
