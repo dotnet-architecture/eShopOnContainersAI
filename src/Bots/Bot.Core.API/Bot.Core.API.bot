@@ -1,15 +1,34 @@
 {
-    "name": "eShopOnContainersAI-Bot.Net.Core",
-    "description": "",
-    "secretKey": "",
-    "services": [
-        {
-            "id": "http://localhost:5135/api/messages",
-            "name": "eShopBot-Docker",
-            "type": "endpoint",
-            "appId": "YOU-NEED-TO-ADD-YOUR-BOT-APP-ID-HERE",
-            "appPassword": "YOU-NEED-TO-ADD-YOUR-BOT-APP-PASSWORD-HERE",
-            "endpoint": "http://localhost:5135/api/messages"
-        }
-    ]
+  "name": "eShopOnContainersAI-Bot.Net.Core",
+  "secretKey": "",
+  "services": [
+    {
+      "type": "endpoint",
+      "name": "eShopAI-Bot-Local",
+      "id": "1",
+      "endpoint": "http://localhost:6654/api/messages",
+      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "appPassword": "xxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "type": "endpoint",
+      "name": "eShopAI-Bot-Docker",
+      "id": "2",
+      "endpoint": "http://localhost:5135/api/messages",
+      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "appPassword": "xxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "id": "3",
+      "type": "luis",
+      "name": "eShopAI-LUIS",
+      "version": "2.0",
+      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+      "authoringKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "subscriptionKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "region":  "xxxxxx"
+    }
+  ],
+  "padlock": "",
+  "version": "2.0"
 }

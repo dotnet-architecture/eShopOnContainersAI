@@ -1,4 +1,4 @@
-﻿namespace Microsoft.eShopOnContainers.Bot.API.Dialogs
+﻿namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Shared
 {
     public static class BotActionTypes
     {

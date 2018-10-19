@@ -8,14 +8,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using static Microsoft.eShopOnContainers.Bot.API.Infrastructure.API;
 
-namespace Microsoft.eShopOnContainers.Bot.API.Services
+namespace Microsoft.eShopOnContainers.Bot.API.Services.Catalog
 {
-    public interface ICatalogAIService
-    {
-        Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs);
-        Task<Models.Catalog.Catalog> GetCatalogItems(int page, int take, int? brand, int? type, IEnumerable<string> tags);
-    }
-
     public class CatalogAIService : ICatalogAIService
     {
         private readonly HttpClient _apiClient;

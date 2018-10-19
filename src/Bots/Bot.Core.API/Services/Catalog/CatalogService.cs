@@ -7,47 +7,42 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Microsoft.eShopOnContainers.Bot.API.Services
+namespace Microsoft.eShopOnContainers.Bot.API.Services.Catalog
 {
-    public interface ICatalogService
-    {
-        Task<IEnumerable<Brand>> GetBrandsAsync();
-        Task<IEnumerable<CatalogType>> GetTypesAsync();
-    }
 
-    public class MockCatalogService : ICatalogService
-    {
-        public Task<IEnumerable<Brand>> GetBrandsAsync()
-        {
-            IEnumerable<Brand> result = new[] { new Brand() { Id = "-1", Text = "All" } };
-            return Task.FromResult(result);
-        }
+    //public class MockCatalogService : ICatalogService
+    //{
+    //    public Task<IEnumerable<Brand>> GetBrandsAsync()
+    //    {
+    //        IEnumerable<Brand> result = new[] { new Brand() { Id = "-1", Text = "All" } };
+    //        return Task.FromResult(result);
+    //    }
 
-        public Task<IEnumerable<CatalogType>> GetTypesAsync()
-        {
-            IEnumerable<CatalogType> result = new[] { new CatalogType() { Id="-1", Text="All" } };
-            return Task.FromResult(result);
-        }
-    }
+    //    public Task<IEnumerable<CatalogType>> GetTypesAsync()
+    //    {
+    //        IEnumerable<CatalogType> result = new[] { new CatalogType() { Id="-1", Text="All" } };
+    //        return Task.FromResult(result);
+    //    }
+    //}
 
-    public class MockCatalogAIService : ICatalogAIService
-    {
-        public Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type, IEnumerable<string> tags)
-        {
-            var catalog = new Catalog();
-            catalog.Count = 300;
-            catalog.PageIndex = page;
-            catalog.PageSize = take;
-            catalog.Data = new List<CatalogItem> { new CatalogItem() { Name = "product_name", Description="description", Price = 99, Id = "000" } };
+    //public class MockCatalogAIService : ICatalogAIService
+    //{
+    //    public Task<Catalog> GetCatalogItems(int page, int take, int? brand, int? type, IEnumerable<string> tags)
+    //    {
+    //        var catalog = new Catalog();
+    //        catalog.Count = 300;
+    //        catalog.PageIndex = page;
+    //        catalog.PageSize = take;
+    //        catalog.Data = new List<CatalogItem> { new CatalogItem() { Name = "product_name", Description="description", Price = 99, Id = "000" } };
 
-            return Task.FromResult(catalog);
-        }
+    //        return Task.FromResult(catalog);
+    //    }
 
-        public Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 
     public class CatalogService : ICatalogService
     {

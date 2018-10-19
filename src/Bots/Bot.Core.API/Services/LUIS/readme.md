@@ -9,5 +9,5 @@ npm install -g luisgen
 in the same shell console, jump to the `LUIS` folder  and execute following command:
 
 ```
-luisgen LuiseShopOnContainersAI.json -cs Microsoft.eShopOnContainers.Bot.API.LUIS.eShopLuisResult
+luisgen LuiseShopOnContainersAI.json -cs Microsoft.eShopOnContainers.Bot.API.Services.LUIS.eShopLuisResult
 ```

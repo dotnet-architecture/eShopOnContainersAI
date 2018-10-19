@@ -1,5 +1,5 @@
 {
-  "luis_schema_version": "3.0.0",
+  "luis_schema_version": "3.1.0",
   "versionId": "0.1",
   "name": "eShopOnContainersAI Bot",
   "desc": "eShopOnContainersAI",
@@ -16,6 +16,9 @@
     },
     {
       "name": "Hello"
+    },
+    {
+      "name": "Help"
     },
     {
       "name": "Login"
@@ -65,6 +68,11 @@
       "entities": []
     },
     {
+      "text": "help",
+      "intent": "Help",
+      "entities": []
+    },
+    {
       "text": "hi",
       "intent": "Hello",
       "entities": []
@@ -84,6 +92,11 @@
           "endPos": 29
         }
       ]
+    },
+    {
+      "text": "i don't know what to do",
+      "intent": "Help",
+      "entities": []
     },
     {
       "text": "i want a mug from azure",
@@ -442,8 +455,23 @@
       "entities": []
     },
     {
+      "text": "what can i do?",
+      "intent": "Help",
+      "entities": []
+    },
+    {
       "text": "what is in my cart?",
       "intent": "Basket",
+      "entities": []
+    },
+    {
+      "text": "what is this for?",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what options are available?",
+      "intent": "Help",
       "entities": []
     },
     {
@@ -461,5 +489,6 @@
       "intent": "Hello",
       "entities": []
     }
-  ]
+  ],
+  "settings": []
 }
