@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.Bot.API</RootNamespace>
     <AssemblyName>Bot.API</AssemblyName>
     <UserSecretsId>38115a34-cef1-42d9-8395-dc53c3d17c36</UserSecretsId>
