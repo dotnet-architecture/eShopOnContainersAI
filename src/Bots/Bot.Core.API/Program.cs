@@ -29,7 +29,7 @@ namespace AspNetCore_SimplePrompt_Bot
                     // There are other logging options available:
                     // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-2.1
                     logging.AddDebug();
-                    // logging.AddConsole();
+                    logging.AddConsole();
                 })
 
                 // Application Insights.

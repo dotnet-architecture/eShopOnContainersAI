@@ -4,19 +4,19 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.Bot.API</RootNamespace>
     <AssemblyName>Bot.API</AssemblyName>
+    <UserSecretsId>38115a34-cef1-42d9-8395-dc53c3d17c36</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="3.10.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Bot.Builder" Version="4.0.8" />
     <PackageReference Include="Microsoft.Bot.Builder.Ai.LUIS" Version="4.0.8" />
     <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.0.8" />
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.WebApi" Version="4.0.8" />
     <PackageReference Include="Microsoft.Bot.Builder.TemplateManager" Version="4.0.8" />
     <PackageReference Include="Microsoft.Bot.Configuration" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <!--<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />-->
   </ItemGroup>
 
   <ItemGroup>

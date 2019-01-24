@@ -29,6 +29,7 @@ namespace AspNetCore_SimplePrompt_Bot
     public class Startup
     {
         private ILoggerFactory loggerFactory;
+        private bool _isProduction = false;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -41,6 +42,7 @@ namespace AspNetCore_SimplePrompt_Bot
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
+            _isProduction = env.IsProduction();
         }
 
         public IConfiguration Configuration { get; }
@@ -103,15 +105,27 @@ namespace AspNetCore_SimplePrompt_Bot
 
             services.AddSingleton<DomainPropertyAccessors>(sp => new DomainPropertyAccessors(userState, conversationState));
 
-            var botConfig = BotConfiguration.Load(@"./Bot.Core.API.bot");
-            services.AddSingleton<BotConfiguration>(sp => botConfig ?? throw new InvalidOperationException($"The .bot config file could not be loaded. ({botConfig})"));
+            var secretKey = Configuration.GetSection("botFileSecret").Value;
+            var botFilePath = Configuration.GetSection("botFilePath").Value;
 
-            
+            if (botFilePath.StartsWith("%APPDATA%", StringComparison.InvariantCultureIgnoreCase))
+            {
+                botFilePath = botFilePath.Replace("%APPDATA%", Configuration["APPDATA"], StringComparison.InvariantCultureIgnoreCase);
+            }
+
+            // Loads .bot configuration file and adds a singleton that your Bot can access through dependency injection.
+            var botConfig = BotConfiguration.Load(botFilePath ?? @".\BotConfiguration.bot", secretKey);
+            services.AddSingleton(sp => botConfig ?? throw new InvalidOperationException($"The .bot config file could not be loaded. ({botConfig})"));
 
             services.AddBot<eShopBot>(options =>
             {
-                // Load the connected services from .bot file.
-                var endpointService = botConfig.Services.FirstOrDefault(s => s.Type == ServiceTypes.Endpoint) as EndpointService;
+                // Retrieve current endpoint.
+                var environment = _isProduction ? "production" : "development";
+                var service = botConfig.Services.Where(s => s.Type == "endpoint" && s.Name == environment).FirstOrDefault();
+                if (!(service is EndpointService endpointService))
+                {
+                    throw new InvalidOperationException($"The .bot file does not contain an endpoint with name '{environment}'.");
+                }
 
                 options.CredentialProvider = new SimpleCredentialProvider(endpointService.AppId, endpointService.AppPassword);
 
@@ -120,7 +134,7 @@ namespace AspNetCore_SimplePrompt_Bot
                 ILogger logger = loggerFactory.CreateLogger<eShopBot>();
                 options.OnTurnError = async (context, exception) =>
                 {
-                    logger.LogError($"Exception caught : {exception}");
+                    logger.LogError(exception, "Exception caught : {ExceptionMessage}", exception.Message);
                     await context.SendActivityAsync("Sorry, it looks like something went wrong.");
                 };
 

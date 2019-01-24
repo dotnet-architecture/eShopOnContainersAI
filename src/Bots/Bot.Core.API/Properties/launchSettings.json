@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AspNetCore-SimplePrompt-Bot": {
+    "eShopOnContainersAI-Bot.Net.Core": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
