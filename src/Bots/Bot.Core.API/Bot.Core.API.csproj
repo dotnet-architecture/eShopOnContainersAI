@@ -8,14 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdentityModel" Version="3.10.0" />
+    <PackageReference Include="IdentityModel" Version="3.10.5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Bot.Builder" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.Ai.LUIS" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Builder.TemplateManager" Version="4.0.8" />
-    <PackageReference Include="Microsoft.Bot.Configuration" Version="4.0.8" />
+    <PackageReference Include="Microsoft.Bot.Builder" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Ai.LUIS" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.TemplateManager" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Bot.Configuration" Version="4.2.0" />
     <!--<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />-->
   </ItemGroup>
 
