@@ -105,8 +105,8 @@ namespace AspNetCore_SimplePrompt_Bot
 
             services.AddSingleton<DomainPropertyAccessors>(sp => new DomainPropertyAccessors(userState, conversationState));
 
-            var secretKey = Configuration.GetSection("botFileSecret").Value;
-            var botFilePath = Configuration.GetSection("botFilePath").Value;
+            var secretKey = Configuration["botFileSecret"];
+            var botFilePath = Configuration["botFilePath"];
 
             if (botFilePath.StartsWith("%APPDATA%", StringComparison.InvariantCultureIgnoreCase))
             {

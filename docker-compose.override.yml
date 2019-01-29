@@ -204,7 +204,7 @@ services:
 
   bot.api:
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+      # ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: http://0.0.0.0:80
       PurchaseUrl: http://webshoppingapigw
       ArtificialIntelligenceUrl: http://webaiapigw
@@ -216,6 +216,11 @@ services:
     ports:
       - "5135:80"
       - "51352:22"
+    volumes:
+      - type: bind
+        source: ${ESHOPAI_BOT_SECRETS_FOLDER}
+        target: /app/configuration
+        read_only: true
 
   webmvc:
     environment:

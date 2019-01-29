@@ -16,7 +16,6 @@
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.2.0" />
     <PackageReference Include="Microsoft.Bot.Builder.TemplateManager" Version="4.2.0" />
     <PackageReference Include="Microsoft.Bot.Configuration" Version="4.2.0" />
-    <!--<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />-->
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +37,10 @@
     <None Update="Bot.Core.API.bot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="docs\images\" />
   </ItemGroup>
 
 </Project>

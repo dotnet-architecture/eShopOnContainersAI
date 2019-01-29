@@ -259,6 +259,7 @@ services:
       dockerfile: src/Bots/Bot.Core.API/Dockerfile
       args:
         configuration: "${configuration}"
+      network: host
     depends_on:
       - webshoppingapigw
       - webaiapigw
