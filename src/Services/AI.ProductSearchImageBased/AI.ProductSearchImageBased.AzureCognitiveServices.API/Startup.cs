@@ -69,8 +69,8 @@ namespace Microsoft.eShopOnContainers.Services.AI.ProductSearchImageBased.AzureC
             //Configure logs
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
             if (!string.IsNullOrEmpty(pathBase))
