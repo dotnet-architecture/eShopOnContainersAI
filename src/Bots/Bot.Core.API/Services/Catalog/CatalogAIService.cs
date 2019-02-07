@@ -20,7 +20,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Services.Catalog
         {
             _apiClient = httpClient;
 
-            _remoteServiceBaseUrl = $"{settings.Value.PurchaseUrl}/catalog-ai-api/v1/CatalogAI/";
+            _remoteServiceBaseUrl = $"{settings.Value.ImageUrl}/catalog-ai-api/v1/CatalogAI/";
         }
 
         public async Task<IEnumerable<CatalogItem>> GetRecommendationsAsync(string productId, IEnumerable<string> productIDs)
