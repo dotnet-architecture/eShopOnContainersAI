@@ -1,0 +1,12 @@
+﻿tunnels:
+    bot.api:
+        addr: 5135
+        proto: http
+        bind_tls: true
+        host_header: localhost:5135
+
+    catalog.api:
+        addr: 5202
+        proto: http
+        bind_tls: true
+        host_header: localhost:5202
