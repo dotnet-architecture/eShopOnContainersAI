@@ -216,11 +216,11 @@ services:
     ports:
       - "5135:80"
       - "51352:22"
-    volumes:
-      - type: bind
-        source: ${ESHOPAI_BOT_SECRETS_FOLDER}
-        target: /app/configuration
-        read_only: true
+    #volumes:
+    #  - type: bind
+    #    source: ${ESHOPAI_BOT_SECRETS_FOLDER}
+    #    target: /app/configuration
+    #    read_only: true
 
   webmvc:
     environment:

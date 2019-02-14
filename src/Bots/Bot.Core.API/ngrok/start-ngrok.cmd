@@ -1,1 +1,1 @@
-ngrok start --all -config=./ngrok.yml
+ngrok start --all -config=./eshopai.core.ngrok.yml

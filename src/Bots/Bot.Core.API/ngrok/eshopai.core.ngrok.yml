@@ -4,9 +4,11 @@
         proto: http
         bind_tls: true
         host_header: localhost:5135
+        #subdomain: <your-eshopai-bot-subdomain>
 
     catalog.api:
         addr: 5202
         proto: http
         bind_tls: true
         host_header: localhost:5202
+        #subdomain: <your-eshopai-catalog-subdomain>
