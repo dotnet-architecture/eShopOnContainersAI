@@ -118,15 +118,16 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Main
 
             if (activity.IsFirstTime())
             {
-                await context.SendActivitiesAsync(new[] {
-                                    MessageFactory.Attachment(new HeroCard()
-                                        {
-                                            Title = $"Welcome {activity.MembersAdded.FirstOrDefault()?.Name}!",
-                                            Images = new List<CardImage>() { new CardImage() { Alt = "eShop Logo", Url = $"{host}/images/brand.png" } }
-                                        }.ToAttachment()),
-                                    MessageFactory.Text("Howdy! - I am eShopAI-Bot."),
-                                    MessageFactory.Text("I can show you the eShopAI Catalog, add items to your shopping cart, place a new order and explore your order's status."),
-                                    MessageFactory.Text("Just type whatever you want to do, for example: *show me the product catalog*") }
+                await context.SendActivitiesAsync(new[]
+                {
+                    MessageFactory.Attachment(new HeroCard()
+                    {
+                        Title = $"Welcome {activity.MembersAdded.FirstOrDefault()?.Name}!",
+                        Images = new List<CardImage>() { new CardImage() { Alt = "eShop Logo", Url = $"{host}/images/brand.png" } }
+                    }.ToAttachment()),
+                    MessageFactory.Text("Howdy! - I am eShopAI-Bot."),
+                    MessageFactory.Text("I can show you the eShopAI Catalog, add items to your shopping cart, place a new order and explore your order's status."),
+                    MessageFactory.Text("Just type whatever you want to do, for example: *show me the product catalog*") }
                 );
             }
         }
@@ -137,7 +138,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Main
             if (activity.Text == "/cancel" || activity.Text == "cancel")
             {
                 await innerDc.CancelAllDialogsAsync(cancellationToken);
-                await innerDc.Context.SendActivityAsync("Cancelling this operation",cancellationToken: cancellationToken);
+                await innerDc.Context.SendActivityAsync("Cancelling this operation", cancellationToken: cancellationToken);
                 return EndOfTurn;
             }
 
@@ -151,7 +152,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Main
 
         protected override Task<DialogTurnResult> OnMessageAuthentication(DialogContext innerDc, CancellationToken cancellationToken = default(CancellationToken))
         {
-             return innerDc.BeginDialogAsync(LoginDialog.Name, cancellationToken: cancellationToken);
+            return innerDc.BeginDialogAsync(LoginDialog.Name, cancellationToken: cancellationToken);
         }
     }
 }
