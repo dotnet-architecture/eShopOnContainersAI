@@ -19,14 +19,14 @@
       "appPassword": ""
     },
     {
-      "id": "3",
       "type": "luis",
       "name": "eShopAI-LUIS",
-      "version": "2.0",
+      "id": "3",
       "appId": "<your-luis-app-id>",
       "authoringKey": "<your-luis-authoring-key>",
       "subscriptionKey": "<your-subscription-key>",
-      "region": "<your-luis-region>"
+      "region": "<your-luis-region>",
+      "version": "2.0",
     }
   ],
   "padlock": "",

@@ -33,15 +33,9 @@ namespace AspNetCore_SimplePrompt_Bot
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
             _isProduction = env.IsProduction();
         }
 
@@ -153,9 +147,14 @@ namespace AspNetCore_SimplePrompt_Bot
         /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> to create logger object for tracing.</param>
         /// <remarks>See <see cref="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-2.1"/> for
         /// more information how environments are detected.</remarks>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IOptions<AppSettings> options)
         {
             this.loggerFactory = loggerFactory;
+
+            var logger = loggerFactory.CreateLogger(nameof(Startup));
+
+            logger.LogInformation("----- Current configuration - AppSettings: {@AppSettigns}", options);
+            logger.LogInformation("----- Current configuration - Configuration: {@Configuration}", Configuration.AsEnumerable());
 
             if (env.IsDevelopment())
             {

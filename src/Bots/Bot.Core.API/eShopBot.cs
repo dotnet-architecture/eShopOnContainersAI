@@ -6,6 +6,7 @@ using Microsoft.eShopOnContainers.Bot.API.Dialogs.Main;
 using Microsoft.eShopOnContainers.Bot.API.Services;
 using Microsoft.eShopOnContainers.Bot.API.Services.Catalog;
 using Microsoft.eShopOnContainers.Bot.API.Services.LUIS;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,12 +50,17 @@ namespace Microsoft.eShopOnContainers.Bot.API
     {
         private readonly DialogSet dialogs;
         private readonly DomainPropertyAccessors eShopBotAccessors;
+        private readonly ILogger<eShopBot> _logger;
 
-        public eShopBot(DomainPropertyAccessors eShopBotAccessors, IDialogFactory dialogFactory)
+        public eShopBot(
+            DomainPropertyAccessors eShopBotAccessors, 
+            IDialogFactory dialogFactory,
+            ILogger<eShopBot> logger)
         {
             this.dialogs = new DialogSet(eShopBotAccessors.DialogStateProperty);
             this.dialogs.Add(dialogFactory.MainDialog);
             this.eShopBotAccessors = eShopBotAccessors;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <summary>
@@ -65,6 +71,8 @@ namespace Microsoft.eShopOnContainers.Bot.API
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken)
         {
+            _logger.LogInformation("----- eShopBot - Getting activity - Text: {Text} - Type: {ActivityType} ({@Activity})", turnContext.Activity.Text, turnContext.Activity.Type, turnContext.Activity);
+
             var dc = await dialogs.CreateContextAsync(turnContext);
             var result = await dc.ContinueDialogAsync();            
 
