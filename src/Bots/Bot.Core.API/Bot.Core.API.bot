@@ -4,29 +4,29 @@
   "services": [
     {
       "type": "endpoint",
-      "name": "eShopAI-Bot-Local",
+      "name": "development",
       "id": "1",
       "endpoint": "http://localhost:6654/api/messages",
-      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      "appPassword": "xxxxxxxxxxxxxxxxxxxxxxx"
+      "appId": "",
+      "appPassword": ""
     },
     {
       "type": "endpoint",
-      "name": "eShopAI-Bot-Docker",
+      "name": "production",
       "id": "2",
       "endpoint": "http://localhost:5135/api/messages",
-      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      "appPassword": "xxxxxxxxxxxxxxxxxxxxxxx"
+      "appId": "",
+      "appPassword": ""
     },
     {
-      "id": "3",
       "type": "luis",
       "name": "eShopAI-LUIS",
+      "id": "3",
+      "appId": "<your-luis-app-id>",
+      "authoringKey": "<your-luis-authoring-key>",
+      "subscriptionKey": "<your-subscription-key>",
+      "region": "<your-luis-region>",
       "version": "2.0",
-      "appId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-      "authoringKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      "subscriptionKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-      "region":  "xxxxxx"
     }
   ],
   "padlock": "",

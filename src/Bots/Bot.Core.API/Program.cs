@@ -3,40 +3,81 @@
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Serilog;
 using System;
+using System.IO;
 
 namespace AspNetCore_SimplePrompt_Bot
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static readonly string AppName = typeof(Program).Namespace;
+        public static readonly string ShortAppName = AppName;
+
+        public static int Main(string[] args)
         {
-            BuildWebHost(args)
-                .Run();
+            var configuration = GetConfiguration();
+
+            Log.Logger = CreateSerilogLogger(configuration);
+
+            try
+            {
+                Log.Information("Configuring web host ({Application})...", AppName);
+                var host = BuildWebHost(configuration, args);
+
+                Log.Information("Starting web host ({Application})...", AppName);
+                host.Run();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Program terminated unexpectedly ({Application})!", AppName);
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    // Add Azure Logging
-                    //logging.AddAzureWebAppDiagnostics();
-
-                    // Other Loggers.
-                    // There are other logging options available:
-                    // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-2.1
-                    logging.AddDebug();
-                    // logging.AddConsole();
-                })
-
-                // Application Insights.
-                // An alternative logging and metrics service for your application.
-                // https://azure.microsoft.com/en-us/services/application-insights/
-                // .UseApplicationInsights()
+                .CaptureStartupErrors(false)
                 .UseStartup<Startup>()
+                .UseConfiguration(configuration)
+                .UseSerilog()
                 .Build();
+
+        private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
+        {
+            var seqServerUrl = configuration["Serilog:SeqServerUrl"];
+
+            return new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .Enrich.WithProperty("Application", AppName)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
+        }
+
+        private static IConfiguration GetConfiguration()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{GetEnvironmentName()}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            return builder.Build();
+        }
+
+        private static string GetEnvironmentName() => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
+
+        private static bool IsDevelopment() => GetEnvironmentName() != "Production";
+
     }
 }

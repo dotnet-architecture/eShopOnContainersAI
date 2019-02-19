@@ -204,18 +204,23 @@ services:
 
   bot.api:
     environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+      # ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: http://0.0.0.0:80
       PurchaseUrl: http://webshoppingapigw
       ArtificialIntelligenceUrl: http://webaiapigw
       IdentityUrl: http://10.0.75.1:5105  # Local Mac: Use http://docker.for.mac.localhost:5105 || Local Windows:  Use 10.0.75.1 in a "Docker for Windows" environment, if using "localhost" from browser. || #Remote access: Use ${ESHOP_EXTERNAL_DNS_NAME_OR_IP} if using external IP or DNS name from browser.
-      ImageUrl: ${ESHOPAI_BOT_IMAGEURL:-http://webaiapigw}
+      ImageUrl: ${ESHOPAI_BOT_IMAGEURL:-http://webshoppingapigw}
       ProductSearchImageBased__Approach: ${ESHOPAI_PRODUCTSEARCHIMAGEBASED_APPROACH}
       AuthenticationConnectionName: ${ESHOPAI_BOT_AUTHENTICATION_CONNECTION_NAME}
       ApplicationInsights__InstrumentationKey: ${INSTRUMENTATION_KEY}
     ports:
       - "5135:80"
       - "51352:22"
+    #volumes:
+    #  - type: bind
+    #    source: ${ESHOPAI_BOT_SECRETS_FOLDER}
+    #    target: /app/configuration
+    #    read_only: true
 
   webmvc:
     environment:

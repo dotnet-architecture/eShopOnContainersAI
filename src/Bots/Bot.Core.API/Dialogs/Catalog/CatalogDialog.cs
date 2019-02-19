@@ -33,7 +33,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
         private readonly ILogger<CatalogDialog> logger;
         private TemplateManager sharedResponses = new Shared.SharedResponses();
 
-        public CatalogDialog(DomainPropertyAccessors accessors, ICatalogAIService catalogAIService, ICatalogService catalogService, 
+        public CatalogDialog(DomainPropertyAccessors accessors, ICatalogAIService catalogAIService, ICatalogService catalogService,
             IDialogFactory dialogFactory, IBasketService basketService, ILogger<CatalogDialog> logger) : base(Name)
         {
             this.accessors = accessors;
@@ -47,7 +47,7 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
             AddDialog(new WaterfallDialog(Name, new WaterfallStep[] {
                 ShowProductCarouselStep, ProcessNextStep, ProcessChildDialogEnd
             }));
-            AddDialog(new WaterfallDialog(PromptProductQuantity, new WaterfallStep[] { ShowProductPromptQuantity, ProcessProductPromptQuantity}));
+            AddDialog(new WaterfallDialog(PromptProductQuantity, new WaterfallStep[] { ShowProductPromptQuantity, ProcessProductPromptQuantity }));
             AddDialog(dialogFactory.LoginDialog);
             AddDialog(dialogFactory.BasketDialog);
 
@@ -79,7 +79,8 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
             try
             {
                 await basketService.AddItemToBasket(authUser.UserId, tempBasketItem, authUser.AccessToken);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 logger.LogError(ex.Message);
             }
@@ -107,9 +108,10 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
 
                 var choices = CreateNextChoices(catalogFilter.PageIndex, pageCount, logged).ToArray();
 
-                return await dc.PromptAsync(PromptChoices, new PromptOptions() {
+                return await dc.PromptAsync(PromptChoices, new PromptOptions()
+                {
                     Prompt = MessageFactory.Text("choose one option"),
-                    Choices = choices.Select(c => c.Choice).ToList()                    
+                    Choices = choices.Select(c => c.Choice).ToList()
                 });
             }
             else
@@ -202,7 +204,8 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
             if (currentPage > 0)
                 yield return (
                     new Choice("Show previous"),
-                    async (DialogContext dc) => {
+                    async (DialogContext dc) =>
+                    {
                         var catalogFilter = await accessors.CatalogFilterProperty.GetAsync(dc.Context);
                         catalogFilter.PageIndex--;
                         await accessors.CatalogFilterProperty.SetAsync(dc.Context, catalogFilter);
@@ -211,8 +214,9 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
                 );
 
             yield return (
-                new Choice("Home"), 
-                async (DialogContext dc) => {
+                new Choice("Home"),
+                async (DialogContext dc) =>
+                {
                     await sharedResponses.ReplyWith(dc.Context, SharedResponses.TypeMore);
                     return await dc.EndDialogAsync();
                 }
@@ -227,7 +231,8 @@ namespace Microsoft.eShopOnContainers.Bot.API.Dialogs.Catalog
             if (currentPage + 1 < pageCount)
                 yield return (
                     new Choice("Show next"),
-                    async (DialogContext dc) => {
+                    async (DialogContext dc) =>
+                    {
                         var catalogFilter = await accessors.CatalogFilterProperty.GetAsync(dc.Context);
                         catalogFilter.PageIndex++;
                         await accessors.CatalogFilterProperty.SetAsync(dc.Context, catalogFilter);

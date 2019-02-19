@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.0-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS build
 WORKDIR /src
 COPY eShopOnContainers-ServicesAndWebApps.sln ./
 COPY test/Services/UnitTest/UnitTest.csproj test/Services/UnitTest/

@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>Microsoft.eShopOnContainers.Services.AI.SalesForecasting.Training.MLNet.API</RootNamespace>
     <AssemblyName>SalesForecasting.Training.MLNet.API</AssemblyName>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ML" Version="0.3.0" />
+    <PackageReference Include="Microsoft.ML" Version="0.9.0" />
   </ItemGroup>
 
   <ItemGroup>
