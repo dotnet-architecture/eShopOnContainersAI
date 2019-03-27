@@ -10,11 +10,11 @@ WORKDIR /src
 COPY . .
 WORKDIR /src/src/Services/AI.SalesForecasting/AI.SalesForecasting.MLNet.API
 RUN dotnet restore -nowarn:msb3202,nu1503
-RUN dotnet build -c ${configuration} -o /app
+RUN dotnet build -c release -o /app
 
 FROM build AS publish
 ARG configuration
-RUN dotnet publish --no-restore -c ${configuration} -o /app
+RUN dotnet publish --no-restore -c release -o /app
 
 FROM base AS final
 WORKDIR /app

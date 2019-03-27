@@ -11,20 +11,20 @@ namespace Microsoft.eShopOnContainers.WebMVC.Services
 {
     public class ProductSearchImageBasedService : IProductSearchImageBasedService
     {
-        private readonly string remoteServiceBaseUrl;
-        private readonly HttpClient httpClient;
+        private readonly string _remoteServiceBaseUrl;
+        private readonly HttpClient _httpClient;
 
-        public ProductSearchImageBasedService(IOptions<AppSettings> settings, HttpClient httpClient)
+        public ProductSearchImageBasedService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
-            remoteServiceBaseUrl = $"{settings.Value.ArtificialIntelligenceUrl}/{settings.Value.ProductSearchImageUrl}/v1/productSearchImage/";
-            this.httpClient = httpClient;
+            _remoteServiceBaseUrl = $"{settings.Value.ArtificialIntelligenceUrl}/{settings.Value.ProductSearchImageUrl}/v1/productSearchImage/";
+            _httpClient = httpClient;
         }
 
         public async Task<IEnumerable<string>> ClassifyImageAsync(byte[] imageFile)
         {
-            var analyzeImageUri = API.ProductImageSearch.ClassifyImage(remoteServiceBaseUrl);
+            var analyzeImageUri = API.ProductImageSearch.ClassifyImage(_remoteServiceBaseUrl);
 
-            var response = await httpClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
+            var response = await _httpClient.PostFileAsync(analyzeImageUri, imageFile, "imageFile");
             if (response.IsSuccessStatusCode)
             {
                 var responseString = await response.Content.ReadAsStringAsync();

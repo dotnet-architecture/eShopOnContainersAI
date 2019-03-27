@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Catalog.API.Extensions;
 using global::Catalog.API.Infrastructure.Filters;
 using global::Catalog.API.IntegrationEvents;
 using Microsoft.ApplicationInsights.Extensibility;
+using Catalog.API.Extensions;
 using Microsoft.ApplicationInsights.ServiceFabric;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,13 +23,15 @@ using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHa
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
 using System.Reflection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -46,6 +48,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         {
             services.AddAppInsight(Configuration)
                 .AddCustomMVC(Configuration)
+                .AddCustomHealthCheck(Configuration)
                 .AddCustomDbContext(Configuration)
                 .AddCustomOptions(Configuration)
                 .AddIntegrationServices(Configuration)
@@ -58,24 +61,32 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         }
 
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             //Configure logs
 
-            loggerFactory.AddAzureWebAppDiagnostics();
-            loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
+            //loggerFactory.AddAzureWebAppDiagnostics();
+            //loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
 
             var pathBase = Configuration["PATH_BASE"];
 
             if (!string.IsNullOrEmpty(pathBase))
             {
-                loggerFactory.CreateLogger("init").LogDebug($"Using PATH BASE '{pathBase}'");
+                loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
                 app.UsePathBase(pathBase);
             }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-            app.Map("/liveness", lapp => lapp.Run(async ctx => ctx.Response.StatusCode = 200));
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            app.UseHealthChecks("/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
 
             app.UseCors("CorsPolicy");
 
@@ -108,7 +119,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             if (orchestratorType?.ToUpper() == "K8S")
             {
                 // Enable K8s telemetry initializer
-                services.EnableKubernetes();
+                services.AddApplicationInsightsKubernetesEnricher();
             }
             if (orchestratorType?.ToUpper() == "SF")
             {
@@ -121,37 +132,67 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         }
 
         public static IServiceCollection AddCustomMVC(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHealthChecks(checks =>
-            {
-                var minutes = 1;
-                if (int.TryParse(configuration["HealthCheck:Timeout"], out var minutesParsed))
-                {
-                    minutes = minutesParsed;
-                }
-                checks.AddSqlCheck("CatalogDb", configuration["ConnectionString"], TimeSpan.FromMinutes(minutes));
-
-                var accountName = configuration.GetValue<string>("AzureStorageAccountName");
-                var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
-                if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
-                {
-                    checks.AddAzureBlobStorageCheck(accountName, accountKey);
-                }
-            });
-
+        {                                        
             services.AddMvc(options =>
-            {
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter));
-            }).AddControllersAsServices();
+                {
+                    options.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddControllersAsServices();
 
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder
+                    .SetIsOriginAllowed((host) => true)
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+
+            return services;
+        }
+
+        public static IServiceCollection AddCustomHealthCheck(this IServiceCollection services, IConfiguration configuration)
+        {
+            var accountName = configuration.GetValue<string>("AzureStorageAccountName");
+            var accountKey = configuration.GetValue<string>("AzureStorageAccountKey");
+
+            var hcBuilder = services.AddHealthChecks();
+
+            hcBuilder
+                .AddCheck("self", () => HealthCheckResult.Healthy())
+                .AddSqlServer(
+                    configuration["ConnectionString"],
+                    name: "CatalogDB-check",
+                    tags: new string[] { "catalogdb" });
+
+            if (!string.IsNullOrEmpty(accountName) && !string.IsNullOrEmpty(accountKey))
+            {                
+                hcBuilder
+                    .AddAzureBlobStorage(
+                        $"DefaultEndpointsProtocol=https;AccountName={accountName};AccountKey={accountKey};EndpointSuffix=core.windows.net",
+                        name: "catalog-storage-check",
+                        tags: new string[] { "catalogstorage" });
+            }
+
+            if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
+            {
+                hcBuilder
+                    .AddAzureServiceBusTopic(
+                        configuration["EventBusConnection"],
+                        topicName: "eshop_event_bus",
+                        name: "catalog-servicebus-check",
+                        tags: new string[] { "servicebus" });
+            }
+            else
+            {
+                hcBuilder
+                    .AddRabbitMQ(
+                        $"amqp://{configuration["EventBusConnection"]}",
+                        name: "catalog-rabbitmqbus-check",
+                        tags: new string[] { "rabbitmqbus" });
+            }
 
             return services;
         }
@@ -224,10 +265,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
                     TermsOfService = "Terms Of Service"
                 });
-
-                options.OperationFilter<FormFileOperationFilter>();
             });
-
             return services;
 
         }

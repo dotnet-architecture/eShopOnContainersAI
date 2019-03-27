@@ -96,7 +96,7 @@
       "UpstreamPathTemplate": "/basket-api/{everything}",
       "UpstreamHttpMethod": []
     },
-    {
+   {
       "DownstreamPathTemplate": "/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -119,12 +119,7 @@
       ],
       "UpstreamPathTemplate": "/payment-api/{everything}",
       "UpstreamHttpMethod": []
-    },
-
-    //
-    // AI Gateway API routing
-    //
-    {
+    },{
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

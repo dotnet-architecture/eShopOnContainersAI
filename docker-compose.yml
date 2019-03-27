@@ -1,6 +1,10 @@
 version: '3.4'
 
 services:
+
+  seq:
+    image: datalust/seq:latest
+
   sql.data:
     image: microsoft/mssql-server-linux:2017-latest
     volumes:
@@ -121,7 +125,7 @@ services:
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
     depends_on:
       - rabbitmq    
-    
+
   locations.api:
     image: eshopai/locations.api:${TAG:-latest}
     build:
@@ -130,6 +134,15 @@ services:
     depends_on:
       - nosql.data
       - rabbitmq
+
+ 
+  webhooks.api:
+    image: ${REGISTRY:-eshop}/webhooks.api:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Webhooks/Webhooks.API/Dockerfile
+    depends_on:
+      - sql.data    
 
   mobileshoppingapigw:
     image: eshopai/ocelotapigw:${TAG:-latest}
@@ -195,7 +208,7 @@ services:
       - basket.api
 
   mobileshoppingagg:
-    image: eshopai/mobileshoppingagg:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/mobileshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Mobile.Bff.Shopping/aggregator/Dockerfile
@@ -210,7 +223,7 @@ services:
       - basket.api
 
   webshoppingagg:
-    image: eshopai/webshoppingagg:${TAG:-latest}
+    image: ${REGISTRY:-eshop}/webshoppingagg:${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Web.Bff.Shopping/aggregator/Dockerfile
@@ -288,3 +301,36 @@ services:
       - webmarketingapigw
       - webaiapigw
 
+  webstatus:
+    image: ${REGISTRY:-eshop}/webstatus:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebStatus/Dockerfile
+
+  webspa:
+    image: ${REGISTRY:-eshop}/webspa:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebSPA/Dockerfile    
+#    depends_on:
+#      - webshoppingagg
+#      - webshoppingapigw
+#      - webmarketingapigw
+
+  webmvc:
+    image: ${REGISTRY:-eshop}/webmvc:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebMVC/Dockerfile    
+    depends_on:
+      - webshoppingagg
+      - webshoppingapigw
+      - webmarketingapigw
+
+  webhooks.client:
+    image: ${REGISTRY:-eshop}/webhooks.client:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebhookClient/Dockerfile
+    depends_on:
+      - webhooks.api    

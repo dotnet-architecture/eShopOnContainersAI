@@ -17,19 +17,19 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
         {
            
             //callbacks urls from config:
-            var clientUrls = new Dictionary<string, string>
-            {
-                {"Mvc", configuration.GetValue<string>("MvcClient")},
-                {"Bot", configuration.GetValue<string>("BotClient")},
-                {"Spa", configuration.GetValue<string>("SpaClient")},
-                {"Xamarin", configuration.GetValue<string>("XamarinCallback")},
-                {"LocationsApi", configuration.GetValue<string>("LocationApiClient")},
-                {"MarketingApi", configuration.GetValue<string>("MarketingApiClient")},
-                {"BasketApi", configuration.GetValue<string>("BasketApiClient")},
-                {"OrderingApi", configuration.GetValue<string>("OrderingApiClient")},
-                {"MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient")},
-                {"WebShoppingAgg", configuration.GetValue<string>("WebShoppingAggClient")}
-            };
+            var clientUrls = new Dictionary<string, string>();
+
+            clientUrls.Add("Mvc", configuration.GetValue<string>("MvcClient"));
+            clientUrls.Add("Spa", configuration.GetValue<string>("SpaClient"));
+            clientUrls.Add("Xamarin", configuration.GetValue<string>("XamarinCallback"));
+            clientUrls.Add("LocationsApi", configuration.GetValue<string>("LocationApiClient"));
+            clientUrls.Add("MarketingApi", configuration.GetValue<string>("MarketingApiClient"));
+            clientUrls.Add("BasketApi", configuration.GetValue<string>("BasketApiClient"));
+            clientUrls.Add("OrderingApi", configuration.GetValue<string>("OrderingApiClient"));
+            clientUrls.Add("MobileShoppingAgg", configuration.GetValue<string>("MobileShoppingAggClient"));
+            clientUrls.Add("WebShoppingAgg", configuration.GetValue<string>("WebShoppingAggClient"));
+            clientUrls.Add("WebhooksApi", configuration.GetValue<string>("WebhooksApiClient"));
+            clientUrls.Add("WebhooksWeb", configuration.GetValue<string>("WebhooksWebClient"));
 
             if (!context.Clients.Any())
             {

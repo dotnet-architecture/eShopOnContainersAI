@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -57,11 +57,20 @@ namespace WebMVC.Infrastructure
             {
                 var filterQs = "";
 
-                if (brand.HasValue || type.HasValue)
+                if (type.HasValue)
                 {
-                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : "null";
-                    var typeQs = (type.HasValue) ? type.Value.ToString() : "null";
-                    filterQs = $"/type/{typeQs}/brand/{brandQs}";
+                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : string.Empty;
+                    filterQs = $"/type/{type.Value}/brand/{brandQs}";
+
+                }
+                else if (brand.HasValue)
+                {
+                    var brandQs = (brand.HasValue) ? brand.Value.ToString() : string.Empty;
+                    filterQs = $"/type/all/brand/{brandQs}";
+                }
+                else
+                {
+                    filterQs = string.Empty;
                 }
 
                 return $"{baseUri}items{filterQs}?pageIndex={page}&pageSize={take}";

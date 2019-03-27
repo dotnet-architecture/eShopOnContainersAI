@@ -133,12 +133,10 @@
       ],
       "UpstreamPathTemplate": "/image-tensorflow-api/{version}/{everything}",
       "UpstreamHttpMethod": []
-
     }
   ],
-      "GlobalConfiguration": {
-        "RequestIdKey": "OcRequestId",
-        "AdministrationPath": "/administration"
-      }
-    }
-    
+  "GlobalConfiguration": {
+    "RequestIdKey": "OcRequestId",
+    "AdministrationPath": "/administration"
+  }
+} 

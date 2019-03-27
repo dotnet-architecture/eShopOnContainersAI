@@ -1,19 +1,4 @@
-﻿.esh-catalog-file {
-  display: inline-block !important;
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
-}
-
-.esh-catalog-file + label {
-  display: inline-block;
-  cursor: pointer;
-}
-
-.esh-catalog-hero {
+﻿.esh-catalog-hero {
   background-image: url("../../images/main_banner.png");
   background-size: cover;
   height: 260px;
@@ -50,16 +35,6 @@
   background-color: #00A69C;
 }
 
-.esh-catalog-filter.caption {
-  display: block;
-  border-width: 1px;
-  border-style: solid;
-}
-
-.esh-catalog-filter.caption.active {
-  background-color: #008075;
-}
-
 .esh-catalog-label {
   display: inline-block;
   position: relative;
@@ -88,19 +63,15 @@
   z-index: 1;
 }
 
-.esh-catalog-label.cs {
-  width: 365px;
-}
-
 .esh-catalog-send {
   background-color: #83D01B;
   color: #FFFFFF;
   cursor: pointer;
   font-size: 1rem;
+  margin-top: -1.5rem;
   padding: 0.5rem;
   transition: all 0.35s;
-  position: absolute;
-  margin-top: 8px;
+  margin-bottom: -6px;
 }
 
 .esh-catalog-send:hover {
